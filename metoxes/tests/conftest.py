@@ -7,9 +7,9 @@ from fastapi.testclient import TestClient
 from httpx import AsyncClient, Request, Response
 
 os.environ["ENV_STATE"] = "test"
-from storeapi.database import database, user_table  # noqa: E402
+from metoxes.database import database, user_table  # noqa: E402
 
-from storeapi.main import app  # noqa: E402
+from metoxes.main import app  # noqa: E402
 
 
 
@@ -69,7 +69,7 @@ def mock_httpx_client(mocker):
     Fixture to mock the HTTPX client so that we never make any
     real HTTP requests (especially important when registering users).
     """
-    mocked_client = mocker.patch("storeapi.tasks.httpx.AsyncClient")
+    mocked_client = mocker.patch("metoxes.tasks.httpx.AsyncClient")
 
     mocked_async_client = Mock()
     response = Response(status_code=200, content="", request=Request("POST", "//"))

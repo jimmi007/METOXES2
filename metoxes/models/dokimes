@@ -1,11 +1,11 @@
-uvicorn storeapi.main:app --reload
+uvicorn metoxes.main:app --reload
 
 {
   "message": "User created",
   "id": 4,
   "confirmation_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJrb25hIiwiZXhwIjoxNzg1NzM5NDQ2LCJ0eXBlIjoiY29uZmlybWF0aW9uIn0.a27nmnzGMjySTVSOKjuJMY_YWMoPQ9gUsLXhqzabPTI"
 }
-  uvicorn storeapi.main:app --host 0.0.0.0 --port $PORT
+  uvicorn metoxes.main:app --host 0.0.0.0 --port $PORT
 
   ENV_STATE=prod
 
@@ -20,7 +20,7 @@ PROD_MAILGUN_API_KEY=
 PROD_MAILGUN_DOMAIN=
 
 ENV_STATE=prod
-PROD_DATABASE_URL=postgresql://storeapi_user:pass@dpg-xxxxx/storeapi
+PROD_DATABASE_URL=postgresql://metoxes_user:pass@dpg-xxxxx/metoxes
 PORT=8000
 
-uvicorn storeapi.main:app --host 0.0.0.0 --port $PORT
+uvicorn metoxes.main:app --host 0.0.0.0 --port $PORT

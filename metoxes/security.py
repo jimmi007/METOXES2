@@ -7,8 +7,8 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import ExpiredSignatureError, JWTError, jwt
 from passlib.context import CryptContext
 
-from storeapi.config import config
-from storeapi.database import database, user_table
+from metoxes.config import config
+from metoxes.database import database, user_table
 
 
 logger = logging.getLogger(__name__)

@@ -3,8 +3,36 @@ from json import JSONDecodeError
 
 import httpx
 from databases import Database
-from storeapi.config import config
-from storeapi.database import post_table
+from metoxes.config import config
+from from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+
+from metoxes.database import database, engine, metadata
+from metoxes.routers.stock import router as stock_router
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    metadata.create_all(engine)
+
+    await database.connect()
+
+    yield
+
+    await database.disconnect()
+
+
+app = FastAPI(lifespan=lifespan)
+
+app.include_router(stock_router)
+
+
+@app.get("/")
+async def root():
+    return {
+        "message": "Stocks API is running"
+    }.database import post_table
 
 logger = logging.getLogger(__name__)
 

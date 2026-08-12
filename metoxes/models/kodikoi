@@ -3,9 +3,9 @@ from typing import Optional
 from pydantic import BaseModel, ConfigDict
 
 
-
-
-1) uvicorn storeapi.main:app --reload(to anoigo sto main)
+cd "C:\Users\anagn\PycharmProjects\ΜΕΤΟΧΕΣ"
+cd "C:\Users\anagn\PycharmProjects\ΜΕΤΟΧΕΣ"
+1) uvicorn metoxes.main:app --reload(to anoigo sto main)
 Meta patao /docs
 
 2)anagnostou102@yahoo.gr trikala2

@@ -19,7 +19,7 @@ def sample_image(fs) -> pathlib.Path:
 @pytest.fixture(autouse=True)
 def mock_b2_upload_file(mocker):
     return mocker.patch(
-        "storeapi.routers.upload.b2_upload_file", return_value="https://fakeurl.com"
+        "metoxes.routers.upload.b2_upload_file", return_value="https://fakeurl.com"
     )
 
 

@@ -1,7 +1,7 @@
 import logging
 from logging.config import dictConfig
 
-from storeapi.config import DevConfig, ProdConfig, config
+from metoxes.config import DevConfig, ProdConfig, config
 
 
 def obfuscated(email: str, obfuscated_length: int) -> str:
@@ -42,13 +42,13 @@ def configure_logging() -> None:
     is_dev = isinstance(config, DevConfig)
     is_prod = isinstance(config, ProdConfig)
 
-    storeapi_handlers = ["console"]
+    metoxes_handlers = ["console"]
 
     if is_dev:
-        storeapi_handlers.append("rotating_file")
+        metoxes_handlers.append("rotating_file")
 
     if is_prod and config.LOGTAIL_API_KEY:
-        storeapi_handlers.append("logtail")
+        metoxes_handlers.append("logtail")
 
     dictConfig(
         {
@@ -103,7 +103,7 @@ def configure_logging() -> None:
                     "class": "logging.handlers.RotatingFileHandler",
                     "level": "DEBUG",
                     "formatter": "json",
-                    "filename": "storeapi.log",
+                    "filename": "metoxes.log",
                     "maxBytes": 1024 * 1024,
                     "backupCount": 5,
                     "encoding": "utf8",
@@ -149,8 +149,8 @@ def configure_logging() -> None:
                     "propagate": False,
                 },
 
-                "storeapi": {
-                    "handlers": storeapi_handlers,
+                "metoxes": {
+                    "handlers": metoxes_handlers,
                     "level": "DEBUG" if is_dev else "INFO",
                     "propagate": False,
                 },

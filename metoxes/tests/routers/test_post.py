@@ -1,7 +1,7 @@
 import pytest
 from httpx import AsyncClient
 
-from storeapi import security
+from metoxes import security
 
 
 async def create_post(
@@ -76,7 +76,7 @@ async def test_create_post(
 async def test_create_post_expired_token(
     async_client: AsyncClient, confirmed_user: dict, mocker
 ):
-    mocker.patch("storeapi.security.access_token_expire_minutes", return_value=-1)
+    mocker.patch("metoxes.security.access_token_expire_minutes", return_value=-1)
     token = security.create_access_token(confirmed_user["email"])
     response = await async_client.post(
         "/post",

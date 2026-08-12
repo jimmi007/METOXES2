@@ -2,8 +2,8 @@ import httpx
 import pytest
 from databases import Database
 
-from storeapi.database import database, post_table
-from storeapi.tasks import (
+from metoxes.database import database, post_table
+from metoxes.tasks import (
     APIResponseError,
     _generate_cute_creature_api,
     generate_and_add_to_post,

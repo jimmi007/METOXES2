@@ -1,7 +1,7 @@
 import pytest
 from jose import jwt
 
-from storeapi import security
+from  metoxes import security
 
 
 def test_access_token_expire_minutes():
@@ -54,7 +54,7 @@ def test_get_subject_for_token_type_valid_access():
 
 def test_get_subject_for_token_type_expired(mocker):
     mocker.patch(
-        "storeapi.security.access_token_expire_minutes",
+        "metoxes.security.access_token_expire_minutes",
         return_value=-1,
     )
 

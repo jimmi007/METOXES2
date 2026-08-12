@@ -89,7 +89,7 @@ async def test_confirm_user_expired_token(
     mocker,
 ):
     mocker.patch(
-        "storeapi.security.confirm_token_expire_minutes",
+        "metoxes.security.confirm_token_expire_minutes",
         return_value=-1,
     )
 
