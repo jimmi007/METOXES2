@@ -24,6 +24,34 @@ stock_table = sqlalchemy.Table(
     ),
 
     sqlalchemy.Column(
+        "name",
+        sqlalchemy.String,
+        nullable=False,
+    ),
+sqlalchemy.Column(
+    "vusa_return",
+    sqlalchemy.Float,
+    nullable=True,
+),
+sqlalchemy.Column(
+    "currency",
+    sqlalchemy.String,
+    nullable=True,
+),
+
+sqlalchemy.Column(
+    "purchase_value_eur",
+    sqlalchemy.Float,
+    nullable=True,
+),
+
+
+sqlalchemy.Column(
+    "excess_return",
+    sqlalchemy.Float,
+    nullable=True,
+),
+    sqlalchemy.Column(
         "sector",
         sqlalchemy.String,
         nullable=False,

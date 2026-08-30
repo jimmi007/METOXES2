@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <title>Monthly Stock Performance</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        .chart-container {
+            width: 900px;
+            height: 500px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Μηνιαία ποσοστιαία μεταβολή μετοχών</h2>
+
+<div class="chart-container">
+    <canvas id="stocksChart"></canvas>
+</div>
+
+<script>
+
+async function loadChart() {
+
+    const response = await fetch(
+        "/stock/summary"
+    );
+
+    const stocks = await response.json();
+
+    console.log("DATA:", stocks);
+
+    const validStocks = stocks.filter(
+        stock =>
+            stock.monthly_percent_change !== null
+    );
+
+    const symbols = validStocks.map(
+        stock => stock.symbol
+    );
+
+    const monthlyChanges = validStocks.map(
+        stock => Number(stock.monthly_percent_change)
+    );
+
+    const ctx = document.getElementById(
+        "stocksChart"
+    );
+
+    new Chart(ctx, {
+        type: "bar",
+
+        data: {
+            labels: symbols,
+
+            datasets: [
+                {
+                    label: "Μηνιαία μεταβολή %",
+                    data: monthlyChanges
+                }
+            ]
+        },
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: "Μεταβολή %"
+                    }
+                },
+
+                x: {
+                    title: {
+                        display: true,
+                        text: "Μετοχή"
+                    }
+                }
+            }
+        }
+    });
+}
+
+loadChart();
+
+</script>
+
+</body>
+</html>

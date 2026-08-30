@@ -8,11 +8,19 @@ cd "C:\Users\anagn\PycharmProjects\ΜΕΤΟΧΕΣ"
 1) uvicorn metoxes.main:app --reload(to anoigo sto main)
 Meta patao /docs
 
+lisi2
+.\.venv\Scripts\python.exe -m pip install yfinance
+.\.venv\Scripts\python.exe -m uvicorn metoxes.main:app --reload
+
 2)anagnostou102@yahoo.gr trikala2
 
 
 git add .
 git commit -m "Add delete user endpoint"
+git push
+
+git add .
+git commit -m "Update stock analysis"
 git push
 
 

@@ -1,24 +1,22 @@
-import logging
 from contextlib import asynccontextmanager
+import logging
 
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 
-from metoxes.config import config
 from metoxes.database import database, engine, metadata
-from metoxes.logging_conf import configure_logging
 from metoxes.routers.stock import router as stock_router
+from metoxes.logging_conf import configure_logging
 
 
-# Ενεργοποίηση logging
 configure_logging()
-
 logger = logging.getLogger("metoxes")
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+
     logger.info("Starting Stocks API")
-    logger.info("Environment: %s", config.ENV_STATE)
 
     metadata.create_all(engine)
 
@@ -28,7 +26,6 @@ async def lifespan(app: FastAPI):
     yield
 
     await database.disconnect()
-    logger.info("Database disconnected")
 
 
 app = FastAPI(lifespan=lifespan)
@@ -38,6 +35,11 @@ app.include_router(stock_router)
 
 @app.get("/")
 async def root():
-    return {
-        "message": "Stocks API is running"
-    }
+    return {"message": "Stocks API is running"}
+
+
+@app.get("/chart")
+async def chart():
+    return FileResponse(
+        "metoxes/templates/chart.html"
+    )

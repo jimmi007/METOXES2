@@ -20,13 +20,14 @@ class Sector(str, Enum):
     communication = "Communication"
     utilities = "Utilities"
     real_estate = "Real Estate"
-    diafora="Diafora"
+    diafora = "Diafora"
 
 
 class StockIn(BaseModel):
     purchase_date: date
     sector: Sector
     symbol: str
+    name: str
     platform: Platform
     purchase_price: float
     quantity: float
@@ -40,11 +41,15 @@ class Stock(StockIn):
     id: int
     current_price: float | None = None
     profit_loss: float | None = None
+    vusa_return: float | None = None
+    excess_return: float | None = None
+
 
 class StockUpdate(BaseModel):
     purchase_date: date | None = None
     sector: Sector | None = None
     symbol: str | None = None
+    name: str | None = None
     platform: Platform | None = None
     purchase_price: float | None = None
     quantity: float | None = None
