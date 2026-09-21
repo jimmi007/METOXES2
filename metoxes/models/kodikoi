@@ -2,6 +2,9 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
+python -m uvicorn metoxes.main:app --reload
+
+
 
 cd "C:\Users\anagn\PycharmProjects\ΜΕΤΟΧΕΣ"
 cd "C:\Users\anagn\PycharmProjects\ΜΕΤΟΧΕΣ"
@@ -30,5 +33,16 @@ Ctrl + Shift + F → Find in Files (αναζήτηση σε όλο το project)
 Ctrl + F → αναζήτηση μόνο στο ανοιχτό αρχείο.
 Shift δύο φορές (Double Shift) και γράψε Find in Files.
 
+Alt + 7
+
+Θα ανοίξει αριστερά το Structure του αρχείου και θα δεις όλες τις functions, π.χ.
+
+
 internal database-postgresql://restapi_db_g1em_user:oEVbcUHGxvgLFjWcdZV0XJFFW7MGclPO@dpg-d9ir3u3rjlhs73fe8m20-a/restapi_db_g1em
 external database-postgresql://restapi_db_g1em_user:oEVbcUHGxvgLFjWcdZV0XJFFW7MGclPO@dpg-d9ir3u3rjlhs73fe8m20-a.oregon-postgres.render.com/restapi_db_g1em
+
+
+Αριστερά από τη def, δίπλα στους αριθμούς γραμμών, υπάρχει ένα μικρό −. Πάτησέ το. Η συνάρτηση θα κλείσει και θα φαίνεται περίπου:
+async def update_excel(...): ...
+Κάνε κλικ πάνω στη διπλωμένη γραμμή και μετά μπορείς να χρησιμοποιήσεις επιλογή γραμμής/Shift για να επιλέξεις όλο το folded block. Εναλλακτικά, πιο αξιόπιστα: βάλε τον κέρσορα στην αρχή του decorator, κράτα Shift και κάνε κλικ ακριβώς πριν από τον επόμενο @router... που ακολουθεί τη συνάρτηση.
+Πάτα Delete και μετά κάνε paste (Ctrl+V) την καινούργια update_excel() που σου έδωσα.
