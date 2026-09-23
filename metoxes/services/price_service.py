@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-
 import yfinance as yf
+import pandas as pd
 
 
 # --------------------------------------------------
@@ -282,3 +282,54 @@ def get_vuaa_return(purchase_date) -> float:
     ) * 100
 
     return round(vuaa_return, 2)
+
+def get_historical_fx_to_eur(currency, purchase_date):
+
+    if currency == "EUR":
+        return 1.0
+
+    if not purchase_date:
+        return None
+
+    yahoo_fx_map = {
+        "USD": "EUR=X",
+        "GBP": "GBPEUR=X",
+        "SEK": "SEKEUR=X",
+    }
+
+    ticker = yahoo_fx_map.get(currency)
+
+    if ticker is None:
+        return None
+
+    try:
+        start_date = pd.to_datetime(purchase_date)
+
+        # Παίρνουμε λίγες ημέρες μετά,
+        # γιατί η ημερομηνία μπορεί να είναι Σ/Κ
+        end_date = start_date + pd.Timedelta(days=7)
+
+        data = yf.download(
+            ticker,
+            start=start_date.strftime("%Y-%m-%d"),
+            end=end_date.strftime("%Y-%m-%d"),
+            progress=False,
+            auto_adjust=False
+        )
+
+        if data.empty:
+            return None
+
+        close = data["Close"].dropna()
+
+        if close.empty:
+            return None
+
+        return float(close.iloc[0].item())
+
+    except Exception as e:
+        print(
+            f"Historical FX error "
+            f"{currency} {purchase_date}: {e}"
+        )
+        return None

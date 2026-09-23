@@ -2,7 +2,7 @@ from io import BytesIO
 
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from openpyxl import load_workbook
-
+from metoxes.services.portfolio_service import aggregate_positions
 from metoxes.services.excel_service import (
     update_portfolio_excel,
     get_excel_stocks,
@@ -39,6 +39,10 @@ router = APIRouter()
 # ==========================================================
 # BASIC TEST
 # ==========================================================
+
+
+
+
 
 @router.get("/stocks")
 async def get_stocks():
@@ -477,4 +481,70 @@ async def freedom_trades_debug():
             )
             else None
         )
+    }
+@router.get("/stocks/all")
+async def get_all_stocks():
+
+    # Trading212
+    trading212_stocks = await get_clean_positions()
+
+    # Capital
+    capital_stocks = await get_clean_capital_positions()
+
+    # Freedom24
+    freedom_stocks = get_clean_freedom_positions()
+
+    # Όλες οι θέσεις μαζί
+    all_stocks = (
+        trading212_stocks
+        + capital_stocks
+        + freedom_stocks
+    )
+    # Ενώνουμε τις πολλαπλές θέσεις
+    # της ίδιας μετοχής στον ίδιο broker
+    all_stocks = aggregate_positions(
+        all_stocks
+    )
+    # ==================================================
+    # ΣΥΝΟΛΙΚΗ ΑΞΙΑ ΧΑΡΤΟΦΥΛΑΚΙΟΥ
+    # Όλα τα market_value είναι πλέον σε EUR
+    # ==================================================
+
+    total_portfolio_value = sum(
+        stock["market_value"]
+        for stock in all_stocks
+        if stock.get("market_value") is not None
+    )
+
+    # ==================================================
+    # PORTFOLIO WEIGHT
+    # Βάρος κάθε θέσης στο συνολικό χαρτοφυλάκιο
+    # ==================================================
+
+    for stock in all_stocks:
+
+        market_value = stock.get("market_value")
+
+        if (
+                market_value is not None
+                and total_portfolio_value > 0
+        ):
+
+            stock["portfolio_weight"] = round(
+                market_value
+                / total_portfolio_value
+                * 100,
+                2
+            )
+
+        else:
+
+            stock["portfolio_weight"] = None
+    return {
+        "count": len(all_stocks),
+        "total_portfolio_value": round(
+            total_portfolio_value,
+            2
+        ),
+        "stocks": all_stocks
     }

@@ -1,5 +1,5 @@
 import os
-
+from metoxes.services.price_service import get_historical_fx_to_eur
 import httpx
 from dotenv import load_dotenv
 from metoxes.services.price_service import (
@@ -14,6 +14,31 @@ CAPITAL_IDENTIFIER = os.getenv("CAPITAL_IDENTIFIER")
 CAPITAL_PASSWORD = os.getenv("CAPITAL_PASSWORD")
 
 BASE_URL = "https://api-capital.backend-capital.com"
+import yfinance as yf
+
+
+def get_fx_to_eur(currency: str):
+
+    if currency == "EUR":
+        return 1.0
+
+    yahoo_fx_map = {
+        "USD": "EUR=X",       # 1 USD -> EUR
+        "GBP": "GBPEUR=X",    # 1 GBP -> EUR
+        "SEK": "SEKEUR=X",    # 1 SEK -> EUR
+    }
+
+    ticker = yahoo_fx_map.get(currency)
+
+    if ticker is None:
+        return None
+
+    data = yf.Ticker(ticker).history(period="5d")
+
+    if data.empty:
+        return None
+
+    return float(data["Close"].iloc[-1])
 
 
 async def create_capital_session():
@@ -135,7 +160,8 @@ from metoxes.services.price_service import (
 )
 
 CAPITAL_TICKER_MAP = {
-    "AIRfr": "AIR",
+   "AIRFR": "AIR.PA",
+   "SAABB": "SAAB-B.ST",
     "RHM": "RHM.DE",
     "BEI": "BEI.DE",
     "HEN3": "HEN3.DE",
@@ -143,41 +169,40 @@ CAPITAL_TICKER_MAP = {
     "LDO": "LDO.MI",
     "LHA": "LHA.DE",
     "RWE": "RWE.DE",
-    "SAAB-B": "SAAB-B.ST",
+
     "FFARM": "FFARM.AS",
     "ULVR": "ULVR.L",
 }
 async def get_clean_capital_positions():
 
-    # Παίρνουμε τα raw positions από Capital
+    # ==========================================================
+    # 1. ΠΑΙΡΝΟΥΜΕ ΤΙΣ RAW ΘΕΣΕΙΣ ΑΠΟ CAPITAL
+    # ==========================================================
+
     data = await get_capital_positions()
 
     positions = data.get("positions", [])
 
-    # Παίρνουμε τα σωστά Yahoo symbols
-    # από το portfolio.xlsx
-
-
     clean_positions = []
 
-    # ==================================================
-    # ΔΙΑΒΑΖΟΥΜΕ ΟΛΕΣ ΤΙΣ ΘΕΣΕΙΣ CAPITAL
-    # ==================================================
+    # ==========================================================
+    # 2. ΔΙΑΒΑΖΟΥΜΕ ΟΛΕΣ ΤΙΣ ΘΕΣΕΙΣ CAPITAL
+    # ==========================================================
 
     for item in positions:
 
         position = item["position"]
         market = item["market"]
 
-        # --------------------------------------------------
+        # ------------------------------------------------------
         # ΒΑΣΙΚΑ ΣΤΟΙΧΕΙΑ
-        # --------------------------------------------------
+        # ------------------------------------------------------
 
         name = market["instrumentName"]
 
         capital_symbol = market["symbol"]
 
-        # Μετατροπή Capital ticker σε Yahoo ticker
+        # Μετατροπή Capital ticker -> Yahoo ticker
         # π.χ. RHM -> RHM.DE
         symbol = CAPITAL_TICKER_MAP.get(
             capital_symbol.upper(),
@@ -190,77 +215,158 @@ async def get_clean_capital_positions():
             position["size"]
         )
 
-        purchase_price = float(
+        # Τιμή αγοράς στο αρχικό νόμισμα
+        purchase_price_native = float(
             position["level"]
         )
 
         direction = position["direction"]
 
-        # --------------------------------------------------
+        # ------------------------------------------------------
+        # ΝΟΜΙΣΜΑ ΘΕΣΗΣ
+        # ------------------------------------------------------
+
+        original_currency = position["currency"]
+
+        # ------------------------------------------------------
+        # ΤΡΕΧΟΥΣΑ ΙΣΟΤΙΜΙΑ ΠΡΟΣ EUR
+        # ------------------------------------------------------
+
+        fx_to_eur = get_fx_to_eur(
+            original_currency
+        )
+
+        # ------------------------------------------------------
+        # ΙΣΤΟΡΙΚΗ ΙΣΟΤΙΜΙΑ ΠΡΟΣ EUR
+        # Την ημερομηνία αγοράς
+        # ------------------------------------------------------
+
+        historical_fx_to_eur = (
+            get_historical_fx_to_eur(
+                original_currency,
+                purchase_date
+            )
+        )
+
+        # ------------------------------------------------------
+        # PURCHASE PRICE ΣΕ EUR
+        # ------------------------------------------------------
+
+        if historical_fx_to_eur is not None:
+
+            purchase_price_eur = (
+                purchase_price_native
+                * historical_fx_to_eur
+            )
+
+        else:
+
+            purchase_price_eur = None
+
+        # ------------------------------------------------------
         # CURRENT PRICE
         #
         # BUY  -> BID
         # SELL -> OFFER
-        # --------------------------------------------------
+        # ------------------------------------------------------
 
         if direction == "BUY":
 
-            current_price = float(
+            current_price_native = float(
                 market["bid"]
             )
 
         else:
 
-            current_price = float(
+            current_price_native = float(
                 market["offer"]
             )
 
-        # --------------------------------------------------
-        # MARKET VALUE
-        # --------------------------------------------------
+        # ------------------------------------------------------
+        # CURRENT PRICE ΣΕ EUR
+        # ------------------------------------------------------
 
-        market_value = (
-            current_price
-            * quantity
-        )
+        if fx_to_eur is not None:
 
-        # --------------------------------------------------
+            current_price_eur = (
+                current_price_native
+                * fx_to_eur
+            )
+
+        else:
+
+            current_price_eur = None
+
+        # ------------------------------------------------------
+        # MARKET VALUE ΣΕ EUR
+        # ------------------------------------------------------
+
+        if current_price_eur is not None:
+
+            market_value_eur = (
+                current_price_eur
+                * quantity
+            )
+
+        else:
+
+            market_value_eur = None
+
+        # ------------------------------------------------------
         # UNREALIZED PROFIT / LOSS
-        # Το παίρνουμε απευθείας από Capital
-        # --------------------------------------------------
+        #
+        # Το Capital δίνει το UPL στο νόμισμα της θέσης.
+        # Το μετατρέπουμε σε EUR με τη σημερινή ισοτιμία.
+        # ------------------------------------------------------
 
-        upl = float(
+        upl_native = float(
             position["upl"]
         )
 
-        # --------------------------------------------------
-        # ΑΡΧΙΚΟ ΚΟΣΤΟΣ ΘΕΣΗΣ
-        # --------------------------------------------------
+        if fx_to_eur is not None:
 
-        total_cost = (
-            purchase_price
-            * quantity
-        )
+            upl_eur = (
+                upl_native
+                * fx_to_eur
+            )
 
-        # --------------------------------------------------
-        # PERCENT CHANGE
-        # --------------------------------------------------
+        else:
 
-        if total_cost != 0:
+            upl_eur = None
+
+        # ------------------------------------------------------
+        # PERCENT CHANGE ΣΕ EUR
+        #
+        # Συγκρίνουμε:
+        # ιστορική τιμή αγοράς σε EUR
+        # με σημερινή τιμή σε EUR
+        #
+        # Άρα περιλαμβάνεται και η επίδραση της ισοτιμίας.
+        # ------------------------------------------------------
+
+        if (
+            purchase_price_eur is not None
+            and current_price_eur is not None
+            and purchase_price_eur != 0
+        ):
 
             percent_change = (
-                upl
-                / total_cost
-            ) * 100
+                (
+                    current_price_eur
+                    - purchase_price_eur
+                )
+                / purchase_price_eur
+                * 100
+            )
 
         else:
 
             percent_change = None
 
-        # --------------------------------------------------
+        # ------------------------------------------------------
         # MONTHLY PERCENT CHANGE
-        # Από Yahoo Finance με το σωστό ticker
-        # --------------------------------------------------
+        # Από Yahoo Finance
+        # ------------------------------------------------------
 
         try:
 
@@ -282,10 +388,10 @@ async def get_clean_capital_positions():
 
             monthly_change = None
 
-        # --------------------------------------------------
+        # ------------------------------------------------------
         # VUAA RETURN
-        # Από την ημερομηνία αγοράς της θέσης
-        # --------------------------------------------------
+        # Από την ημερομηνία αγοράς
+        # ------------------------------------------------------
 
         try:
 
@@ -305,11 +411,11 @@ async def get_clean_capital_positions():
 
             vuaa_return = None
 
-        # --------------------------------------------------
+        # ------------------------------------------------------
         # EXCESS RETURN
         #
-        # Απόδοση μετοχής - Απόδοση VUAA
-        # --------------------------------------------------
+        # Απόδοση μετοχής σε EUR - Απόδοση VUAA
+        # ------------------------------------------------------
 
         if (
             percent_change is not None
@@ -325,78 +431,146 @@ async def get_clean_capital_positions():
 
             excess_return = None
 
-        # --------------------------------------------------
-        # ΠΡΟΣΘΗΚΗ ΣΤΗ CLEAN ΛΙΣΤΑ
-        # --------------------------------------------------
+        # ------------------------------------------------------
+        # STATUS
+        # ------------------------------------------------------
+
+        if (
+            fx_to_eur is not None
+            and historical_fx_to_eur is not None
+        ):
+
+            status = "OK"
+
+        elif fx_to_eur is None:
+
+            status = "FX_NOT_FOUND"
+
+        else:
+
+            status = "HISTORICAL_FX_NOT_FOUND"
+
+        # ======================================================
+        # 3. ΤΕΛΙΚΟ CLEAN RECORD
+        # ======================================================
 
         clean_positions.append({
 
-            "symbol":
-                symbol,
+            "symbol": symbol,
 
-            "name":
-                name,
+            "name": name,
 
-            "platform":
-                "Capital",
+            "platform": "Capital",
 
-            "purchase_date":
-                purchase_date,
+            "purchase_date": purchase_date,
 
-            "purchase_price":
+            # Τιμή αγοράς σε EUR
+            "purchase_price": (
                 round(
-                    purchase_price,
+                    purchase_price_eur,
                     2
-                ),
+                )
+                if purchase_price_eur is not None
+                else None
+            ),
 
-            "quantity":
-                quantity,
+            "quantity": quantity,
 
-            "current_price":
-                round(
-                    current_price,
-                    2
-                ),
-
-            "market_value":
-                round(
-                    market_value,
-                    2
-                ),
-
-            "percent_change":
+            # Απόδοση σε EUR
+            "percent_change": (
                 round(
                     percent_change,
                     2
                 )
                 if percent_change is not None
-                else None,
+                else None
+            ),
 
-            "monthly_percent_change":
-                monthly_change,
+            "monthly_percent_change": (
+                round(
+                    monthly_change,
+                    2
+                )
+                if monthly_change is not None
+                else None
+            ),
 
-            "vuaa_return":
-                vuaa_return,
+            "vuaa_return": (
+                round(
+                    vuaa_return,
+                    2
+                )
+                if vuaa_return is not None
+                else None
+            ),
 
-            "excess_return":
+            "excess_return": (
                 round(
                     excess_return,
                     2
                 )
                 if excess_return is not None
-                else None,
+                else None
+            ),
 
-            "upl":
+            # Τρέχουσα τιμή σε EUR
+            "current_price": (
                 round(
-                    upl,
+                    current_price_eur,
                     2
-                ),
+                )
+                if current_price_eur is not None
+                else None
+            ),
 
-            "direction":
-                direction,
+            # Τρέχουσα αξία θέσης σε EUR
+            "market_value": (
+                round(
+                    market_value_eur,
+                    2
+                )
+                if market_value_eur is not None
+                else None
+            ),
 
-            "status":
-                "OK"
+            # UPL σε EUR
+            "upl": (
+                round(
+                    upl_eur,
+                    2
+                )
+                if upl_eur is not None
+                else None
+            ),
+
+            "original_currency": original_currency,
+
+            # Σημερινή ισοτιμία
+            "fx_to_eur": (
+                round(
+                    fx_to_eur,
+                    6
+                )
+                if fx_to_eur is not None
+                else None
+            ),
+
+            # Ιστορική ισοτιμία αγοράς
+            "historical_fx_to_eur": (
+                round(
+                    historical_fx_to_eur,
+                    6
+                )
+                if historical_fx_to_eur is not None
+                else None
+            ),
+
+            "direction": direction,
+
+            "status": status
         })
 
     return clean_positions
+
+
+

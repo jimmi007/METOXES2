@@ -6,6 +6,7 @@ from tradernet import Tradernet as tn
 from metoxes.services.price_service import (
     get_monthly_percent_change,
     get_vuaa_return,
+    get_historical_fx_to_eur,
 )
 
 load_dotenv()
@@ -275,7 +276,7 @@ def get_clean_freedom_positions():
     accounts = portfolio.get("acc", [])
 
     # ==========================================================
-    # 1. ΙΣΟΤΙΜΙΕΣ FREEDOM24
+    # 1. ΤΡΕΧΟΥΣΕΣ ΙΣΟΤΙΜΙΕΣ FREEDOM24
     # ==========================================================
 
     currency_rates = {}
@@ -308,11 +309,15 @@ def get_clean_freedom_positions():
         currency = p.get("curr")
 
         quantity = float(
-            p.get("q", 0)
+            p.get("q", 0) or 0
         )
 
+        # Δεν μας ενδιαφέρουν μηδενικές/κλειστές θέσεις
+        if quantity <= 0:
+            continue
+
         # ======================================================
-        # 3. TRADES ΜΟΝΟ ΤΗΣ ΣΥΓΚΕΚΡΙΜΕΝΗΣ ΜΕΤΟΧΗΣ
+        # 3. TRADES ΤΗΣ ΣΥΓΚΕΚΡΙΜΕΝΗΣ ΜΕΤΟΧΗΣ
         # ======================================================
 
         trades = get_freedom_trades(
@@ -320,7 +325,7 @@ def get_clean_freedom_positions():
         )
 
         # ======================================================
-        # 4. ΗΜΕΡΟΜΗΝΙΑ ΑΓΟΡΑΣ ΜΕ FIFO
+        # 4. ΣΤΑΘΜΙΣΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΑΓΟΡΑΣ ΜΕ FIFO
         # ======================================================
 
         purchase_date = get_weighted_purchase_date(
@@ -343,47 +348,64 @@ def get_clean_freedom_positions():
         # ======================================================
 
         try:
-            monthly_percent_change = get_monthly_percent_change(
-                yahoo_symbol
+
+            monthly_percent_change = (
+                get_monthly_percent_change(
+                    yahoo_symbol
+                )
             )
+
         except Exception:
+
             monthly_percent_change = None
+
         # ======================================================
-        # 7. ΑΠΟΔΟΣΗ VUAA ΑΠΟ ΗΜΕΡΟΜΗΝΙΑ ΑΓΟΡΑΣ
+        # 7. ΑΠΟΔΟΣΗ VUAA
         # ======================================================
 
         if purchase_date:
 
-            vuaa_return = get_vuaa_return(
-                purchase_date
-            )
+            try:
+
+                vuaa_return = get_vuaa_return(
+                    purchase_date
+                )
+
+            except Exception:
+
+                vuaa_return = None
 
         else:
 
             vuaa_return = None
 
         # ======================================================
-        # 8. ΤΙΜΕΣ FREEDOM24
+        # 8. ΤΙΜΕΣ FREEDOM24 ΣΤΟ ΑΡΧΙΚΟ ΝΟΜΙΣΜΑ
         # ======================================================
 
         purchase_price_native = float(
-            p.get("price_a", 0)
+            p.get("price_a", 0) or 0
         )
 
         current_price_native = float(
-            p.get("profit_price", 0)
+            p.get("profit_price", 0) or 0
         )
 
         market_value_native = float(
-            p.get("market_value", 0)
+            p.get("market_value", 0) or 0
         )
 
         profit_native = float(
-            p.get("profit_close", 0)
+            p.get("profit_close", 0) or 0
         )
 
         # ======================================================
-        # 9. ΜΕΤΑΤΡΟΠΗ ΝΟΜΙΣΜΑΤΟΣ -> EUR
+        # 9. ΤΡΕΧΟΥΣΑ ΙΣΟΤΙΜΙΑ -> EUR
+        #
+        # Για:
+        # current_price
+        # market_value
+        # profit
         # ======================================================
 
         if currency == "EUR":
@@ -408,7 +430,51 @@ def get_clean_freedom_positions():
                 fx_to_eur = None
 
         # ======================================================
-        # 10. ΤΡΕΧΟΥΣΕΣ ΑΞΙΕΣ ΣΕ EUR
+        # 10. ΙΣΤΟΡΙΚΗ ΙΣΟΤΙΜΙΑ -> EUR
+        #
+        # Χρησιμοποιείται για την τιμή αγοράς.
+        # ======================================================
+
+        if currency == "EUR":
+
+            historical_fx_to_eur = 1.0
+
+        elif purchase_date:
+
+            try:
+
+                historical_fx_to_eur = (
+                    get_historical_fx_to_eur(
+                        currency,
+                        purchase_date
+                    )
+                )
+
+            except Exception:
+
+                historical_fx_to_eur = None
+
+        else:
+
+            historical_fx_to_eur = None
+
+        # ======================================================
+        # 11. PURCHASE PRICE ΣΕ EUR
+        # ======================================================
+
+        if historical_fx_to_eur is not None:
+
+            purchase_price_eur = (
+                purchase_price_native
+                * historical_fx_to_eur
+            )
+
+        else:
+
+            purchase_price_eur = None
+
+        # ======================================================
+        # 12. ΤΡΕΧΟΥΣΕΣ ΑΞΙΕΣ ΣΕ EUR
         # ======================================================
 
         if fx_to_eur is not None:
@@ -435,19 +501,27 @@ def get_clean_freedom_positions():
             profit_eur = None
 
         # ======================================================
-        # 11. ΣΥΝΟΛΙΚΗ % ΑΠΟΔΟΣΗ
+        # 13. ΣΥΝΟΛΙΚΗ % ΑΠΟΔΟΣΗ ΣΕ EUR
+        #
+        # Ιστορική τιμή αγοράς EUR
+        # έναντι
+        # σημερινής τιμής EUR
+        #
+        # Έτσι λαμβάνεται υπόψη και η μεταβολή της ισοτιμίας.
         # ======================================================
 
-        total_cost_native = (
-            purchase_price_native
-            * quantity
-        )
-
-        if total_cost_native != 0:
+        if (
+            purchase_price_eur is not None
+            and current_price_eur is not None
+            and purchase_price_eur != 0
+        ):
 
             percent_change = (
-                profit_native
-                / total_cost_native
+                (
+                    current_price_eur
+                    - purchase_price_eur
+                )
+                / purchase_price_eur
                 * 100
             )
 
@@ -456,8 +530,10 @@ def get_clean_freedom_positions():
             percent_change = None
 
         # ======================================================
-        # 12. EXCESS RETURN
-        #     Απόδοση μετοχής - απόδοση VUAA
+        # 14. EXCESS RETURN
+        #
+        # Απόδοση επένδυσης σε EUR
+        # μείον απόδοση VUAA
         # ======================================================
 
         if (
@@ -475,7 +551,26 @@ def get_clean_freedom_positions():
             excess_return = None
 
         # ======================================================
-        # 13. ΤΕΛΙΚΟ CLEAN RECORD
+        # 15. STATUS
+        # ======================================================
+
+        if (
+            fx_to_eur is not None
+            and historical_fx_to_eur is not None
+        ):
+
+            status = "OK"
+
+        elif fx_to_eur is None:
+
+            status = "FX_NOT_FOUND"
+
+        else:
+
+            status = "HISTORICAL_FX_NOT_FOUND"
+
+        # ======================================================
+        # 16. ΤΕΛΙΚΟ CLEAN RECORD
         # ======================================================
 
         clean_positions.append({
@@ -488,68 +583,108 @@ def get_clean_freedom_positions():
 
             "purchase_date": purchase_date,
 
-            "purchase_price": round(
-                purchase_price_native,
-                2
+            # Ιστορική τιμή αγοράς σε EUR
+            "purchase_price": (
+                round(
+                    purchase_price_eur,
+                    2
+                )
+                if purchase_price_eur is not None
+                else None
             ),
 
             "quantity": quantity,
 
+            # Σημερινή τιμή σε EUR
             "current_price": (
-                round(current_price_eur, 2)
+                round(
+                    current_price_eur,
+                    2
+                )
                 if current_price_eur is not None
                 else None
             ),
 
+            # Σημερινή αξία θέσης σε EUR
             "market_value": (
-                round(market_value_eur, 2)
+                round(
+                    market_value_eur,
+                    2
+                )
                 if market_value_eur is not None
                 else None
             ),
 
+            # Συνολική απόδοση σε EUR
             "percent_change": (
-                round(percent_change, 2)
+                round(
+                    percent_change,
+                    2
+                )
                 if percent_change is not None
                 else None
             ),
 
             "monthly_percent_change": (
-                round(monthly_percent_change, 2)
+                round(
+                    monthly_percent_change,
+                    2
+                )
                 if monthly_percent_change is not None
                 else None
             ),
 
             "vuaa_return": (
-                round(vuaa_return, 2)
+                round(
+                    vuaa_return,
+                    2
+                )
                 if vuaa_return is not None
                 else None
             ),
 
             "excess_return": (
-                round(excess_return, 2)
+                round(
+                    excess_return,
+                    2
+                )
                 if excess_return is not None
                 else None
             ),
 
+            # Κέρδος / ζημία Freedom24 σε EUR
             "profit": (
-                round(profit_eur, 2)
+                round(
+                    profit_eur,
+                    2
+                )
                 if profit_eur is not None
                 else None
             ),
 
             "original_currency": currency,
 
+            # Σημερινή ισοτιμία
             "fx_to_eur": (
-                round(fx_to_eur, 6)
+                round(
+                    fx_to_eur,
+                    6
+                )
                 if fx_to_eur is not None
                 else None
             ),
 
-            "status": (
-                "OK"
-                if fx_to_eur is not None
-                else "FX_NOT_FOUND"
-            )
+            # Ιστορική ισοτιμία
+            "historical_fx_to_eur": (
+                round(
+                    historical_fx_to_eur,
+                    6
+                )
+                if historical_fx_to_eur is not None
+                else None
+            ),
+
+            "status": status
         })
 
     return clean_positions
