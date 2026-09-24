@@ -254,26 +254,91 @@ async def create_excel():
 # UPDATE EXCEL
 # ==========================================================
 
+# ==========================================================
+# UPDATE EXCEL
+# ==========================================================
+
+# ==========================================================
+# UPDATE EXCEL - ΟΛΟ ΤΟ PORTFOLIO
+# ==========================================================
+
 @router.post("/stocks/update-excel")
 async def update_excel():
 
-    stocks = await get_clean_positions()
+    # Παίρνουμε Trading212
+    trading212_stocks = await get_clean_positions()
 
-    file_path = update_portfolio_excel(
-        stocks
+    # Παίρνουμε Capital
+    capital_stocks = await get_clean_capital_positions()
+
+    # Παίρνουμε Freedom24
+    freedom_stocks = get_clean_freedom_positions()
+
+    # Ενώνουμε όλες τις θέσεις
+    all_stocks = (
+        trading212_stocks
+        + capital_stocks
+        + freedom_stocks
     )
 
+    # Ενώνουμε πολλαπλές θέσεις της ίδιας
+    # μετοχής στον ίδιο broker
+    all_stocks = aggregate_positions(
+        all_stocks
+    )
+
+    # Συνολική αξία portfolio σε EUR
+    total_portfolio_value = sum(
+        stock["market_value"]
+        for stock in all_stocks
+        if stock.get("market_value") is not None
+    )
+
+    # Υπολογίζουμε portfolio weight
+    for stock in all_stocks:
+
+        market_value = stock.get(
+            "market_value"
+        )
+
+        if (
+            market_value is not None
+            and total_portfolio_value > 0
+        ):
+
+            stock["portfolio_weight"] = round(
+                market_value
+                / total_portfolio_value
+                * 100,
+                2
+            )
+
+        else:
+
+            stock["portfolio_weight"] = None
+
+    # Γράφουμε όλα τα δεδομένα στο Excel
+    file_path = update_portfolio_excel(
+        all_stocks
+    )
+
+    # Απάντηση API
     return {
         "message":
             "Portfolio Excel updated successfully",
 
         "stocks":
-            len(stocks),
+            len(all_stocks),
+
+        "total_portfolio_value":
+            round(
+                total_portfolio_value,
+                2
+            ),
 
         "file":
             str(file_path)
     }
-
 
 # ==========================================================
 # CAPITAL - TEST

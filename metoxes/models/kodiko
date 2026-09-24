@@ -12,3 +12,9 @@ Trikala@2
 Προσοχή! Το ιδιωτικό κλειδί είναι διαθέσιμο για εμφάνιση μία φορά. Αποθηκεύστε το.
 Ιδιωτικό κλειδί
 98cbd5e7d1a36ac127c95670c8f2beb9ddc367c6
+
+
+git status
+git add .
+git commit -m "Add EUR returns and historical FX for Capital and Freedom24"
+git push
