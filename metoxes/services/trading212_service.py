@@ -11,6 +11,7 @@ from metoxes.services.price_service import (
     get_current_eur_rate,
     get_historical_eur_rate,
     get_vuaa_return,
+    get_stock_info,
 )
 
 
@@ -22,6 +23,9 @@ API_SECRET = os.getenv("TRADING212_API_SECRET")
 BASE_URL = "https://live.trading212.com/api/v0"
 
 
+# ==========================================================
+# CLEAN TRADING212 POSITIONS
+# ==========================================================
 
 async def get_clean_positions():
 
@@ -39,6 +43,8 @@ async def get_clean_positions():
         "VACQ_US_EQ": "RKLB",
         "SXLIl_EQ": "SXLI.L",
         "SXRUd_EQ": "SXRU.DE",
+        "EGLNl_EQ": "EGLN.L",
+        "SXR8d_EQ": "SXR8.DE",
     }
 
     clean_positions = []
@@ -58,12 +64,16 @@ async def get_clean_positions():
 
         if t212_ticker in TICKER_MAP:
 
-            yahoo_symbol = TICKER_MAP[t212_ticker]
+            yahoo_symbol = TICKER_MAP[
+                t212_ticker
+            ]
 
         else:
 
             # π.χ. BSX_US_EQ -> BSX
-            base_symbol = t212_ticker.split("_")[0]
+            base_symbol = t212_ticker.split(
+                "_"
+            )[0]
 
             yahoo_symbol = symbol_lookup.get(
                 base_symbol.upper()
@@ -72,13 +82,38 @@ async def get_clean_positions():
             if not yahoo_symbol:
                 yahoo_symbol = base_symbol
 
+        # --------------------------------------------------
+        # SECTOR / COUNTRY
+        # Από Yahoo Finance
+        # --------------------------------------------------
+
+        stock_info = get_stock_info(
+            yahoo_symbol
+        )
+
+        sector = stock_info.get(
+            "sector"
+        )
+
+        country = stock_info.get(
+            "country"
+        )
+
+        # --------------------------------------------------
+        # ΒΑΣΙΚΑ ΣΤΟΙΧΕΙΑ ΘΕΣΗΣ
+        # --------------------------------------------------
+
         purchase_date = p["createdAt"]
-        quantity = float(p["quantity"])
+
+        quantity = float(
+            p["quantity"]
+        )
 
         try:
 
             # --------------------------------------------------
             # TRADING212 WALLET VALUES
+            #
             # Τα ποσά αυτά είναι ήδη σε EUR
             # --------------------------------------------------
 
@@ -128,7 +163,9 @@ async def get_clean_positions():
             # MARKET VALUE ΣΕ EUR
             # --------------------------------------------------
 
-            market_value_eur = current_value
+            market_value_eur = (
+                current_value
+            )
 
             # --------------------------------------------------
             # PERCENT CHANGE ΣΕ EUR
@@ -137,7 +174,8 @@ async def get_clean_positions():
             if total_cost != 0:
 
                 percent_change = (
-                    unrealized / total_cost
+                    unrealized
+                    / total_cost
                 ) * 100
 
             else:
@@ -172,8 +210,10 @@ async def get_clean_positions():
 
             try:
 
-                vuaa_return = get_vuaa_return(
-                    purchase_date
+                vuaa_return = (
+                    get_vuaa_return(
+                        purchase_date
+                    )
                 )
 
             except Exception as e:
@@ -205,7 +245,7 @@ async def get_clean_positions():
 
             # --------------------------------------------------
             # FX IMPACT
-            # Χρήσιμο για USD/GBP θέσεις
+            # Χρήσιμο για USD / GBP θέσεις
             # --------------------------------------------------
 
             fx_impact = wallet.get(
@@ -218,11 +258,20 @@ async def get_clean_positions():
 
             clean_positions.append({
 
-                "symbol": yahoo_symbol,
+                "symbol":
+                    yahoo_symbol,
 
-                "name": name,
+                "name":
+                    name,
 
-                "platform": "Trading212",
+                "sector":
+                    sector,
+
+                "country":
+                    country,
+
+                "platform":
+                    "Trading212",
 
                 "purchase_date":
                     purchase_date,
@@ -307,6 +356,12 @@ async def get_clean_positions():
                 "name":
                     name,
 
+                "sector":
+                    sector,
+
+                "country":
+                    country,
+
                 "platform":
                     "Trading212",
 
@@ -383,24 +438,35 @@ async def get_clean_positions():
 
     return clean_positions
 
+
+# ==========================================================
+# RAW TRADING212 POSITIONS
+# ==========================================================
+
 async def get_positions():
 
     if not API_KEY or not API_SECRET:
-        raise ValueError("Λείπει το Trading212 API Key ή API Secret από το .env")
 
-    url = f"{BASE_URL}/equity/positions"
+        raise ValueError(
+            "Λείπει το Trading212 API Key "
+            "ή API Secret από το .env"
+        )
+
+    url = (
+        f"{BASE_URL}/equity/positions"
+    )
 
     async with httpx.AsyncClient() as client:
+
         response = await client.get(
             url,
-            auth=(API_KEY, API_SECRET),
+            auth=(
+                API_KEY,
+                API_SECRET
+            ),
             timeout=30
         )
 
         response.raise_for_status()
 
         return response.json()
-
-
-
-

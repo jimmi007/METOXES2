@@ -3,8 +3,10 @@ from metoxes.services.price_service import get_historical_fx_to_eur
 import httpx
 from dotenv import load_dotenv
 from metoxes.services.price_service import (
+    get_historical_fx_to_eur,
     get_monthly_percent_change,
     get_vuaa_return,
+    get_stock_info,
 )
 
 load_dotenv()
@@ -208,7 +210,15 @@ async def get_clean_capital_positions():
             capital_symbol.upper(),
             capital_symbol
         )
+        # ------------------------------------------------------
+        # SECTOR / COUNTRY
+        # Από Yahoo Finance
+        # ------------------------------------------------------
 
+        stock_info = get_stock_info(symbol)
+
+        sector = stock_info.get("sector")
+        country = stock_info.get("country")
         purchase_date = position["createdDateUTC"]
 
         quantity = float(
@@ -459,6 +469,10 @@ async def get_clean_capital_positions():
             "symbol": symbol,
 
             "name": name,
+
+            "sector": sector,
+
+            "country": country,
 
             "platform": "Capital",
 

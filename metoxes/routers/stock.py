@@ -1,6 +1,11 @@
 from io import BytesIO
-
+from metoxes.services.fundamentals_service import get_stock_fundamentals
+from metoxes.services.analysis_service import analyze_portfolio
 from fastapi import APIRouter, UploadFile, File, HTTPException
+from metoxes.services.fundamentals_service import (
+    get_stock_fundamentals,
+    get_portfolio_fundamentals,
+)
 from openpyxl import load_workbook
 from metoxes.services.portfolio_service import aggregate_positions
 from metoxes.services.excel_service import (
@@ -8,10 +13,16 @@ from metoxes.services.excel_service import (
     get_excel_stocks,
     create_portfolio_excel,
 )
+from metoxes.services.freedom_service import FREEDOM_TICKER_MAP
+from metoxes.services.fundamentals_service import (
+    get_stock_fundamentals,
+    get_portfolio_fundamentals,
+)
 
 from metoxes.services.price_service import (
     get_monthly_percent_change,
 )
+from metoxes.services.scoring_services import score_stocks_by_sector
 
 from metoxes.services.trading212_service import (
     get_positions,
@@ -612,4 +623,165 @@ async def get_all_stocks():
             2
         ),
         "stocks": all_stocks
+    }
+
+
+@router.get("/stocks/analysis")
+async def portfolio_analysis():
+
+    trading212 = await get_clean_positions()
+    capital = await get_clean_capital_positions()
+    freedom = get_clean_freedom_positions()
+
+    all_stocks = (
+        trading212
+        + capital
+        + freedom
+    )
+
+    aggregated = aggregate_positions(
+        all_stocks
+    )
+
+    return analyze_portfolio(
+        aggregated
+    )
+
+
+@router.get("/stocks/fundamentals/{symbol}")
+async def stock_fundamentals(symbol: str):
+
+    return get_stock_fundamentals(
+        symbol.upper()
+    )
+
+@router.get("/stocks/fundamentals")
+def get_portfolio_fundamentals(stocks):
+
+    results = []
+
+    for stock in stocks:
+
+        symbol = stock.get("symbol")
+        platform = stock.get("platform")
+
+        if not symbol:
+            continue
+
+        # --------------------------------------------------
+        # YAHOO SYMBOL
+        # --------------------------------------------------
+
+        yahoo_symbol = symbol
+
+        # Freedom24 χρησιμοποιεί δικά της symbols:
+        # ACM.US -> ACM
+        # ASML.EU -> ASML
+        # AEGN.GR -> AEGN.AT
+        # κτλ.
+        if platform == "Freedom24":
+
+            yahoo_symbol = FREEDOM_TICKER_MAP.get(
+                symbol,
+                symbol
+            )
+
+        try:
+
+            fundamentals = get_stock_fundamentals(
+                yahoo_symbol
+            )
+
+            results.append({
+
+                # Κρατάμε το αρχικό broker symbol
+                "symbol": symbol,
+
+                # Για έλεγχο βλέπουμε και τι στείλαμε Yahoo
+                "yahoo_symbol": yahoo_symbol,
+
+                "name": stock.get("name"),
+                "sector": stock.get("sector"),
+                "country": stock.get("country"),
+                "platform": platform,
+
+                "fcf_yield": fundamentals.get(
+                    "fcf_yield"
+                ),
+
+                "fcf_growth": fundamentals.get(
+                    "fcf_growth"
+                ),
+
+                "roic": fundamentals.get(
+                    "roic"
+                ),
+            })
+
+        except Exception as e:
+
+            print(
+                f"FUNDAMENTALS ERROR "
+                f"{symbol} -> {yahoo_symbol}: {e}"
+            )
+
+            results.append({
+
+                "symbol": symbol,
+                "yahoo_symbol": yahoo_symbol,
+                "name": stock.get("name"),
+                "sector": stock.get("sector"),
+                "country": stock.get("country"),
+                "platform": platform,
+
+                "fcf_yield": None,
+                "fcf_growth": None,
+                "roic": None,
+            })
+
+    return results
+@router.get("/stocks/scores")
+async def portfolio_scores():
+
+    # ----------------------------------------------
+    # ΠΑΙΡΝΟΥΜΕ ΤΙΣ ΘΕΣΕΙΣ ΑΠΟ ΤΙΣ 3 ΠΛΑΤΦΟΡΜΕΣ
+    # ----------------------------------------------
+
+    trading212 = await get_clean_positions()
+    capital = await get_clean_capital_positions()
+    freedom = get_clean_freedom_positions()
+
+    all_stocks = (
+        trading212
+        + capital
+        + freedom
+    )
+
+    # ----------------------------------------------
+    # ΟΜΑΔΟΠΟΙΗΣΗ ΘΕΣΕΩΝ
+    # ----------------------------------------------
+
+    aggregated = aggregate_positions(
+        all_stocks
+    )
+
+    # ----------------------------------------------
+    # FUNDAMENTALS
+    # ----------------------------------------------
+
+    fundamentals = get_portfolio_fundamentals(
+        aggregated
+    )
+
+    # ----------------------------------------------
+    # SCORE ΑΝΑ SECTOR
+    # ----------------------------------------------
+
+    scores = score_stocks_by_sector(
+        fundamentals
+    )
+
+    return {
+        "count": len(scores),
+        "stocks": scores
     }

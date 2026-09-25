@@ -1,17 +1,26 @@
 from datetime import datetime, timedelta
 import yfinance as yf
 import pandas as pd
-
+from functools import lru_cache
 
 # --------------------------------------------------
 # ΜΗΝΙΑΙΑ ΜΕΤΑΒΟΛΗ ΜΕΤΟΧΗΣ
 # --------------------------------------------------
 
+# --------------------------------------------------
+# ΜΕΤΑΒΟΛΗ ΤΕΛΕΥΤΑΙΩΝ 30 ΗΜΕΡΩΝ
+# --------------------------------------------------
+
 def get_monthly_percent_change(symbol: str) -> float:
+
     ticker = yf.Ticker(symbol)
 
+    end_date = datetime.now().date()
+    start_date = end_date - timedelta(days=30)
+
     history = ticker.history(
-        period="1mo",
+        start=start_date,
+        end=end_date + timedelta(days=1),
         auto_adjust=False
     )
 
@@ -25,11 +34,13 @@ def get_monthly_percent_change(symbol: str) -> float:
     first_price = float(prices.iloc[0])
     last_price = float(prices.iloc[-1])
 
-    monthly_percent_change = (
-        (last_price - first_price) / first_price
-    ) * 100
+    percent_change = (
+        (last_price - first_price)
+        / first_price
+        * 100
+    )
 
-    return round(monthly_percent_change, 2)
+    return round(percent_change, 2)
 
 
 # --------------------------------------------------
@@ -160,11 +171,12 @@ def get_historical_eur_rate(
 # VUAA RETURN ΑΠΟ ΤΗΝ ΗΜΕΡΟΜΗΝΙΑ ΑΓΟΡΑΣ
 # --------------------------------------------------
 
-def get_vuaa_return(purchase_date) -> float:
+# --------------------------------------------------
+# VUAA RETURN ΑΠΟ ΤΗΝ ΗΜΕΡΟΜΗΝΙΑ ΑΓΟΡΑΣ
+# --------------------------------------------------
 
-    # --------------------------------------------------
-    # ΗΜΕΡΟΜΗΝΙΑ ΑΓΟΡΑΣ
-    # --------------------------------------------------
+@lru_cache(maxsize=512)
+def get_vuaa_return(purchase_date) -> float:
 
     if isinstance(purchase_date, str):
         purchase_date = datetime.fromisoformat(
@@ -172,34 +184,24 @@ def get_vuaa_return(purchase_date) -> float:
         )
 
     start_date = purchase_date.date()
-    end_date = start_date + timedelta(days=7)
+    end_date = start_date + timedelta(days=14)
 
     ticker = yf.Ticker("VUAA.L")
 
-    # --------------------------------------------------
-    # ΝΟΜΙΣΜΑ VUAA
-    # --------------------------------------------------
-
+    # Νόμισμα VUAA
     raw_currency = ticker.fast_info.get("currency")
 
     if not raw_currency:
-        raise ValueError(
-            "Δεν βρέθηκε νόμισμα για VUAA.L"
-        )
+        raise ValueError("Δεν βρέθηκε νόμισμα VUAA")
 
-    # Το Yahoo μπορεί να δίνει το VUAA.L σε GBp/GBX
-    # δηλαδή pence.
     if raw_currency in ("GBp", "GBX"):
         currency = "GBP"
-        price_divisor = 100
+        divisor = 100
     else:
         currency = raw_currency.upper()
-        price_divisor = 1
+        divisor = 1
 
-    # --------------------------------------------------
-    # ΤΙΜΗ VUAA ΣΤΗΝ ΗΜΕΡΟΜΗΝΙΑ ΑΓΟΡΑΣ
-    # --------------------------------------------------
-
+    # Τιμή VUAA τότε
     history = ticker.history(
         start=start_date,
         end=end_date,
@@ -213,75 +215,43 @@ def get_vuaa_return(purchase_date) -> float:
             f"Δεν βρέθηκε τιμή VUAA για {start_date}"
         )
 
-    purchase_price_native = (
-        float(prices.iloc[0]) / price_divisor
-    )
+    purchase_price = float(prices.iloc[0]) / divisor
 
-    # --------------------------------------------------
-    # ΙΣΟΤΙΜΙΑ ΤΟΤΕ -> EUR
-    # --------------------------------------------------
-
-    historical_eur_rate = (
-        get_historical_eur_rate(
-            currency,
-            purchase_date
-        )
+    historical_fx = get_historical_eur_rate(
+        currency,
+        purchase_date
     )
 
     purchase_price_eur = (
-        purchase_price_native
-        * historical_eur_rate
+        purchase_price * historical_fx
     )
 
-    # --------------------------------------------------
-    # ΣΗΜΕΡΙΝΗ ΤΙΜΗ VUAA
-    # --------------------------------------------------
-
-    current_history = ticker.history(
+    # Τιμή VUAA σήμερα
+    current = ticker.history(
         period="5d",
         auto_adjust=False
-    )
+    )["Close"].dropna()
 
-    current_prices = (
-        current_history["Close"].dropna()
-    )
-
-    if current_prices.empty:
+    if current.empty:
         raise ValueError(
             "Δεν βρέθηκε σημερινή τιμή VUAA"
         )
 
-    current_price_native = (
-        float(current_prices.iloc[-1])
-        / price_divisor
-    )
+    current_price = float(current.iloc[-1]) / divisor
 
-    # --------------------------------------------------
-    # ΣΗΜΕΡΙΝΗ ΙΣΟΤΙΜΙΑ -> EUR
-    # --------------------------------------------------
-
-    current_eur_rate = (
-        get_current_eur_rate(currency)
-    )
+    current_fx = get_current_eur_rate(currency)
 
     current_price_eur = (
-        current_price_native
-        * current_eur_rate
+        current_price * current_fx
     )
 
-    # --------------------------------------------------
-    # VUAA RETURN ΣΕ EUR
-    # --------------------------------------------------
-
-    vuaa_return = (
+    return round(
         (
-            current_price_eur
-            - purchase_price_eur
-        )
-        / purchase_price_eur
-    ) * 100
-
-    return round(vuaa_return, 2)
+            (current_price_eur - purchase_price_eur)
+            / purchase_price_eur
+        ) * 100,
+        2
+    )
 
 def get_historical_fx_to_eur(currency, purchase_date):
 
@@ -333,3 +303,34 @@ def get_historical_fx_to_eur(currency, purchase_date):
             f"{currency} {purchase_date}: {e}"
         )
         return None
+
+# --------------------------------------------------
+# SECTOR / COUNTRY ΜΕΤΟΧΗΣ
+# --------------------------------------------------
+
+def get_stock_info(symbol: str):
+
+    try:
+        ticker = yf.Ticker(symbol)
+
+        # Πληροφορίες εταιρείας από Yahoo Finance
+        info = ticker.info
+
+        sector = info.get("sector")
+        country = info.get("country")
+
+        return {
+            "sector": sector,
+            "country": country
+        }
+
+    except Exception as e:
+
+        print(
+            f"Stock info error {symbol}: {e}"
+        )
+
+        return {
+            "sector": None,
+            "country": None
+        }

@@ -3,24 +3,25 @@ from pathlib import Path
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font, Alignment, PatternFill
 from openpyxl.utils import get_column_letter
+from openpyxl.worksheet.table import Table, TableStyleInfo
 
 
 # ==========================================================
 # ΑΡΧΕΙΑ
 # ==========================================================
 
-# Κεντρικός φάκελος του project ΜΕΤΟΧΕΣ2
 BASE_DIR = Path(__file__).resolve().parents[2]
 
-# Κεντρικό Excel
 EXCEL_FILE = BASE_DIR / "portfolio.xlsx"
 
-# Χρησιμοποιείται από create_portfolio_excel()
 OUTPUT_FILE = BASE_DIR / "portfolio_updated.xlsx"
 
 
 # ==========================================================
 # ΣΤΗΛΕΣ EXCEL
+#
+# ΠΡΟΣΟΧΗ:
+# Η σειρά εδώ είναι η επίσημη σειρά του portfolio.
 # ==========================================================
 
 HEADERS = [
@@ -43,18 +44,120 @@ HEADERS = [
 
 
 # ==========================================================
+# ΑΦΑΙΡΕΣΗ ΠΑΛΙΩΝ EXCEL TABLES
+# ==========================================================
+
+def remove_existing_tables(sheet):
+
+    table_names = list(
+        sheet.tables.keys()
+    )
+
+    for table_name in table_names:
+
+        del sheet.tables[
+            table_name
+        ]
+
+
+# ==========================================================
+# ΚΑΘΑΡΙΣΜΟΣ ΕΠΙΠΛΕΟΝ ΣΤΗΛΩΝ
+#
+# Κρατάμε μόνο A:O
+# δηλαδή τις 15 στήλες του HEADERS.
+# ==========================================================
+
+def remove_extra_columns(sheet):
+
+    wanted_columns = len(
+        HEADERS
+    )
+
+    if sheet.max_column > wanted_columns:
+
+        columns_to_delete = (
+            sheet.max_column
+            - wanted_columns
+        )
+
+        sheet.delete_cols(
+            wanted_columns + 1,
+            columns_to_delete
+        )
+
+
+# ==========================================================
+# ΕΠΙΒΟΛΗ ΣΩΣΤΗΣ ΣΕΙΡΑΣ HEADERS
+# ==========================================================
+
+def write_correct_headers(sheet):
+
+    for column, header in enumerate(
+        HEADERS,
+        start=1
+    ):
+
+        sheet.cell(
+            row=1,
+            column=column
+        ).value = header
+
+
+# ==========================================================
+# EXCEL TABLE
+# ==========================================================
+
+def create_stock_table(sheet):
+
+    # Αν δεν υπάρχουν μετοχές,
+    # δεν δημιουργούμε Table.
+    if sheet.max_row < 2:
+        return
+
+    last_column = get_column_letter(
+        len(HEADERS)
+    )
+
+    table_reference = (
+        f"A1:{last_column}{sheet.max_row}"
+    )
+
+    table = Table(
+        displayName="StockSummary",
+        ref=table_reference
+    )
+
+    style = TableStyleInfo(
+        name="TableStyleMedium2",
+        showFirstColumn=False,
+        showLastColumn=False,
+        showRowStripes=True,
+        showColumnStripes=False
+    )
+
+    table.tableStyleInfo = style
+
+    sheet.add_table(
+        table
+    )
+
+
+# ==========================================================
 # ΜΟΡΦΟΠΟΙΗΣΗ EXCEL
 # ==========================================================
 
 def format_portfolio_sheet(sheet):
 
-    # Παγώνουμε την πρώτη γραμμή
+    # ------------------------------------------------------
+    # Freeze header
+    # ------------------------------------------------------
+
     sheet.freeze_panes = "A2"
 
-    # Φίλτρα στις στήλες
-    sheet.auto_filter.ref = sheet.dimensions
+    # ------------------------------------------------------
+    # Header
+    # ------------------------------------------------------
 
-    # Μορφοποίηση headers
     header_fill = PatternFill(
         fill_type="solid",
         fgColor="D9E1F2"
@@ -62,7 +165,9 @@ def format_portfolio_sheet(sheet):
 
     for cell in sheet[1]:
 
-        cell.font = Font(bold=True)
+        cell.font = Font(
+            bold=True
+        )
 
         cell.fill = header_fill
 
@@ -71,7 +176,12 @@ def format_portfolio_sheet(sheet):
             vertical="center"
         )
 
-    # Βρίσκουμε τις στήλες
+    sheet.row_dimensions[1].height = 24
+
+    # ------------------------------------------------------
+    # Header lookup
+    # ------------------------------------------------------
+
     headers = {}
 
     for cell in sheet[1]:
@@ -82,7 +192,9 @@ def format_portfolio_sheet(sheet):
                 cell.value
             ).strip().lower()
 
-            headers[header] = cell.column
+            headers[
+                header
+            ] = cell.column
 
     # ------------------------------------------------------
     # Χρηματικές στήλες
@@ -99,7 +211,9 @@ def format_portfolio_sheet(sheet):
         if field not in headers:
             continue
 
-        column = headers[field]
+        column = headers[
+            field
+        ]
 
         for row in range(
             2,
@@ -114,11 +228,13 @@ def format_portfolio_sheet(sheet):
     # ------------------------------------------------------
     # Ποσοστά
     #
-    # Οι τιμές μας είναι ήδη:
-    # 12.50
+    # Οι τιμές είναι ήδη:
+    #
+    # 2.03
     #
     # και όχι:
-    # 0.125
+    #
+    # 0.0203
     # ------------------------------------------------------
 
     percent_fields = [
@@ -134,7 +250,9 @@ def format_portfolio_sheet(sheet):
         if field not in headers:
             continue
 
-        column = headers[field]
+        column = headers[
+            field
+        ]
 
         for row in range(
             2,
@@ -147,12 +265,14 @@ def format_portfolio_sheet(sheet):
             ).number_format = '0.00"%"'
 
     # ------------------------------------------------------
-    # Ποσότητα
+    # Quantity
     # ------------------------------------------------------
 
     if "quantity" in headers:
 
-        column = headers["quantity"]
+        column = headers[
+            "quantity"
+        ]
 
         for row in range(
             2,
@@ -165,28 +285,61 @@ def format_portfolio_sheet(sheet):
             ).number_format = "0.########"
 
     # ------------------------------------------------------
+    # Purchase date alignment
+    # ------------------------------------------------------
+
+    if "purchase_date" in headers:
+
+        column = headers[
+            "purchase_date"
+        ]
+
+        for row in range(
+            2,
+            sheet.max_row + 1
+        ):
+
+            sheet.cell(
+                row=row,
+                column=column
+            ).alignment = Alignment(
+                horizontal="center"
+            )
+
+    # ------------------------------------------------------
     # Αυτόματο πλάτος στηλών
     # ------------------------------------------------------
 
-    for column_cells in sheet.columns:
+    for column_number in range(
+        1,
+        len(HEADERS) + 1
+    ):
 
         max_length = 0
 
-        column_letter = get_column_letter(
-            column_cells[0].column
-        )
+        for row in range(
+            1,
+            sheet.max_row + 1
+        ):
 
-        for cell in column_cells:
+            cell = sheet.cell(
+                row=row,
+                column=column_number
+            )
 
             if cell.value is None:
                 continue
 
-            cell_length = len(
+            length = len(
                 str(cell.value)
             )
 
-            if cell_length > max_length:
-                max_length = cell_length
+            if length > max_length:
+                max_length = length
+
+        column_letter = get_column_letter(
+            column_number
+        )
 
         sheet.column_dimensions[
             column_letter
@@ -194,6 +347,14 @@ def format_portfolio_sheet(sheet):
             max_length + 2,
             25
         )
+
+    # ------------------------------------------------------
+    # Excel Table
+    # ------------------------------------------------------
+
+    create_stock_table(
+        sheet
+    )
 
 
 # ==========================================================
@@ -215,7 +376,6 @@ def get_excel_stocks():
 
     sheet = workbook.worksheets[0]
 
-    # Βρίσκουμε τις στήλες
     headers = {}
 
     for cell in sheet[1]:
@@ -226,9 +386,10 @@ def get_excel_stocks():
                 cell.value
             ).strip().lower()
 
-            headers[header] = cell.column
+            headers[
+                header
+            ] = cell.column
 
-    # Πρέπει να υπάρχει symbol
     if "symbol" not in headers:
 
         workbook.close()
@@ -239,7 +400,6 @@ def get_excel_stocks():
 
     stocks = []
 
-    # Διαβάζουμε όλες τις γραμμές
     for row in range(
         2,
         sheet.max_row + 1
@@ -254,10 +414,11 @@ def get_excel_stocks():
             continue
 
         stock = {
-            "symbol": str(symbol).strip()
+            "symbol": str(
+                symbol
+            ).strip()
         }
 
-        # Platform
         if "platform" in headers:
 
             stock["platform"] = sheet.cell(
@@ -265,7 +426,6 @@ def get_excel_stocks():
                 column=headers["platform"]
             ).value
 
-        # Sector
         if "sector" in headers:
 
             stock["sector"] = sheet.cell(
@@ -273,7 +433,6 @@ def get_excel_stocks():
                 column=headers["sector"]
             ).value
 
-        # Country
         if "country" in headers:
 
             stock["country"] = sheet.cell(
@@ -281,7 +440,9 @@ def get_excel_stocks():
                 column=headers["country"]
             ).value
 
-        stocks.append(stock)
+        stocks.append(
+            stock
+        )
 
     workbook.close()
 
@@ -300,19 +461,20 @@ def get_symbol_lookup():
 
     for stock in stocks:
 
-        symbol = stock["symbol"].strip()
+        symbol = stock[
+            "symbol"
+        ].strip()
 
-        # Πλήρες Yahoo ticker
-        # RHM.DE -> RHM.DE
+        # Πλήρες ticker
         lookup[
             symbol.upper()
         ] = symbol
 
         # Βασικό ticker
-        # RHM.DE -> RHM
-        base_symbol = symbol.split(".")[0]
+        base_symbol = symbol.split(
+            "."
+        )[0]
 
-        # RHM -> RHM.DE
         if base_symbol.upper() not in lookup:
 
             lookup[
@@ -323,7 +485,7 @@ def get_symbol_lookup():
 
 
 # ==========================================================
-# ΔΗΜΙΟΥΡΓΙΑ ΝΕΟΥ EXCEL
+# ΔΗΜΙΟΥΡΓΙΑ portfolio_updated.xlsx
 # ==========================================================
 
 def create_portfolio_excel(stocks):
@@ -331,12 +493,21 @@ def create_portfolio_excel(stocks):
     workbook = Workbook()
 
     sheet = workbook.active
+
     sheet.title = "Portfolio"
 
+    # ------------------------------------------------------
     # Headers
-    sheet.append(HEADERS)
+    # ------------------------------------------------------
 
-    # Γράφουμε τις θέσεις
+    sheet.append(
+        HEADERS
+    )
+
+    # ------------------------------------------------------
+    # Data
+    # ------------------------------------------------------
+
     for stock in stocks:
 
         sheet.append([
@@ -357,11 +528,13 @@ def create_portfolio_excel(stocks):
             stock.get("excess_return"),
         ])
 
-    # Μορφοποίηση
-    format_portfolio_sheet(sheet)
+    format_portfolio_sheet(
+        sheet
+    )
 
-    # Αποθήκευση
-    workbook.save(OUTPUT_FILE)
+    workbook.save(
+        OUTPUT_FILE
+    )
 
     workbook.close()
 
@@ -375,7 +548,8 @@ def create_portfolio_excel(stocks):
 def update_portfolio_excel(stocks):
 
     # ------------------------------------------------------
-    # Αν δεν υπάρχει Excel, το δημιουργούμε
+    # Αν δεν υπάρχει το αρχείο,
+    # δημιουργούμε νέο.
     # ------------------------------------------------------
 
     if not EXCEL_FILE.exists():
@@ -383,26 +557,37 @@ def update_portfolio_excel(stocks):
         workbook = Workbook()
 
         sheet = workbook.active
+
         sheet.title = "Portfolio"
 
-        sheet.append(HEADERS)
+        sheet.append(
+            HEADERS
+        )
 
-        workbook.save(EXCEL_FILE)
+        workbook.save(
+            EXCEL_FILE
+        )
+
         workbook.close()
 
     # ------------------------------------------------------
     # Ανοίγουμε το υπάρχον Excel
     # ------------------------------------------------------
 
-    workbook = load_workbook(EXCEL_FILE)
+    workbook = load_workbook(
+        EXCEL_FILE
+    )
 
     sheet = workbook.worksheets[0]
 
     # ------------------------------------------------------
-    # Βρίσκουμε τα headers
+    # Βρίσκουμε την ΠΑΛΙΑ σειρά headers.
+    #
+    # Το χρειαζόμαστε μόνο για να κρατήσουμε
+    # τα χειροκίνητα sector/country.
     # ------------------------------------------------------
 
-    headers = {}
+    old_headers = {}
 
     for cell in sheet[1]:
 
@@ -412,84 +597,83 @@ def update_portfolio_excel(stocks):
                 cell.value
             ).strip().lower()
 
-            headers[header] = cell.column
-
-    # ------------------------------------------------------
-    # Προσθέτουμε headers που λείπουν
-    # ------------------------------------------------------
-
-    for header in HEADERS:
-
-        if header not in headers:
-
-            new_column = sheet.max_column + 1
-
-            sheet.cell(
-                row=1,
-                column=new_column
-            ).value = header
-
-            headers[header] = new_column
+            old_headers[
+                header
+            ] = cell.column
 
     # ======================================================
-    # ΚΡΑΤΑΜΕ SECTOR / COUNTRY
-    #
-    # Το κλειδί είναι:
-    #
-    # (symbol, platform)
-    #
-    # ώστε:
-    #
-    # RHM.DE + Capital
-    # RHM.DE + Freedom24
-    #
-    # να θεωρούνται διαφορετικές γραμμές.
+    # ΚΡΑΤΑΜΕ MANUAL SECTOR / COUNTRY
     # ======================================================
 
     manual_data = {}
 
-    for row in range(
-        2,
-        sheet.max_row + 1
+    if (
+        "symbol" in old_headers
+        and "platform" in old_headers
     ):
 
-        symbol = sheet.cell(
-            row=row,
-            column=headers["symbol"]
-        ).value
+        for row in range(
+            2,
+            sheet.max_row + 1
+        ):
 
-        platform = sheet.cell(
-            row=row,
-            column=headers["platform"]
-        ).value
+            symbol = sheet.cell(
+                row=row,
+                column=old_headers["symbol"]
+            ).value
 
-        if not symbol:
-            continue
+            platform = sheet.cell(
+                row=row,
+                column=old_headers["platform"]
+            ).value
 
-        key = (
-            str(symbol).strip().upper(),
-            str(platform or "").strip().upper()
-        )
+            if not symbol:
+                continue
 
-        sector = sheet.cell(
-            row=row,
-            column=headers["sector"]
-        ).value
+            key = (
+                str(
+                    symbol
+                ).strip().upper(),
 
-        country = sheet.cell(
-            row=row,
-            column=headers["country"]
-        ).value
+                str(
+                    platform or ""
+                ).strip().upper()
+            )
 
-        manual_data[key] = {
-            "sector": sector,
-            "country": country
-        }
+            sector = None
+            country = None
+
+            if "sector" in old_headers:
+
+                sector = sheet.cell(
+                    row=row,
+                    column=old_headers["sector"]
+                ).value
+
+            if "country" in old_headers:
+
+                country = sheet.cell(
+                    row=row,
+                    column=old_headers["country"]
+                ).value
+
+            manual_data[
+                key
+            ] = {
+                "sector": sector,
+                "country": country
+            }
+
+    # ======================================================
+    # ΚΑΘΑΡΙΖΟΥΜΕ ΤΟ ΠΑΛΙΟ TABLE
+    # ======================================================
+
+    remove_existing_tables(
+        sheet
+    )
 
     # ======================================================
     # ΣΒΗΝΟΥΜΕ ΟΛΕΣ ΤΙΣ ΠΑΛΙΕΣ ΘΕΣΕΙΣ
-    #
-    # Κρατάμε μόνο την πρώτη γραμμή (headers).
     # ======================================================
 
     if sheet.max_row > 1:
@@ -500,24 +684,57 @@ def update_portfolio_excel(stocks):
         )
 
     # ======================================================
-    # ΓΡΑΦΟΥΜΕ ΤΙΣ ΣΗΜΕΡΙΝΕΣ ΕΝΕΡΓΕΣ ΘΕΣΕΙΣ
+    # ΚΑΘΑΡΙΖΟΥΜΕ ΤΙΣ ΠΕΡΙΤΤΕΣ ΣΤΗΛΕΣ
+    #
+    # Αυτό θα αφαιρέσει:
+    #
+    # Στήλη1
+    # Στήλη2
+    # ...
+    # μέχρι XFD
+    # ======================================================
+
+    remove_extra_columns(
+        sheet
+    )
+
+    # ======================================================
+    # ΒΑΖΟΥΜΕ HEADERS ΑΚΡΙΒΩΣ ΣΤΗ ΣΩΣΤΗ ΣΕΙΡΑ
+    # ======================================================
+
+    write_correct_headers(
+        sheet
+    )
+
+    # ======================================================
+    # ΓΡΑΦΟΥΜΕ ΤΙΣ ΣΗΜΕΡΙΝΕΣ ΘΕΣΕΙΣ
     # ======================================================
 
     for stock in stocks:
 
-        symbol = stock.get("symbol")
-        platform = stock.get("platform")
+        symbol = stock.get(
+            "symbol"
+        )
+
+        platform = stock.get(
+            "platform"
+        )
 
         if not symbol:
             continue
 
         key = (
-            str(symbol).strip().upper(),
-            str(platform or "").strip().upper()
+            str(
+                symbol
+            ).strip().upper(),
+
+            str(
+                platform or ""
+            ).strip().upper()
         )
 
         # --------------------------------------------------
-        # Παίρνουμε τα παλιά χειροκίνητα στοιχεία
+        # Παλιό manual sector/country
         # --------------------------------------------------
 
         old_manual_data = manual_data.get(
@@ -534,25 +751,35 @@ def update_portfolio_excel(stocks):
         )
 
         # --------------------------------------------------
-        # Αν αργότερα έχουμε sector από API,
-        # χρησιμοποιούμε τη νέα τιμή
+        # Αν Yahoo/API δίνει sector,
+        # αυτό έχει προτεραιότητα.
         # --------------------------------------------------
 
-        if stock.get("sector") is not None:
+        if stock.get(
+            "sector"
+        ) is not None:
 
-            sector = stock.get("sector")
-
-        # --------------------------------------------------
-        # Αν αργότερα έχουμε country από API,
-        # χρησιμοποιούμε τη νέα τιμή
-        # --------------------------------------------------
-
-        if stock.get("country") is not None:
-
-            country = stock.get("country")
+            sector = stock.get(
+                "sector"
+            )
 
         # --------------------------------------------------
-        # Γράφουμε τη νέα γραμμή
+        # Αν Yahoo/API δίνει country,
+        # αυτό έχει προτεραιότητα.
+        # --------------------------------------------------
+
+        if stock.get(
+            "country"
+        ) is not None:
+
+            country = stock.get(
+                "country"
+            )
+
+        # --------------------------------------------------
+        # ΠΡΟΣΟΧΗ:
+        #
+        # Η σειρά είναι ΑΚΡΙΒΩΣ ίδια με HEADERS.
         # --------------------------------------------------
 
         sheet.append([
@@ -574,16 +801,20 @@ def update_portfolio_excel(stocks):
         ])
 
     # ======================================================
-    # ΜΟΡΦΟΠΟΙΗΣΗ
+    # ΜΟΡΦΟΠΟΙΗΣΗ + ΝΕΟ STOCKSUMMARY
     # ======================================================
 
-    format_portfolio_sheet(sheet)
+    format_portfolio_sheet(
+        sheet
+    )
 
     # ======================================================
     # ΑΠΟΘΗΚΕΥΣΗ
     # ======================================================
 
-    workbook.save(EXCEL_FILE)
+    workbook.save(
+        EXCEL_FILE
+    )
 
     workbook.close()
 
