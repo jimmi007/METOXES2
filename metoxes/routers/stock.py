@@ -6,7 +6,7 @@ from metoxes.services.fundamentals_service import (
     get_stock_fundamentals,
     get_portfolio_fundamentals,
 )
-from openpyxl import load_workbook
+
 from metoxes.services.portfolio_service import aggregate_positions
 from metoxes.services.excel_service import (
     update_portfolio_excel,
@@ -18,6 +18,11 @@ from metoxes.services.fundamentals_service import (
     get_stock_fundamentals,
     get_portfolio_fundamentals,
 )
+from metoxes.services.fundamentals_service import (
+    get_stock_fundamentals,
+    get_portfolio_fundamentals,
+)
+
 
 from metoxes.services.price_service import (
     get_monthly_percent_change,
@@ -274,39 +279,71 @@ async def create_excel():
 # ==========================================================
 
 @router.post("/stocks/update-excel")
+@router.post("/stocks/update-excel")
 async def update_excel():
 
-    # Παίρνουμε Trading212
-    trading212_stocks = await get_clean_positions()
+    # ======================================================
+    # 1. TRADING212
+    # ======================================================
 
-    # Παίρνουμε Capital
-    capital_stocks = await get_clean_capital_positions()
-
-    # Παίρνουμε Freedom24
-    freedom_stocks = get_clean_freedom_positions()
-
-    # Ενώνουμε όλες τις θέσεις
-    all_stocks = (
-        trading212_stocks
-        + capital_stocks
-        + freedom_stocks
+    trading212 = (
+        await get_clean_positions()
     )
 
-    # Ενώνουμε πολλαπλές θέσεις της ίδιας
-    # μετοχής στον ίδιο broker
-    all_stocks = aggregate_positions(
+    # ======================================================
+    # 2. CAPITAL
+    # ======================================================
+
+    capital = (
+        await get_clean_capital_positions()
+    )
+
+    # ======================================================
+    # 3. FREEDOM24
+    # ======================================================
+
+    freedom = (
+        get_clean_freedom_positions()
+    )
+
+    # ======================================================
+    # 4. ΟΛΕΣ ΟΙ ΘΕΣΕΙΣ
+    # ======================================================
+
+    all_stocks = (
+        trading212
+        + capital
+        + freedom
+    )
+
+    # ======================================================
+    # 5. AGGREGATION
+    #
+    # ίδιο symbol + ίδιο platform
+    # ======================================================
+
+    stocks = aggregate_positions(
         all_stocks
     )
 
-    # Συνολική αξία portfolio σε EUR
+    # ======================================================
+    # 6. TOTAL PORTFOLIO VALUE
+    # ======================================================
+
     total_portfolio_value = sum(
-        stock["market_value"]
-        for stock in all_stocks
-        if stock.get("market_value") is not None
+
+        stock.get(
+            "market_value"
+        ) or 0
+
+        for stock in stocks
     )
 
-    # Υπολογίζουμε portfolio weight
-    for stock in all_stocks:
+    # ======================================================
+    # 7. PORTFOLIO WEIGHT
+    # ======================================================
+
+    for stock in stocks:
 
         market_value = stock.get(
             "market_value"
@@ -317,7 +354,9 @@ async def update_excel():
             and total_portfolio_value > 0
         ):
 
-            stock["portfolio_weight"] = round(
+            stock[
+                "portfolio_weight"
+            ] = round(
                 market_value
                 / total_portfolio_value
                 * 100,
@@ -326,20 +365,128 @@ async def update_excel():
 
         else:
 
-            stock["portfolio_weight"] = None
+            stock[
+                "portfolio_weight"
+            ] = None
 
-    # Γράφουμε όλα τα δεδομένα στο Excel
-    file_path = update_portfolio_excel(
-        all_stocks
+    # ======================================================
+    # 8. FUNDAMENTALS
+    # ======================================================
+
+    fundamentals = (
+        get_portfolio_fundamentals(
+            stocks
+        )
     )
 
-    # Απάντηση API
+    # ======================================================
+    # 9. SECTOR SCORES
+    # ======================================================
+
+    scores = (
+        score_stocks_by_sector(
+            fundamentals
+        )
+    )
+
+    # ======================================================
+    # 10. SCORE LOOKUP
+    #
+    # symbol + platform
+    # ======================================================
+
+    score_lookup = {}
+
+    for score in scores:
+
+        key = (
+            str(
+                score.get(
+                    "symbol"
+                ) or ""
+            ).strip().upper(),
+
+            str(
+                score.get(
+                    "platform"
+                ) or ""
+            ).strip().upper()
+        )
+
+        score_lookup[
+            key
+        ] = score
+
+    # ======================================================
+    # 11. ΠΡΟΣΘΗΚΗ FUNDAMENTALS ΣΤΙΣ ΘΕΣΕΙΣ
+    # ======================================================
+
+    for stock in stocks:
+
+        key = (
+            str(
+                stock.get(
+                    "symbol"
+                ) or ""
+            ).strip().upper(),
+
+            str(
+                stock.get(
+                    "platform"
+                ) or ""
+            ).strip().upper()
+        )
+
+        score = score_lookup.get(
+            key,
+            {}
+        )
+
+        stock[
+            "fcf_yield"
+        ] = score.get(
+            "fcf_yield"
+        )
+
+        stock[
+            "fcf_growth"
+        ] = score.get(
+            "fcf_growth"
+        )
+
+        stock[
+            "roic"
+        ] = score.get(
+            "roic"
+        )
+
+        stock[
+            "final_score"
+        ] = score.get(
+            "final_score"
+        )
+
+    # ======================================================
+    # 12. EXCEL
+    # ======================================================
+
+    file_path = (
+        update_portfolio_excel(
+            stocks
+        )
+    )
+
+    # ======================================================
+    # 13. RESPONSE
+    # ======================================================
+
     return {
+
         "message":
             "Portfolio Excel updated successfully",
 
         "stocks":
-            len(all_stocks),
+            len(stocks),
 
         "total_portfolio_value":
             round(

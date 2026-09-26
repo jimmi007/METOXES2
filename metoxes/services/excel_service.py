@@ -13,15 +13,11 @@ from openpyxl.worksheet.table import Table, TableStyleInfo
 BASE_DIR = Path(__file__).resolve().parents[2]
 
 EXCEL_FILE = BASE_DIR / "portfolio.xlsx"
-
 OUTPUT_FILE = BASE_DIR / "portfolio_updated.xlsx"
 
 
 # ==========================================================
 # ΣΤΗΛΕΣ EXCEL
-#
-# ΠΡΟΣΟΧΗ:
-# Η σειρά εδώ είναι η επίσημη σειρά του portfolio.
 # ==========================================================
 
 HEADERS = [
@@ -40,6 +36,10 @@ HEADERS = [
     "portfolio_weight",
     "vuaa_return",
     "excess_return",
+    "fcf_yield",
+    "fcf_growth",
+    "roic",
+    "final_score",
 ]
 
 
@@ -62,9 +62,6 @@ def remove_existing_tables(sheet):
 
 # ==========================================================
 # ΚΑΘΑΡΙΣΜΟΣ ΕΠΙΠΛΕΟΝ ΣΤΗΛΩΝ
-#
-# Κρατάμε μόνο A:O
-# δηλαδή τις 15 στήλες του HEADERS.
 # ==========================================================
 
 def remove_extra_columns(sheet):
@@ -87,7 +84,7 @@ def remove_extra_columns(sheet):
 
 
 # ==========================================================
-# ΕΠΙΒΟΛΗ ΣΩΣΤΗΣ ΣΕΙΡΑΣ HEADERS
+# ΣΩΣΤΑ HEADERS
 # ==========================================================
 
 def write_correct_headers(sheet):
@@ -109,8 +106,8 @@ def write_correct_headers(sheet):
 
 def create_stock_table(sheet):
 
-    # Αν δεν υπάρχουν μετοχές,
-    # δεν δημιουργούμε Table.
+    # Χρειαζόμαστε τουλάχιστον
+    # header + 1 μετοχή.
     if sheet.max_row < 2:
         return
 
@@ -122,10 +119,22 @@ def create_stock_table(sheet):
         f"A1:{last_column}{sheet.max_row}"
     )
 
+    # ------------------------------------------------------
+    # Δημιουργία Table
+    # ------------------------------------------------------
+
     table = Table(
         displayName="StockSummary",
         ref=table_reference
     )
+
+    # ------------------------------------------------------
+    # ΜΠΛΕ EXCEL TABLE STYLE
+    #
+    # Σκούρο μπλε header
+    # Λευκά γράμματα
+    # Λευκή / ανοιχτό μπλε εναλλαγή
+    # ------------------------------------------------------
 
     style = TableStyleInfo(
         name="TableStyleMedium2",
@@ -135,6 +144,9 @@ def create_stock_table(sheet):
         showColumnStripes=False
     )
 
+    # ΠΡΟΣΟΧΗ:
+    # table = instance
+    # Table = class
     table.tableStyleInfo = style
 
     sheet.add_table(
@@ -155,18 +167,30 @@ def format_portfolio_sheet(sheet):
     sheet.freeze_panes = "A2"
 
     # ------------------------------------------------------
-    # Header
+    # HEADER
+    #
+    # Μπλε #4472C4
+    # Λευκά γράμματα
     # ------------------------------------------------------
 
     header_fill = PatternFill(
         fill_type="solid",
-        fgColor="D9E1F2"
+        fgColor="4472C4"
     )
 
-    for cell in sheet[1]:
+    for column_number in range(
+        1,
+        len(HEADERS) + 1
+    ):
+
+        cell = sheet.cell(
+            row=1,
+            column=column_number
+        )
 
         cell.font = Font(
-            bold=True
+            bold=True,
+            color="FFFFFF"
         )
 
         cell.fill = header_fill
@@ -179,7 +203,7 @@ def format_portfolio_sheet(sheet):
     sheet.row_dimensions[1].height = 24
 
     # ------------------------------------------------------
-    # Header lookup
+    # HEADER LOOKUP
     # ------------------------------------------------------
 
     headers = {}
@@ -197,7 +221,7 @@ def format_portfolio_sheet(sheet):
             ] = cell.column
 
     # ------------------------------------------------------
-    # Χρηματικές στήλες
+    # ΧΡΗΜΑΤΙΚΕΣ ΣΤΗΛΕΣ
     # ------------------------------------------------------
 
     money_fields = [
@@ -226,7 +250,7 @@ def format_portfolio_sheet(sheet):
             ).number_format = '#,##0.00 "€"'
 
     # ------------------------------------------------------
-    # Ποσοστά
+    # ΠΟΣΟΣΤΑ
     #
     # Οι τιμές είναι ήδη:
     #
@@ -243,6 +267,9 @@ def format_portfolio_sheet(sheet):
         "portfolio_weight",
         "vuaa_return",
         "excess_return",
+        "fcf_yield",
+        "fcf_growth",
+        "roic",
     ]
 
     for field in percent_fields:
@@ -265,7 +292,27 @@ def format_portfolio_sheet(sheet):
             ).number_format = '0.00"%"'
 
     # ------------------------------------------------------
-    # Quantity
+    # FINAL SCORE
+    # ------------------------------------------------------
+
+    if "final_score" in headers:
+
+        column = headers[
+            "final_score"
+        ]
+
+        for row in range(
+            2,
+            sheet.max_row + 1
+        ):
+
+            sheet.cell(
+                row=row,
+                column=column
+            ).number_format = "0.00"
+
+    # ------------------------------------------------------
+    # QUANTITY
     # ------------------------------------------------------
 
     if "quantity" in headers:
@@ -285,7 +332,7 @@ def format_portfolio_sheet(sheet):
             ).number_format = "0.########"
 
     # ------------------------------------------------------
-    # Purchase date alignment
+    # PURCHASE DATE
     # ------------------------------------------------------
 
     if "purchase_date" in headers:
@@ -307,7 +354,7 @@ def format_portfolio_sheet(sheet):
             )
 
     # ------------------------------------------------------
-    # Αυτόματο πλάτος στηλών
+    # ΑΥΤΟΜΑΤΟ ΠΛΑΤΟΣ ΣΤΗΛΩΝ
     # ------------------------------------------------------
 
     for column_number in range(
@@ -349,7 +396,7 @@ def format_portfolio_sheet(sheet):
         )
 
     # ------------------------------------------------------
-    # Excel Table
+    # EXCEL TABLE
     # ------------------------------------------------------
 
     create_stock_table(
@@ -376,6 +423,10 @@ def get_excel_stocks():
 
     sheet = workbook.worksheets[0]
 
+    # ------------------------------------------------------
+    # HEADERS
+    # ------------------------------------------------------
+
     headers = {}
 
     for cell in sheet[1]:
@@ -397,6 +448,10 @@ def get_excel_stocks():
         raise ValueError(
             "Δεν βρέθηκε στήλη 'symbol' στο Excel"
         )
+
+    # ------------------------------------------------------
+    # STOCKS
+    # ------------------------------------------------------
 
     stocks = []
 
@@ -497,7 +552,7 @@ def create_portfolio_excel(stocks):
     sheet.title = "Portfolio"
 
     # ------------------------------------------------------
-    # Headers
+    # HEADERS
     # ------------------------------------------------------
 
     sheet.append(
@@ -505,7 +560,7 @@ def create_portfolio_excel(stocks):
     )
 
     # ------------------------------------------------------
-    # Data
+    # DATA
     # ------------------------------------------------------
 
     for stock in stocks:
@@ -526,11 +581,27 @@ def create_portfolio_excel(stocks):
             stock.get("portfolio_weight"),
             stock.get("vuaa_return"),
             stock.get("excess_return"),
+
+            # Fundamentals
+            stock.get("fcf_yield"),
+            stock.get("fcf_growth"),
+            stock.get("roic"),
+
+            # Final Score
+            stock.get("final_score"),
         ])
+
+    # ------------------------------------------------------
+    # FORMAT
+    # ------------------------------------------------------
 
     format_portfolio_sheet(
         sheet
     )
+
+    # ------------------------------------------------------
+    # SAVE
+    # ------------------------------------------------------
 
     workbook.save(
         OUTPUT_FILE
@@ -548,8 +619,7 @@ def create_portfolio_excel(stocks):
 def update_portfolio_excel(stocks):
 
     # ------------------------------------------------------
-    # Αν δεν υπάρχει το αρχείο,
-    # δημιουργούμε νέο.
+    # ΑΝ ΔΕΝ ΥΠΑΡΧΕΙ ΤΟ portfolio.xlsx
     # ------------------------------------------------------
 
     if not EXCEL_FILE.exists():
@@ -571,7 +641,7 @@ def update_portfolio_excel(stocks):
         workbook.close()
 
     # ------------------------------------------------------
-    # Ανοίγουμε το υπάρχον Excel
+    # ΑΝΟΙΓΟΥΜΕ ΤΟ ΥΠΑΡΧΟΝ EXCEL
     # ------------------------------------------------------
 
     workbook = load_workbook(
@@ -581,10 +651,10 @@ def update_portfolio_excel(stocks):
     sheet = workbook.worksheets[0]
 
     # ------------------------------------------------------
-    # Βρίσκουμε την ΠΑΛΙΑ σειρά headers.
+    # ΠΑΛΙΑ HEADERS
     #
-    # Το χρειαζόμαστε μόνο για να κρατήσουμε
-    # τα χειροκίνητα sector/country.
+    # Τα χρειαζόμαστε για να κρατήσουμε
+    # χειροκίνητο sector / country.
     # ------------------------------------------------------
 
     old_headers = {}
@@ -665,7 +735,7 @@ def update_portfolio_excel(stocks):
             }
 
     # ======================================================
-    # ΚΑΘΑΡΙΖΟΥΜΕ ΤΟ ΠΑΛΙΟ TABLE
+    # ΑΦΑΙΡΟΥΜΕ ΤΟ ΠΑΛΙΟ TABLE
     # ======================================================
 
     remove_existing_tables(
@@ -673,7 +743,7 @@ def update_portfolio_excel(stocks):
     )
 
     # ======================================================
-    # ΣΒΗΝΟΥΜΕ ΟΛΕΣ ΤΙΣ ΠΑΛΙΕΣ ΘΕΣΕΙΣ
+    # ΣΒΗΝΟΥΜΕ ΤΙΣ ΠΑΛΙΕΣ ΘΕΣΕΙΣ
     # ======================================================
 
     if sheet.max_row > 1:
@@ -684,14 +754,10 @@ def update_portfolio_excel(stocks):
         )
 
     # ======================================================
-    # ΚΑΘΑΡΙΖΟΥΜΕ ΤΙΣ ΠΕΡΙΤΤΕΣ ΣΤΗΛΕΣ
+    # ΚΡΑΤΑΜΕ ΜΟΝΟ ΤΙΣ ΣΤΗΛΕΣ ΠΟΥ ΘΕΛΟΥΜΕ
     #
-    # Αυτό θα αφαιρέσει:
-    #
-    # Στήλη1
-    # Στήλη2
-    # ...
-    # μέχρι XFD
+    # Πλέον:
+    # A:S = 19 στήλες
     # ======================================================
 
     remove_extra_columns(
@@ -699,7 +765,7 @@ def update_portfolio_excel(stocks):
     )
 
     # ======================================================
-    # ΒΑΖΟΥΜΕ HEADERS ΑΚΡΙΒΩΣ ΣΤΗ ΣΩΣΤΗ ΣΕΙΡΑ
+    # ΒΑΖΟΥΜΕ ΤΑ HEADERS ΣΤΗ ΣΩΣΤΗ ΣΕΙΡΑ
     # ======================================================
 
     write_correct_headers(
@@ -734,7 +800,7 @@ def update_portfolio_excel(stocks):
         )
 
         # --------------------------------------------------
-        # Παλιό manual sector/country
+        # ΠΑΛΙΟ MANUAL SECTOR / COUNTRY
         # --------------------------------------------------
 
         old_manual_data = manual_data.get(
@@ -751,8 +817,7 @@ def update_portfolio_excel(stocks):
         )
 
         # --------------------------------------------------
-        # Αν Yahoo/API δίνει sector,
-        # αυτό έχει προτεραιότητα.
+        # ΝΕΟ SECTOR ΑΠΟ API/YAHOO
         # --------------------------------------------------
 
         if stock.get(
@@ -764,8 +829,7 @@ def update_portfolio_excel(stocks):
             )
 
         # --------------------------------------------------
-        # Αν Yahoo/API δίνει country,
-        # αυτό έχει προτεραιότητα.
+        # ΝΕΟ COUNTRY ΑΠΟ API/YAHOO
         # --------------------------------------------------
 
         if stock.get(
@@ -777,7 +841,7 @@ def update_portfolio_excel(stocks):
             )
 
         # --------------------------------------------------
-        # ΠΡΟΣΟΧΗ:
+        # ΓΡΑΦΗ ΣΤΟ EXCEL
         #
         # Η σειρά είναι ΑΚΡΙΒΩΣ ίδια με HEADERS.
         # --------------------------------------------------
@@ -798,10 +862,18 @@ def update_portfolio_excel(stocks):
             stock.get("portfolio_weight"),
             stock.get("vuaa_return"),
             stock.get("excess_return"),
+
+            # Fundamentals
+            stock.get("fcf_yield"),
+            stock.get("fcf_growth"),
+            stock.get("roic"),
+
+            # Final Score
+            stock.get("final_score"),
         ])
 
     # ======================================================
-    # ΜΟΡΦΟΠΟΙΗΣΗ + ΝΕΟ STOCKSUMMARY
+    # FORMAT + STOCKSUMMARY TABLE
     # ======================================================
 
     format_portfolio_sheet(
@@ -809,7 +881,7 @@ def update_portfolio_excel(stocks):
     )
 
     # ======================================================
-    # ΑΠΟΘΗΚΕΥΣΗ
+    # SAVE
     # ======================================================
 
     workbook.save(

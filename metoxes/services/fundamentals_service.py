@@ -9,6 +9,8 @@ from metoxes.services.price_service import get_current_eur_rate
 # FREEDOM24 SYMBOL -> YAHOO FINANCE SYMBOL
 # ==========================================================
 
+
+
 YAHOO_SYMBOL_MAP = {
 
     # -------------------------
@@ -81,7 +83,96 @@ def get_value(data, row, column):
 
     except Exception:
         return None
+def get_latest_values(data, row, limit=2):
 
+    values = []
+
+    if data.empty or row not in data.index:
+        return values
+
+    # Οι στήλες είναι ήδη newest -> oldest
+    for column in data.columns:
+
+        value = get_value(
+            data,
+            row,
+            column
+        )
+
+        if value is not None:
+
+            values.append(
+                value
+            )
+
+        if len(values) == limit:
+            break
+
+    return values
+
+
+def get_latest_fcf_values(cashflow, limit=2):
+
+    values = []
+
+    if cashflow.empty:
+        return values
+
+    for column in cashflow.columns:
+
+        # ----------------------------------------------
+        # 1. Προσπαθούμε έτοιμο Free Cash Flow
+        # ----------------------------------------------
+
+        fcf = get_value(
+            cashflow,
+            "Free Cash Flow",
+            column
+        )
+
+        # ----------------------------------------------
+        # 2. Αν λείπει:
+        #
+        # FCF = Operating Cash Flow + CapEx
+        #
+        # Στο Yahoo το Capital Expenditure
+        # συνήθως είναι αρνητικός αριθμός.
+        # ----------------------------------------------
+
+        if fcf is None:
+
+            operating_cash_flow = get_value(
+                cashflow,
+                "Operating Cash Flow",
+                column
+            )
+
+            capital_expenditure = get_value(
+                cashflow,
+                "Capital Expenditure",
+                column
+            )
+
+            if (
+                operating_cash_flow is not None
+                and capital_expenditure is not None
+            ):
+
+                fcf = (
+                    operating_cash_flow
+                    + capital_expenditure
+                )
+
+        if fcf is not None:
+
+            values.append(
+                fcf
+            )
+
+        if len(values) == limit:
+            break
+
+    return values
 
 # ==========================================================
 # YAHOO SYMBOL
@@ -275,21 +366,19 @@ def get_stock_fundamentals(symbol: str):
 
     market_cap = None
 
+    # Πρώτα χρησιμοποιούμε το marketCap από το Yahoo info.
+    # Είναι ασφαλέστερο για London stocks όπως ULVR.L.
     try:
-
-        market_cap = ticker.fast_info[
-            "market_cap"
-        ]
-
+        market_cap = info.get("marketCap")
     except Exception:
+        market_cap = None
 
-        pass
-
+    # Fallback μόνο αν δεν υπάρχει
     if market_cap is None:
-
-        market_cap = info.get(
-            "marketCap"
-        )
+        try:
+            market_cap = ticker.fast_info["market_cap"]
+        except Exception:
+            market_cap = None
 
     # ======================================================
     # CURRENCIES
@@ -315,51 +404,53 @@ def get_stock_fundamentals(symbol: str):
     previous_fcf = None
     fcf_growth = None
 
-    if not cashflow.empty:
+    fcf_values = get_latest_fcf_values(
+        cashflow,
+        limit=2
+    )
 
-        latest_date = cashflow.columns[0]
-
-        free_cash_flow = get_value(
-            cashflow,
-            "Free Cash Flow",
-            latest_date
+    if len(fcf_values) >= 1:
+        free_cash_flow = (
+            fcf_values[0]
         )
 
-        # ----------------------------------------------
-        # ΠΡΟΗΓΟΥΜΕΝΗ ΧΡΗΣΗ
-        # ----------------------------------------------
-
-        if len(cashflow.columns) >= 2:
-
-            previous_date = (
-                cashflow.columns[1]
-            )
-
-            previous_fcf = get_value(
-                cashflow,
-                "Free Cash Flow",
-                previous_date
-            )
+    if len(fcf_values) >= 2:
+        previous_fcf = (
+            fcf_values[1]
+        )
 
     # ======================================================
     # FCF GROWTH
+    #
+    # Υπολογίζουμε growth μόνο όταν:
+    #
+    # latest FCF   > 0
+    # previous FCF > 0
+    #
+    # Έτσι αποφεύγουμε παραπλανητικά ποσοστά όταν
+    # μια εταιρεία περνά από αρνητικό FCF σε θετικό
+    # ή από θετικό σε αρνητικό.
     # ======================================================
 
     if (
-        free_cash_flow is not None
-        and previous_fcf is not None
-        and previous_fcf != 0
+            free_cash_flow is not None
+            and previous_fcf is not None
+            and free_cash_flow > 0
+            and previous_fcf > 0
     ):
 
         fcf_growth = (
-            (
-                free_cash_flow
-                - previous_fcf
-            )
-            / abs(previous_fcf)
-            * 100
+                (
+                        free_cash_flow
+                        - previous_fcf
+                )
+                / previous_fcf
+                * 100
         )
 
+    else:
+
+        fcf_growth = None
     # ======================================================
     # FCF YIELD
     # ======================================================
@@ -451,37 +542,57 @@ def get_stock_fundamentals(symbol: str):
         and not balance.empty
     ):
 
-        income_date = (
-            income.columns[0]
-        )
-
-        balance_date = (
-            balance.columns[0]
-        )
-
-        operating_income = get_value(
+        operating_values = get_latest_values(
             income,
             "Operating Income",
-            income_date
+            limit=1
         )
 
-        tax_provision = get_value(
+        tax_values = get_latest_values(
             income,
             "Tax Provision",
-            income_date
+            limit=1
         )
 
-        pretax_income = get_value(
+        pretax_values = get_latest_values(
             income,
             "Pretax Income",
-            income_date
+            limit=1
         )
 
-        invested_capital = get_value(
+        invested_values = get_latest_values(
             balance,
             "Invested Capital",
-            balance_date
+            limit=1
         )
+
+        operating_income = (
+            operating_values[0]
+            if operating_values
+            else None
+        )
+
+        tax_provision = (
+            tax_values[0]
+            if tax_values
+            else None
+        )
+
+        pretax_income = (
+            pretax_values[0]
+            if pretax_values
+            else None
+        )
+
+        invested_capital = (
+            invested_values[0]
+            if invested_values
+            else None
+        )
+
+
+
+
 
         # ----------------------------------------------
         # TAX RATE
@@ -601,6 +712,7 @@ def get_stock_fundamentals(symbol: str):
         "market_currency": (
             market_currency
         ),
+        "industry": info.get("industry"),
     }
 
 
@@ -668,7 +780,7 @@ def get_portfolio_fundamentals(stocks):
                         "fcf_yield"
                     )
                 ),
-
+                "industry": fundamentals.get("industry"),
                 "fcf_growth": (
                     fundamentals.get(
                         "fcf_growth"
@@ -704,7 +816,7 @@ def get_portfolio_fundamentals(stocks):
                 "sector": stock.get(
                     "sector"
                 ),
-
+                "industry": None,
                 "country": stock.get(
                     "country"
                 ),
