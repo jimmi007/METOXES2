@@ -14,7 +14,7 @@ Trikala@2
 98cbd5e7d1a36ac127c95670c8f2beb9ddc367c6
 
 
-git status
+python -m pytest -q
 git add .
-git commit -m "Add EUR returns and historical FX for Capital and Freedom24"
+git commit -m "τι άλλαξες"
 git push

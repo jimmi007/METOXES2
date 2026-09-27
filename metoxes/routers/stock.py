@@ -6,7 +6,14 @@ from metoxes.services.fundamentals_service import (
     get_stock_fundamentals,
     get_portfolio_fundamentals,
 )
+from metoxes.services.data_quality_service import (
+    run_portfolio_quality_checks,
+    save_quality_report,
+)
 
+from metoxes.services.dashboard_service import (
+    generate_portfolio_dashboard,
+)
 from metoxes.services.portfolio_service import aggregate_positions
 from metoxes.services.excel_service import (
     update_portfolio_excel,
@@ -280,6 +287,11 @@ async def create_excel():
 
 @router.post("/stocks/update-excel")
 @router.post("/stocks/update-excel")
+# ==========================================================
+# UPDATE EXCEL - ΟΛΟ ΤΟ PORTFOLIO
+# ==========================================================
+
+@router.post("/stocks/update-excel")
 async def update_excel():
 
     # ======================================================
@@ -331,11 +343,9 @@ async def update_excel():
     # ======================================================
 
     total_portfolio_value = sum(
-
         stock.get(
             "market_value"
         ) or 0
-
         for stock in stocks
     )
 
@@ -467,7 +477,23 @@ async def update_excel():
         )
 
     # ======================================================
-    # 12. EXCEL
+    # 12. DATA QUALITY CHECKS
+    # ======================================================
+
+    quality_report = (
+        run_portfolio_quality_checks(
+            stocks
+        )
+    )
+
+    quality_file = (
+        save_quality_report(
+            quality_report
+        )
+    )
+
+    # ======================================================
+    # 13. UPDATE PORTFOLIO EXCEL
     # ======================================================
 
     file_path = (
@@ -477,13 +503,24 @@ async def update_excel():
     )
 
     # ======================================================
-    # 13. RESPONSE
+    # 14. CREATE JSON + HTML DASHBOARD
+    # ======================================================
+
+    dashboard_files = (
+        generate_portfolio_dashboard(
+            stocks=stocks,
+            quality_report=quality_report,
+        )
+    )
+
+    # ======================================================
+    # 15. RESPONSE
     # ======================================================
 
     return {
 
         "message":
-            "Portfolio Excel updated successfully",
+            "Portfolio Excel + dashboard updated successfully",
 
         "stocks":
             len(stocks),
@@ -494,9 +531,62 @@ async def update_excel():
                 2
             ),
 
-        "file":
-            str(file_path)
+        "data_quality": {
+
+            "status":
+                quality_report[
+                    "status"
+                ],
+
+            "errors":
+                quality_report[
+                    "errors"
+                ],
+
+            "warnings":
+                quality_report[
+                    "warnings"
+                ],
+
+            "info":
+                quality_report[
+                    "info"
+                ],
+
+            "positions_with_issues":
+                quality_report[
+                    "positions_with_issues"
+                ],
+        },
+
+        "files": {
+
+            "excel":
+                str(
+                    file_path
+                ),
+
+            "quality_report":
+                str(
+                    quality_file
+                ),
+
+            "dashboard_json":
+                str(
+                    dashboard_files[
+                        "json_file"
+                    ]
+                ),
+
+            "dashboard_html":
+                str(
+                    dashboard_files[
+                        "html_file"
+                    ]
+                ),
+        }
     }
+
 
 # ==========================================================
 # CAPITAL - TEST

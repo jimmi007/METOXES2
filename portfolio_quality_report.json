@@ -1,0 +1,712 @@
+{
+  "status": "WARNING",
+  "positions_checked": 68,
+  "positions_with_issues": 35,
+  "errors": 0,
+  "warnings": 9,
+  "info": 28,
+  "stocks": [
+    {
+      "symbol": "VUAA.L",
+      "platform": "Trading212",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_yield",
+            "fcf_growth",
+            "roic",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "EGLN.L",
+      "platform": "Trading212",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_yield",
+            "fcf_growth",
+            "roic",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "SXR8.DE",
+      "platform": "Trading212",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_yield",
+            "fcf_growth",
+            "roic",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "GASS",
+      "platform": "Trading212",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "IUIS.L",
+      "platform": "Trading212",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_yield",
+            "fcf_growth",
+            "roic",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "IMMR",
+      "platform": "Trading212",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "RKLB",
+      "platform": "Trading212",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "OPHC",
+      "platform": "Trading212",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "roic",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "NNE",
+      "platform": "Trading212",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "CCS",
+      "platform": "Trading212",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "BAC",
+      "platform": "Trading212",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth",
+            "roic",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "ALB",
+      "platform": "Trading212",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "SXLI.L",
+      "platform": "Trading212",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_yield",
+            "fcf_growth",
+            "roic",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "SXRU.DE",
+      "platform": "Trading212",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_yield",
+            "fcf_growth",
+            "roic",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "RHM.DE",
+      "platform": "Capital",
+      "errors": 0,
+      "warnings": 1,
+      "info": 0,
+      "issues": [
+        {
+          "code": "percent_change_mismatch",
+          "severity": "warning",
+          "field": "percent_change",
+          "message": "Το percent_change δεν συμφωνεί με purchase_price/current_price.",
+          "actual": 5.47,
+          "expected": 0.05
+        }
+      ]
+    },
+    {
+      "symbol": "GLD",
+      "platform": "Capital",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_yield",
+            "fcf_growth",
+            "roic",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "LDO.MI",
+      "platform": "Capital",
+      "errors": 0,
+      "warnings": 1,
+      "info": 0,
+      "issues": [
+        {
+          "code": "percent_change_mismatch",
+          "severity": "warning",
+          "field": "percent_change",
+          "message": "Το percent_change δεν συμφωνεί με purchase_price/current_price.",
+          "actual": 40.76,
+          "expected": 31.46
+        }
+      ]
+    },
+    {
+      "symbol": "RWE.DE",
+      "platform": "Capital",
+      "errors": 0,
+      "warnings": 1,
+      "info": 1,
+      "issues": [
+        {
+          "code": "possible_stock_split",
+          "severity": "warning",
+          "field": "price_ratio",
+          "message": "Η αναλογία current_price/purchase_price είναι κοντά σε συνηθισμένο split factor. Θέλει επιβεβαίωση.",
+          "actual": 1.948,
+          "expected": 2
+        },
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "IESC",
+      "platform": "Capital",
+      "errors": 0,
+      "warnings": 2,
+      "info": 0,
+      "issues": [
+        {
+          "code": "extreme_return",
+          "severity": "warning",
+          "field": "percent_change",
+          "message": "Ακραία συνολική απόδοση. Έλεγξε split, purchase_price και ticker mapping.",
+          "actual": 186.78,
+          "expected": null
+        },
+        {
+          "code": "recent_return_anomaly",
+          "severity": "warning",
+          "field": "percent_change",
+          "message": "Πρόσφατη θέση με μεγάλη απόκλιση total return από 1M return.",
+          "actual": 186.78,
+          "expected": 4.63
+        }
+      ]
+    },
+    {
+      "symbol": "TSM",
+      "platform": "Capital",
+      "errors": 0,
+      "warnings": 1,
+      "info": 0,
+      "issues": [
+        {
+          "code": "extreme_return",
+          "severity": "warning",
+          "field": "percent_change",
+          "message": "Ακραία συνολική απόδοση. Έλεγξε split, purchase_price και ticker mapping.",
+          "actual": 167.25,
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "ALPHA.GR",
+      "platform": "Freedom24",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth",
+            "roic",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "EE.US",
+      "platform": "Freedom24",
+      "errors": 0,
+      "warnings": 1,
+      "info": 0,
+      "issues": [
+        {
+          "code": "market_value_mismatch",
+          "severity": "warning",
+          "field": "market_value",
+          "message": "Το market_value αποκλίνει >3% από current_price × quantity.",
+          "actual": 334.65,
+          "expected": 349.56
+        }
+      ]
+    },
+    {
+      "symbol": "ETE.GR",
+      "platform": "Freedom24",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth",
+            "roic",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "EUROB.GR",
+      "platform": "Freedom24",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "roic",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "EVD.EU",
+      "platform": "Freedom24",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "FCX.US",
+      "platform": "Freedom24",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "LAMDA.GR",
+      "platform": "Freedom24",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "MOH.GR",
+      "platform": "Freedom24",
+      "errors": 0,
+      "warnings": 1,
+      "info": 0,
+      "issues": [
+        {
+          "code": "extreme_return",
+          "severity": "warning",
+          "field": "percent_change",
+          "message": "Ακραία συνολική απόδοση. Έλεγξε split, purchase_price και ticker mapping.",
+          "actual": 226.08,
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "MTLN.GR",
+      "platform": "Freedom24",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "OTOEL.GR",
+      "platform": "Freedom24",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "PPC.GR",
+      "platform": "Freedom24",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "PSN.US",
+      "platform": "Freedom24",
+      "errors": 0,
+      "warnings": 1,
+      "info": 0,
+      "issues": [
+        {
+          "code": "market_value_mismatch",
+          "severity": "warning",
+          "field": "market_value",
+          "message": "Το market_value αποκλίνει >3% από current_price × quantity.",
+          "actual": 329.9,
+          "expected": 379.1
+        }
+      ]
+    },
+    {
+      "symbol": "SIX3.EU",
+      "platform": "Freedom24",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "THEON.EU",
+      "platform": "Freedom24",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "VUAA.EU",
+      "platform": "Freedom24",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_yield",
+            "fcf_growth",
+            "roic",
+            "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    }
+  ]
+}
