@@ -1,10 +1,14 @@
 .DS_Store
 *.pyc
-__pycache__
+__pycache__/
 .env
 *.db
-.venv
+.venv/
 .vscode/
 *.png
 *.log
 .idea/
+
+portfolio.xlsx
+portfolio_updated.xlsx
+*.csv
