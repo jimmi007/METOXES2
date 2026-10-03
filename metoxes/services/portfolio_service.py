@@ -1,376 +1,379 @@
-from datetime import datetime
+from __future__ import annotations
 
-from metoxes.services.price_service import get_vuaa_return
+from datetime import date, datetime
 
 
-# ==========================================================
-# AGGREGATE POSITIONS
-# Ενώνει ίδια μετοχή + ίδιο broker
-# ==========================================================
+def _to_float(value):
+    if value in (None, ""):
+        return None
 
-def aggregate_positions(stocks):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
 
-    grouped = {}
 
-    # ==================================================
-    # 1. ΟΜΑΔΟΠΟΙΗΣΗ
-    # ίδια μετοχή + ίδιος broker
-    # ==================================================
+def _to_datetime(value):
+    if value in (None, ""):
+        return None
 
-    for stock in stocks:
+    if isinstance(value, datetime):
+        return value
 
-        key = (
-            stock.get("symbol"),
-            stock.get("platform")
+    if isinstance(value, date):
+        return datetime.combine(
+            value,
+            datetime.min.time(),
         )
 
-        if key not in grouped:
-            grouped[key] = []
+    text = str(value).strip()
 
-        grouped[key].append(stock)
+    try:
+        return datetime.fromisoformat(
+            text.replace("Z", "+00:00")
+        ).replace(tzinfo=None)
+    except ValueError:
+        pass
 
-    aggregated_stocks = []
-
-    # ==================================================
-    # 2. ΕΝΩΣΗ ΚΑΘΕ ΟΜΑΔΑΣ
-    # ==================================================
-
-    for (
-        symbol,
-        platform
-    ), positions in grouped.items():
-
-        # --------------------------------------------------
-        # ΣΥΝΟΛΙΚΗ ΠΟΣΟΤΗΤΑ
-        # --------------------------------------------------
-
-        total_quantity = sum(
-            position.get(
-                "quantity",
-                0
-            ) or 0
-            for position in positions
-        )
-
-        # ==================================================
-        # ΣΤΑΘΜΙΣΜΕΝΗ ΜΕΣΗ ΤΙΜΗ ΑΓΟΡΑΣ
-        #
-        # π.χ.
-        # 5 μετοχές x 40 €
-        # 15 μετοχές x 20 €
-        #
-        # μέση τιμή = 25 €, όχι 30 €
-        # ==================================================
-
-        total_purchase_cost = sum(
-            (
-                position.get(
-                    "purchase_price"
-                ) or 0
+    for fmt in (
+        "%d/%m/%Y",
+        "%d-%m-%Y",
+        "%Y/%m/%d",
+    ):
+        try:
+            return datetime.strptime(
+                text,
+                fmt,
             )
-            *
-            (
-                position.get(
-                    "quantity"
-                ) or 0
-            )
-            for position in positions
+        except ValueError:
+            continue
+
+    return None
+
+
+def _weighted_average(
+    rows,
+    field,
+    quantity_field="quantity",
+):
+    weighted_total = 0.0
+    total_weight = 0.0
+
+    for row in rows:
+        value = _to_float(
+            row.get(field)
         )
-
-        if total_quantity > 0:
-
-            weighted_purchase_price = (
-                total_purchase_cost
-                / total_quantity
-            )
-
-        else:
-
-            weighted_purchase_price = None
-
-        # ==================================================
-        # ΣΤΑΘΜΙΣΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΑΓΟΡΑΣ
-        # ==================================================
-
-        dated_positions = [
-            position
-            for position in positions
-            if (
-                position.get(
-                    "purchase_date"
-                )
-                and (
-                    position.get(
-                        "quantity"
-                    ) or 0
-                ) > 0
-            )
-        ]
-
-        if dated_positions:
-
-            total_dated_quantity = sum(
-                position.get(
-                    "quantity"
-                ) or 0
-                for position
-                in dated_positions
-            )
-
-            weighted_timestamp = sum(
-                datetime.fromisoformat(
-                    str(
-                        position[
-                            "purchase_date"
-                        ]
-                    )[:10]
-                ).timestamp()
-                *
-                (
-                    position.get(
-                        "quantity"
-                    ) or 0
-                )
-                for position
-                in dated_positions
-            ) / total_dated_quantity
-
-            weighted_purchase_date = (
-                datetime.fromtimestamp(
-                    weighted_timestamp
-                )
-                .date()
-                .isoformat()
-            )
-
-        else:
-
-            weighted_purchase_date = None
-
-        # ==================================================
-        # ΣΥΝΟΛΙΚΗ ΤΡΕΧΟΥΣΑ ΑΞΙΑ
-        # ==================================================
-
-        total_market_value = sum(
-            position.get(
-                "market_value",
-                0
-            ) or 0
-            for position in positions
+        quantity = _to_float(
+            row.get(quantity_field)
         )
-
-        # ==================================================
-        # ΣΤΑΘΜΙΣΜΕΝΟ PERCENT CHANGE
-        # ==================================================
-
-        valid_percent_positions = [
-            position
-            for position in positions
-            if (
-                position.get(
-                    "percent_change"
-                ) is not None
-                and position.get(
-                    "market_value"
-                ) is not None
-            )
-        ]
-
-        total_weight_value = sum(
-            position[
-                "market_value"
-            ]
-            for position
-            in valid_percent_positions
-        )
-
-        if total_weight_value > 0:
-
-            weighted_percent_change = sum(
-                position[
-                    "percent_change"
-                ]
-                *
-                position[
-                    "market_value"
-                ]
-                for position
-                in valid_percent_positions
-            ) / total_weight_value
-
-        else:
-
-            weighted_percent_change = None
-
-        # ==================================================
-        # ΚΟΙΝΑ ΣΤΟΙΧΕΙΑ
-        #
-        # name / sector / country
-        # είναι ίδια για τις θέσεις της ίδιας μετοχής
-        # στον ίδιο broker
-        # ==================================================
-
-        first = positions[0]
-
-        name = first.get(
-            "name"
-        )
-
-        sector = first.get(
-            "sector"
-        )
-
-        country = first.get(
-            "country"
-        )
-
-        # ==================================================
-        # VUAA RETURN
-        # ==================================================
-
-        if weighted_purchase_date:
-
-            try:
-
-                vuaa_return = (
-                    get_vuaa_return(
-                        weighted_purchase_date
-                    )
-                )
-
-            except Exception as e:
-
-                print(
-                    f"VUAA AGGREGATION ERROR "
-                    f"{symbol}: {e}"
-                )
-
-                vuaa_return = None
-
-        else:
-
-            vuaa_return = None
-
-        # ==================================================
-        # EXCESS RETURN
-        #
-        # Απόδοση μετοχής - απόδοση VUAA
-        # ==================================================
 
         if (
-            weighted_percent_change
-            is not None
-            and vuaa_return
-            is not None
+            value is None
+            or quantity is None
+            or quantity == 0
         ):
+            continue
 
-            excess_return = (
-                weighted_percent_change
-                - vuaa_return
-            )
+        weight = abs(quantity)
 
-        else:
+        weighted_total += (
+            value * weight
+        )
+        total_weight += weight
 
-            excess_return = None
+    if total_weight == 0:
+        return None
 
-        # ==================================================
-        # ΤΕΛΙΚΗ ΕΝΟΠΟΙΗΜΕΝΗ ΘΕΣΗ
-        # ==================================================
+    return weighted_total / total_weight
 
-        aggregated_stock = {
 
-            "symbol":
-                symbol,
+def _sum_field(rows, field):
+    values = [
+        _to_float(row.get(field))
+        for row in rows
+    ]
 
-            "name":
-                name,
+    values = [
+        value
+        for value in values
+        if value is not None
+    ]
 
-            # ----------------------------------------------
-            # SECTOR / COUNTRY
-            # Διατηρούνται μετά το aggregation
-            # ----------------------------------------------
+    if not values:
+        return None
 
-            "sector":
-                sector,
+    return sum(values)
 
-            "country":
-                country,
 
-            "platform":
-                platform,
+def _weighted_purchase_date(rows):
+    weighted_timestamp = 0.0
+    total_weight = 0.0
 
-            "quantity":
-                round(
-                    total_quantity,
-                    8
-                ),
-
-            "current_price":
-                first.get(
-                    "current_price"
-                ),
-
-            "market_value":
-                round(
-                    total_market_value,
-                    2
-                ),
-
-            "purchase_date":
-                weighted_purchase_date,
-
-            "purchase_price":
-                (
-                    round(
-                        weighted_purchase_price,
-                        2
-                    )
-                    if weighted_purchase_price
-                    is not None
-                    else None
-                ),
-
-            "percent_change":
-                (
-                    round(
-                        weighted_percent_change,
-                        2
-                    )
-                    if weighted_percent_change
-                    is not None
-                    else None
-                ),
-
-            "monthly_percent_change":
-                first.get(
-                    "monthly_percent_change"
-                ),
-
-            "vuaa_return":
-                (
-                    round(
-                        vuaa_return,
-                        2
-                    )
-                    if vuaa_return
-                    is not None
-                    else None
-                ),
-
-            "excess_return":
-                (
-                    round(
-                        excess_return,
-                        2
-                    )
-                    if excess_return
-                    is not None
-                    else None
-                )
-        }
-
-        aggregated_stocks.append(
-            aggregated_stock
+    for row in rows:
+        dt = _to_datetime(
+            row.get("purchase_date")
+        )
+        quantity = _to_float(
+            row.get("quantity")
         )
 
-    return aggregated_stocks
+        if (
+            dt is None
+            or quantity is None
+            or quantity == 0
+        ):
+            continue
+
+        weight = abs(quantity)
+
+        weighted_timestamp += (
+            dt.timestamp()
+            * weight
+        )
+        total_weight += weight
+
+    if total_weight == 0:
+        return None
+
+    dt = datetime.fromtimestamp(
+        weighted_timestamp
+        / total_weight
+    )
+
+    return dt.date().isoformat()
+
+
+def _first_non_empty(rows, field):
+    for row in rows:
+        value = row.get(field)
+
+        if value not in (None, ""):
+            return value
+
+    return None
+
+
+def aggregate_positions(stocks):
+    """
+    Ενώνει θέσεις με ίδιο symbol + ίδιο platform.
+
+    Το συνολικό percent_change υπολογίζεται από:
+
+        aggregated current_price
+        -------------------------  - 1
+        weighted purchase_price
+
+    και όχι ως μέσος όρος των percent_change των lots.
+    """
+
+    if not stocks:
+        return []
+
+    groups = {}
+    order = []
+
+    for stock in stocks:
+        symbol = str(
+            stock.get("symbol")
+            or ""
+        ).strip()
+
+        platform = str(
+            stock.get("platform")
+            or ""
+        ).strip()
+
+        if not symbol:
+            continue
+
+        key = (
+            symbol.upper(),
+            platform.upper(),
+        )
+
+        if key not in groups:
+            groups[key] = []
+            order.append(key)
+
+        groups[key].append(
+            dict(stock)
+        )
+
+    result = []
+
+    for key in order:
+        rows = groups[key]
+        aggregated = dict(
+            rows[0]
+        )
+
+        total_quantity = sum(
+            _to_float(
+                row.get("quantity")
+            ) or 0.0
+            for row in rows
+        )
+
+        purchase_price = _weighted_average(
+            rows,
+            "purchase_price",
+        )
+
+        current_price = _weighted_average(
+            rows,
+            "current_price",
+        )
+
+        purchase_date = _weighted_purchase_date(
+            rows
+        )
+
+        aggregated["quantity"] = round(
+            total_quantity,
+            10
+        )
+
+        aggregated["purchase_price"] = (
+            round(
+                purchase_price,
+                2
+            )
+            if purchase_price is not None
+            else None
+        )
+
+        aggregated["current_price"] = (
+            round(
+                current_price,
+                2
+            )
+            if current_price is not None
+            else None
+        )
+
+        if purchase_date is not None:
+            aggregated[
+                "purchase_date"
+            ] = purchase_date
+
+        # Market value από current_price × quantity.
+        if (
+            current_price is not None
+            and total_quantity != 0
+        ):
+            market_value = (
+                current_price
+                * total_quantity
+            )
+        else:
+            market_value = _sum_field(
+                rows,
+                "market_value",
+            )
+
+        aggregated["market_value"] = (
+            round(
+                market_value,
+                2
+            )
+            if market_value is not None
+            else None
+        )
+
+        # Σωστό aggregated total return.
+        if (
+            purchase_price is not None
+            and current_price is not None
+            and purchase_price != 0
+        ):
+            percent_change = (
+                current_price
+                / purchase_price
+                - 1
+            ) * 100
+        else:
+            percent_change = None
+
+        aggregated["percent_change"] = (
+            round(
+                percent_change,
+                2
+            )
+            if percent_change is not None
+            else None
+        )
+
+        for field in (
+            "monthly_percent_change",
+            "vuaa_return",
+            "avg_monthly_change",
+            "fx_to_eur",
+            "historical_fx_to_eur",
+        ):
+            value = _weighted_average(
+                rows,
+                field,
+            )
+
+            if value is not None:
+                aggregated[field] = round(
+                    value,
+                    6
+                    if "fx_to_eur" in field
+                    else 2
+                )
+
+        vuaa_return = _to_float(
+            aggregated.get(
+                "vuaa_return"
+            )
+        )
+
+        if (
+            percent_change is not None
+            and vuaa_return is not None
+        ):
+            aggregated[
+                "excess_return"
+            ] = round(
+                percent_change
+                - vuaa_return,
+                2
+            )
+
+        for field in (
+            "profit",
+            "upl",
+        ):
+            value = _sum_field(
+                rows,
+                field,
+            )
+
+            if value is not None:
+                aggregated[field] = round(
+                    value,
+                    2
+                )
+
+        for field in (
+            "name",
+            "sector",
+            "country",
+            "original_currency",
+            "direction",
+            "status",
+        ):
+            value = _first_non_empty(
+                rows,
+                field,
+            )
+
+            if value is not None:
+                aggregated[field] = value
+
+        result.append(
+            aggregated
+        )
+
+    return result

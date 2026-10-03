@@ -1,366 +1,263 @@
-from collections import defaultdict
+from __future__ import annotations
+
+import math
+
+METRICS = (
+    ("fcf_yield", "fcf_yield_score"),
+    ("fcf_growth", "fcf_growth_score"),
+    ("roic", "roic_score"),
+)
+
+MIN_COUNTRY_SECTOR_PEERS = 5
 
 
-# ==========================================================
-# SETTINGS
-# ==========================================================
-
-MIN_SECTOR_COMPANIES = 3
-
-
-# ==========================================================
-# BANKS
-# ==========================================================
-
-BANK_SYMBOLS = {
-    "BAC",
-    "OPHC",
-    "ALPHA.GR",
-    "ETE.GR",
-    "EUROB.GR",
-}
+def _safe_float(value):
+    if value in (None, ""):
+        return None
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return None
+    if math.isnan(number) or math.isinf(number):
+        return None
+    return number
 
 
-# ==========================================================
-# BANK CHECK
-# ==========================================================
+def _country(row):
+    return str(
+        row.get("country") or "Unknown"
+    ).strip()
 
-def is_bank(stock):
 
-    symbol = str(
-        stock.get("symbol") or ""
-    ).strip().upper()
+def _sector(row):
+    return str(
+        row.get("sector") or "Unknown"
+    ).strip()
 
-    industry = str(
-        stock.get("industry") or ""
-    ).lower()
 
-    return (
-        symbol in BANK_SYMBOLS
-        or "bank" in industry
+def _rank_percentile(value, peers):
+    number = _safe_float(value)
+    valid = sorted(
+        _safe_float(peer)
+        for peer in peers
+        if _safe_float(peer) is not None
+    )
+
+    if number is None or not valid:
+        return None
+
+    if len(valid) == 1:
+        return 50.0
+
+    lower = sum(
+        1 for peer in valid
+        if peer < number
+    )
+    equal = sum(
+        1 for peer in valid
+        if peer == number
+    )
+
+    average_index = (
+        lower
+        + (equal - 1) / 2
+    )
+
+    return round(
+        average_index
+        / (len(valid) - 1)
+        * 100,
+        2,
     )
 
 
-# ==========================================================
-# UNIQUE METRIC VALUES
-# ==========================================================
-
-def get_unique_metric_values(
-    stocks,
-    metric
+def _assign_rank_scores(
+    rows,
+    value_field,
+    score_field,
 ):
+    """
+    Default peer group:
+        same country + same sector.
 
-    unique = {}
+    Stability fallback:
+        if fewer than 5 valid peers exist for that metric,
+        compare against all available companies in the same sector.
+    """
+    country_sector = {}
+    sector_groups = {}
 
-    for stock in stocks:
+    for row in rows:
+        cs_key = (
+            _country(row),
+            _sector(row),
+        )
+        sector_key = _sector(row)
 
-        # Οι τράπεζες δεν συμμετέχουν
-        # στο generic FCF / ROIC scoring
-        if is_bank(stock):
-            continue
+        country_sector.setdefault(
+            cs_key,
+            [],
+        ).append(row)
 
-        value = stock.get(metric)
+        sector_groups.setdefault(
+            sector_key,
+            [],
+        ).append(row)
 
+    for row in rows:
+        row[score_field] = None
+
+        value = _safe_float(
+            row.get(value_field)
+        )
         if value is None:
             continue
 
-        # Ίδια εταιρεία σε διαφορετικό broker
-        # μετράει μία φορά στο percentile.
-        company_key = (
-            stock.get("yahoo_symbol")
-            or stock.get("symbol")
+        cs_key = (
+            _country(row),
+            _sector(row),
+        )
+        sector_key = _sector(row)
+
+        cs_values = [
+            peer.get(value_field)
+            for peer in country_sector.get(
+                cs_key,
+                [],
+            )
+            if _safe_float(
+                peer.get(value_field)
+            ) is not None
+        ]
+
+        if len(cs_values) >= MIN_COUNTRY_SECTOR_PEERS:
+            peers = cs_values
+            scope = "country_sector"
+        else:
+            peers = [
+                peer.get(value_field)
+                for peer in sector_groups.get(
+                    sector_key,
+                    [],
+                )
+                if _safe_float(
+                    peer.get(value_field)
+                ) is not None
+            ]
+            scope = "global_sector"
+
+        row[score_field] = _rank_percentile(
+            value,
+            peers,
         )
 
-        company_key = str(
-            company_key
-        ).strip().upper()
+        row[
+            f"{score_field}_peer_scope"
+        ] = scope
 
-        if company_key not in unique:
-            unique[company_key] = value
-
-    return list(
-        unique.values()
-    )
+        row[
+            f"{score_field}_peer_count"
+        ] = len(peers)
 
 
-# ==========================================================
-# PERCENTILE SCORE
-# ==========================================================
+def _calculate_final_score(row):
+    available_scores = []
 
-def percentile_score(
-    value,
-    values
-):
+    for _, score_field in METRICS:
+        score = _safe_float(
+            row.get(score_field)
+        )
+        if score is not None:
+            available_scores.append(
+                score
+            )
 
-    if value is None:
+    if not available_scores:
         return None
-
-    valid_values = [
-        v
-        for v in values
-        if v is not None
-    ]
-
-    # Δεν δίνουμε τεχνητό 0 / 50 / 100
-    # σε sector με μόνο 1-2 εταιρείες.
-    if (
-        len(valid_values)
-        < MIN_SECTOR_COMPANIES
-    ):
-        return None
-
-    lower = sum(
-        1
-        for v in valid_values
-        if v < value
-    )
-
-    equal = sum(
-        1
-        for v in valid_values
-        if v == value
-    )
-
-    score = (
-        lower
-        + (equal - 1) / 2
-    ) / (
-        len(valid_values) - 1
-    ) * 100
 
     return round(
-        score,
-        2
+        sum(available_scores)
+        / len(available_scores),
+        2,
     )
 
-
-# ==========================================================
-# SCORE STOCKS BY SECTOR
-# ==========================================================
 
 def score_stocks_by_sector(stocks):
+    """
+    Compatibility name.
 
-    sectors = defaultdict(list)
+    Preferred peer group:
+        same country + same sector.
 
-    # ------------------------------------------------------
-    # GROUP BY SECTOR
-    # ------------------------------------------------------
+    Fallback:
+        if a metric has <5 valid country+sector peers,
+        use the global same-sector universe.
+    """
+    if not stocks:
+        return []
 
-    for stock in stocks:
+    result = [
+        dict(stock)
+        for stock in stocks
+    ]
 
-        sector = (
-            stock.get("sector")
-            or "Unknown"
+    for (
+        value_field,
+        score_field,
+    ) in METRICS:
+        _assign_rank_scores(
+            result,
+            value_field=value_field,
+            score_field=score_field,
         )
 
-        sectors[sector].append(
-            stock
+    for row in result:
+        country = _country(row)
+        sector = _sector(row)
+
+        scopes = [
+            row.get(
+                f"{score_field}_peer_scope"
+            )
+            for _, score_field
+            in METRICS
+            if row.get(
+                f"{score_field}_peer_scope"
+            )
+        ]
+
+        counts = [
+            row.get(
+                f"{score_field}_peer_count"
+            )
+            for _, score_field
+            in METRICS
+            if row.get(
+                f"{score_field}_peer_count"
+            ) is not None
+        ]
+
+        row["score_peer_country"] = country
+        row["score_peer_sector"] = sector
+        row["score_peer_scope"] = (
+            "global_sector"
+            if "global_sector" in scopes
+            else "country_sector"
+        )
+        row["score_peer_count"] = (
+            min(counts)
+            if counts
+            else 0
+        )
+        row["final_score"] = (
+            _calculate_final_score(
+                row
+            )
         )
 
-    results = []
+    return result
 
-    # ------------------------------------------------------
-    # ΚΑΘΕ SECTOR
-    # ------------------------------------------------------
 
-    for sector, sector_stocks in sectors.items():
-
-        fcf_yields = (
-            get_unique_metric_values(
-                sector_stocks,
-                "fcf_yield"
-            )
-        )
-
-        fcf_growths = (
-            get_unique_metric_values(
-                sector_stocks,
-                "fcf_growth"
-            )
-        )
-
-        roics = (
-            get_unique_metric_values(
-                sector_stocks,
-                "roic"
-            )
-        )
-
-        # --------------------------------------------------
-        # ΚΑΘΕ ΜΕΤΟΧΗ
-        # --------------------------------------------------
-
-        for stock in sector_stocks:
-
-            # ==============================================
-            # BANK
-            # ==============================================
-
-            if is_bank(stock):
-
-                results.append({
-                    "symbol":
-                        stock.get("symbol"),
-
-                    "yahoo_symbol":
-                        stock.get("yahoo_symbol"),
-
-                    "name":
-                        stock.get("name"),
-
-                    "sector":
-                        sector,
-
-                    "industry":
-                        stock.get("industry"),
-
-                    "country":
-                        stock.get("country"),
-
-                    "platform":
-                        stock.get("platform"),
-
-                    "fcf_yield":
-                        stock.get("fcf_yield"),
-
-                    "fcf_yield_score":
-                        None,
-
-                    "fcf_growth":
-                        stock.get("fcf_growth"),
-
-                    "fcf_growth_score":
-                        None,
-
-                    "roic":
-                        stock.get("roic"),
-
-                    "roic_score":
-                        None,
-
-                    "final_score":
-                        None,
-
-                    "score_status":
-                        "BANK",
-                })
-
-                continue
-
-            # ==============================================
-            # NORMAL COMPANY
-            # ==============================================
-
-            fcf_yield_score = percentile_score(
-                stock.get("fcf_yield"),
-                fcf_yields
-            )
-
-            fcf_growth_score = percentile_score(
-                stock.get("fcf_growth"),
-                fcf_growths
-            )
-
-            roic_score = percentile_score(
-                stock.get("roic"),
-                roics
-            )
-
-            available_scores = [
-                score
-                for score in [
-                    fcf_yield_score,
-                    fcf_growth_score,
-                    roic_score,
-                ]
-                if score is not None
-            ]
-
-            # ==============================================
-            # FINAL SCORE
-            # ==============================================
-
-            if available_scores:
-
-                final_score = round(
-                    sum(available_scores)
-                    / len(available_scores),
-                    2
-                )
-
-                score_status = "OK"
-
-            else:
-
-                final_score = None
-                score_status = "INSUFFICIENT_DATA"
-
-            # ==============================================
-            # RESULT
-            # ==============================================
-
-            results.append({
-                "symbol":
-                    stock.get("symbol"),
-
-                "yahoo_symbol":
-                    stock.get("yahoo_symbol"),
-
-                "name":
-                    stock.get("name"),
-
-                "sector":
-                    sector,
-
-                "industry":
-                    stock.get("industry"),
-
-                "country":
-                    stock.get("country"),
-
-                "platform":
-                    stock.get("platform"),
-
-                "fcf_yield":
-                    stock.get("fcf_yield"),
-
-                "fcf_yield_score":
-                    fcf_yield_score,
-
-                "fcf_growth":
-                    stock.get("fcf_growth"),
-
-                "fcf_growth_score":
-                    fcf_growth_score,
-
-                "roic":
-                    stock.get("roic"),
-
-                "roic_score":
-                    roic_score,
-
-                "final_score":
-                    final_score,
-
-                "score_status":
-                    score_status,
-            })
-
-    # ======================================================
-    # SORT
-    # ======================================================
-
-    results.sort(
-        key=lambda stock: (
-            stock.get("final_score")
-            is not None,
-
-            stock.get("final_score")
-            if stock.get("final_score")
-            is not None
-            else -1
-        ),
-        reverse=True
-    )
-
-    return results
+score_stocks_by_country_sector = (
+    score_stocks_by_sector
+)

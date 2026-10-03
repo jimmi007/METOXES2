@@ -7,8 +7,8 @@ from metoxes.services.price_service import (
     get_monthly_percent_change,
     get_vuaa_return,
     get_historical_fx_to_eur,
-    get_stock_info,
 )
+
 load_dotenv()
 
 FREEDOM_PUBLIC_KEY = os.getenv("FREEDOM_PUBLIC_KEY")
@@ -33,10 +33,10 @@ FREEDOM_TICKER_MAP = {
     "MOH.GR": "MOH.AT",
     "MTLN.GR": "MTLN.L",
     "OTOEL.GR": "OTOEL.AT",
-    "PPC.GR": "PPC.AT",
+    "PPC.GR": "PPC",
     "PSN.US": "PSN",
     "RHM.EU": "RHM.DE",
-    "SIX3.EU": "SIX2.DE",
+    "SIX3.EU": "SIX3D.XD",
     "THEON.EU": "THEON.AS",
     "VUAA.EU": "VUAA.L",
 }
@@ -342,22 +342,6 @@ def get_clean_freedom_positions():
             symbol,
             symbol
         )
-        # ======================================================
-        # SECTOR / COUNTRY
-        # Από Yahoo Finance με το σωστό Yahoo ticker
-        # ======================================================
-
-        stock_info = get_stock_info(
-            yahoo_symbol
-        )
-
-        sector = stock_info.get(
-            "sector"
-        )
-
-        country = stock_info.get(
-            "country"
-        )
 
         # ======================================================
         # 6. ΜΗΝΙΑΙΑ ΜΕΤΑΒΟΛΗ
@@ -500,9 +484,16 @@ def get_clean_freedom_positions():
                 * fx_to_eur
             )
 
+            # Η αξία θέσης υπολογίζεται από τα ίδια δεδομένα
+            # που εμφανίζουμε στο portfolio:
+            #
+            # current_price_eur × quantity
+            #
+            # Έτσι current_price / quantity / market_value
+            # είναι πάντα μαθηματικά συνεπή.
             market_value_eur = (
-                market_value_native
-                * fx_to_eur
+                current_price_eur
+                * quantity
             )
 
             profit_eur = (
@@ -594,10 +585,6 @@ def get_clean_freedom_positions():
             "symbol": symbol,
 
             "name": name,
-
-            "sector": sector,
-
-            "country": country,
 
             "platform": "Freedom24",
 

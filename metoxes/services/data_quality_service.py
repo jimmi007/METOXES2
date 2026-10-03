@@ -191,6 +191,8 @@ def check_stock_quality(stock, today=None):
                 )
             )
 
+    calculated_change = None
+
     if (
         purchase_price is not None
         and current_price is not None
@@ -217,13 +219,47 @@ def check_stock_quality(stock, today=None):
 
     if percent_change is not None:
         if percent_change > 150 or percent_change < -80:
+            # Μεγάλη απόδοση από μόνη της δεν είναι σφάλμα.
+            # Αν purchase_price/current_price δεν συμφωνούν,
+            # το percent_change_mismatch πιο πάνω παραμένει WARNING.
+            #
+            # Όταν όμως ο υπολογισμός είναι μαθηματικά συνεπής
+            # (όπως TSM και MOH.GR), το extreme return είναι INFO.
+            return_is_consistent = (
+                calculated_change is not None
+                and abs(
+                    percent_change
+                    - calculated_change
+                ) <= 2.0
+            )
+
+            severity = (
+                "info"
+                if return_is_consistent
+                else "warning"
+            )
+
+            message = (
+                "Πολύ μεγάλη συνολική απόδοση, αλλά συμφωνεί "
+                "με purchase_price/current_price."
+                if return_is_consistent
+                else
+                "Ακραία συνολική απόδοση με πιθανή ασυνέπεια. "
+                "Έλεγξε split, purchase_price και ticker mapping."
+            )
+
             issues.append(
                 _issue(
                     "extreme_return",
-                    "warning",
-                    "Ακραία συνολική απόδοση. Έλεγξε split, purchase_price και ticker mapping.",
+                    severity,
+                    message,
                     "percent_change",
                     round(percent_change, 2),
+                    (
+                        round(calculated_change, 2)
+                        if calculated_change is not None
+                        else None
+                    ),
                 )
             )
 
@@ -238,11 +274,42 @@ def check_stock_quality(stock, today=None):
         and monthly_change is not None
         and abs(percent_change - monthly_change) >= 40
     ):
+        # Το total return από την ημερομηνία αγοράς
+        # και το 1M return δεν έχουν το ίδιο χρονικό διάστημα.
+        # Μεγάλη διαφορά μεταξύ τους δεν σημαίνει απαραίτητα
+        # πρόβλημα δεδομένων.
+        #
+        # Αν purchase/current/percent_change συμφωνούν,
+        # το κρατάμε ως INFO. Αν δεν συμφωνούν, μένει WARNING.
+        return_is_consistent = (
+            calculated_change is not None
+            and abs(
+                percent_change
+                - calculated_change
+            ) <= 2.0
+        )
+
+        severity = (
+            "info"
+            if return_is_consistent
+            else "warning"
+        )
+
+        message = (
+            "Πρόσφατη θέση με μεγάλη διαφορά μεταξύ total return "
+            "και 1M return, αλλά το total return συμφωνεί με "
+            "purchase_price/current_price."
+            if return_is_consistent
+            else
+            "Πρόσφατη θέση με μεγάλη απόκλιση total return από "
+            "1M return και πιθανή ασυνέπεια στα δεδομένα."
+        )
+
         issues.append(
             _issue(
                 "recent_return_anomaly",
-                "warning",
-                "Πρόσφατη θέση με μεγάλη απόκλιση total return από 1M return.",
+                severity,
+                message,
                 "percent_change",
                 round(percent_change, 2),
                 round(monthly_change, 2),
@@ -268,10 +335,23 @@ def check_stock_quality(stock, today=None):
 
         relative_error = abs(ratio - nearest) / nearest
 
+        # Ratio κοντά σε 2x/3x/4x από μόνο του
+        # δεν σημαίνει split. Η μετοχή μπορεί απλώς
+        # να έχει αυξηθεί πολύ σε τιμή.
+        return_mismatch = (
+            calculated_change is not None
+            and percent_change is not None
+            and abs(
+                percent_change
+                - calculated_change
+            ) > 20
+        )
+
         if (
             relative_error <= 0.04
             and percent_change is not None
             and abs(percent_change) >= 40
+            and return_mismatch
         ):
             issues.append(
                 _issue(
