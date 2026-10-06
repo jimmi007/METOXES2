@@ -1,0 +1,1341 @@
+{
+  "peer:BSX:5": {
+    "saved_at": 1791222735.969123,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "BCRX",
+        "CI",
+        "PODD"
+      ],
+      "peer_count": 3,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": 5.5,
+          "peer_median": 11.69,
+          "difference": -6.19,
+          "percentile": 33.33,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 9.55,
+          "peer_median": 13.99,
+          "difference": -4.44,
+          "percentile": 33.33,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 4.92,
+          "peer_median": 4.08,
+          "difference": 0.84,
+          "percentile": 66.67,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": 4.46,
+          "peer_median": 18.64,
+          "difference": -14.18,
+          "percentile": 0.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 33.33,
+      "peer_advantage_label": "below_peer_median",
+      "peer_strengths": [
+        "Forward Revenue: 4.92% έναντι median peers 4.08% (percentile 67)."
+      ],
+      "peer_weaknesses": [
+        "FCF Yield: 5.50% έναντι median peers 11.69% (percentile 33).",
+        "ROIC: 9.55% έναντι median peers 13.99% (percentile 33).",
+        "Forward EPS: 4.46% έναντι median peers 18.64% (percentile 0)."
+      ],
+      "peer_summary": "Σύγκριση με 3 peers (industry/sector fallback from analysed universe): below peer median, μέσο peer percentile 33.3/100.",
+      "peer_checked_at": "2026-10-05T20:52:15",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=BSX&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:VUAA.L:5": {
+    "saved_at": 1791222735.902784,
+    "payload": {
+      "peer_source": null,
+      "peer_symbols": [],
+      "peer_count": 0,
+      "peer_comparison": [],
+      "peer_quality_percentile": null,
+      "peer_advantage_label": "insufficient_data",
+      "peer_strengths": [],
+      "peer_weaknesses": [],
+      "peer_summary": "Σύγκριση με 0 peers (μη διαθέσιμη πηγή): insufficient data.",
+      "peer_checked_at": "2026-10-05T20:52:15",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=VUAA.L&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:EPAM:5": {
+    "saved_at": 1791222735.8726025,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "ADBE",
+        "CRM",
+        "IDCC",
+        "IMMR",
+        "PSN.US"
+      ],
+      "peer_count": 5,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": 10.99,
+          "peer_median": 9.0,
+          "difference": 1.99,
+          "percentile": 80.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 10.49,
+          "peer_median": 9.49,
+          "difference": 1.0,
+          "percentile": 60.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 3.55,
+          "peer_median": 7.435,
+          "difference": -3.885,
+          "percentile": 25.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": 6.9,
+          "peer_median": 6.66,
+          "difference": 0.24,
+          "percentile": 50.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 53.75,
+      "peer_advantage_label": "near_peer_median",
+      "peer_strengths": [
+        "FCF Yield: 10.99% έναντι median peers 9.00% (percentile 80)."
+      ],
+      "peer_weaknesses": [
+        "Forward Revenue: 3.55% έναντι median peers 7.44% (percentile 25)."
+      ],
+      "peer_summary": "Σύγκριση με 5 peers (industry/sector fallback from analysed universe): near peer median, μέσο peer percentile 53.8/100.",
+      "peer_checked_at": "2026-10-05T20:52:15",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=EPAM&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:RKLB:5": {
+    "saved_at": 1791299359.3815901,
+    "payload": {
+      "peer_source": "FMP stock peers + Yahoo metrics",
+      "peer_symbols": [
+        "EME",
+        "HEI",
+        "FIX",
+        "ESLT",
+        "OTIS"
+      ],
+      "peer_count": 5,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": -0.67,
+          "peer_median": 2.7027,
+          "difference": -3.3727,
+          "percentile": 0.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 41.62,
+          "peer_median": 19.8,
+          "difference": 21.82,
+          "percentile": 80.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": 68.11,
+          "peer_median": 34.2,
+          "difference": 33.91,
+          "percentile": 80.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 53.33,
+      "peer_advantage_label": "near_peer_median",
+      "peer_strengths": [
+        "Forward Revenue: 41.62% έναντι median peers 19.80% (percentile 80).",
+        "Forward EPS: 68.11% έναντι median peers 34.20% (percentile 80)."
+      ],
+      "peer_weaknesses": [
+        "FCF Yield: -0.67% έναντι median peers 2.70% (percentile 0)."
+      ],
+      "peer_summary": "Σύγκριση με 5 peers (FMP stock peers + Yahoo metrics): near peer median, μέσο peer percentile 53.3/100.",
+      "peer_checked_at": "2026-10-06T18:09:19"
+    }
+  },
+  "peer:RHM.DE:5": {
+    "saved_at": 1791222737.4497747,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "RHM.EU",
+        "SIX3.EU",
+        "ACM.US",
+        "AEGN.GR",
+        "AIR.PA"
+      ],
+      "peer_count": 5,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": 3.09,
+          "peer_median": 5.125,
+          "difference": -2.035,
+          "percentile": 37.5,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 21.27,
+          "peer_median": 15.91,
+          "difference": 5.36,
+          "percentile": 87.5,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 33.55,
+          "peer_median": 11.04,
+          "difference": 22.51,
+          "percentile": 87.5,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": 43.59,
+          "peer_median": 31.545,
+          "difference": 12.045,
+          "percentile": 62.5,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 68.75,
+      "peer_advantage_label": "above_peer_median",
+      "peer_strengths": [
+        "ROIC: 21.27% έναντι median peers 15.91% (percentile 88).",
+        "Forward Revenue: 33.55% έναντι median peers 11.04% (percentile 88)."
+      ],
+      "peer_weaknesses": [],
+      "peer_summary": "Σύγκριση με 5 peers (industry/sector fallback from analysed universe): above peer median, μέσο peer percentile 68.8/100.",
+      "peer_checked_at": "2026-10-05T20:52:17",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=RHM.DE&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:CI:5": {
+    "saved_at": 1791222737.4651222,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "BCRX",
+        "BSX",
+        "PODD"
+      ],
+      "peer_count": 3,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": 11.69,
+          "peer_median": 5.5,
+          "difference": 6.19,
+          "percentile": 66.67,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 9.0,
+          "peer_median": 13.99,
+          "difference": -4.99,
+          "percentile": 0.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 4.08,
+          "peer_median": 4.92,
+          "difference": -0.84,
+          "percentile": 33.33,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": 9.75,
+          "peer_median": 18.64,
+          "difference": -8.89,
+          "percentile": 33.33,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 33.33,
+      "peer_advantage_label": "below_peer_median",
+      "peer_strengths": [
+        "FCF Yield: 11.69% έναντι median peers 5.50% (percentile 67)."
+      ],
+      "peer_weaknesses": [
+        "ROIC: 9.00% έναντι median peers 13.99% (percentile 0).",
+        "Forward Revenue: 4.08% έναντι median peers 4.92% (percentile 33).",
+        "Forward EPS: 9.75% έναντι median peers 18.64% (percentile 33)."
+      ],
+      "peer_summary": "Σύγκριση με 3 peers (industry/sector fallback from analysed universe): below peer median, μέσο peer percentile 33.3/100.",
+      "peer_checked_at": "2026-10-05T20:52:17",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=CI&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:BEI.DE:5": {
+    "saved_at": 1791222737.7895217,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "HEN3.DE",
+        "FFARM.AS",
+        "ULVR.L"
+      ],
+      "peer_count": 3,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": 1.95,
+          "peer_median": 6.35,
+          "difference": -4.4,
+          "percentile": 0.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 11.21,
+          "peer_median": 14.52,
+          "difference": -3.31,
+          "percentile": 33.33,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 2.81,
+          "peer_median": 5.68,
+          "difference": -2.87,
+          "percentile": 0.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": 5.29,
+          "peer_median": 6.44,
+          "difference": -1.15,
+          "percentile": 33.33,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 16.66,
+      "peer_advantage_label": "peer_laggard",
+      "peer_strengths": [],
+      "peer_weaknesses": [
+        "FCF Yield: 1.95% έναντι median peers 6.35% (percentile 0).",
+        "ROIC: 11.21% έναντι median peers 14.52% (percentile 33).",
+        "Forward Revenue: 2.81% έναντι median peers 5.68% (percentile 0)."
+      ],
+      "peer_summary": "Σύγκριση με 3 peers (industry/sector fallback from analysed universe): peer laggard, μέσο peer percentile 16.7/100.",
+      "peer_checked_at": "2026-10-05T20:52:17",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=BEI.DE&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:NNE:5": {
+    "saved_at": 1791222735.697422,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "ACM.US",
+        "RKLB",
+        "AEGN.GR",
+        "AIR.PA",
+        "CAAP"
+      ],
+      "peer_count": 5,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": -4.44,
+          "peer_median": 7.16,
+          "difference": -11.6,
+          "percentile": 0.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": -20.22,
+          "peer_median": 14.3,
+          "difference": -34.52,
+          "percentile": 0.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 459.93,
+          "peer_median": 10.28,
+          "difference": 449.65,
+          "percentile": 100.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": -55.06,
+          "peer_median": 19.5,
+          "difference": -74.56,
+          "percentile": 0.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 25.0,
+      "peer_advantage_label": "peer_laggard",
+      "peer_strengths": [
+        "Forward Revenue: 459.93% έναντι median peers 10.28% (percentile 100)."
+      ],
+      "peer_weaknesses": [
+        "FCF Yield: -4.44% έναντι median peers 7.16% (percentile 0).",
+        "ROIC: -20.22% έναντι median peers 14.30% (percentile 0).",
+        "Forward EPS: -55.06% έναντι median peers 19.50% (percentile 0)."
+      ],
+      "peer_summary": "Σύγκριση με 5 peers (industry/sector fallback from analysed universe): peer laggard, μέσο peer percentile 25.0/100.",
+      "peer_checked_at": "2026-10-05T20:52:15",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=NNE&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:CRM:5": {
+    "saved_at": 1791095416.083673,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "ADBE",
+        "EPAM",
+        "IDCC",
+        "IMMR",
+        "PSN.US"
+      ],
+      "peer_count": 5,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": 7.46,
+          "peer_median": 10.43,
+          "difference": -2.97,
+          "percentile": 20.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 9.49,
+          "peer_median": 10.49,
+          "difference": -1.0,
+          "percentile": 40.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 9.72,
+          "peer_median": 4.62,
+          "difference": 5.1,
+          "percentile": 100.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": -4.38,
+          "peer_median": 9.97,
+          "difference": -14.35,
+          "percentile": 0.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 40.0,
+      "peer_advantage_label": "below_peer_median",
+      "peer_strengths": [
+        "Forward Revenue: 9.72% έναντι median peers 4.62% (percentile 100)."
+      ],
+      "peer_weaknesses": [
+        "FCF Yield: 7.46% έναντι median peers 10.43% (percentile 20).",
+        "Forward EPS: -4.38% έναντι median peers 9.97% (percentile 0)."
+      ],
+      "peer_summary": "Σύγκριση με 5 peers (industry/sector fallback from analysed universe): below peer median, μέσο peer percentile 40.0/100.",
+      "peer_checked_at": "2026-10-04T09:30:16",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=CRM&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:AEGN.AT:5": {
+    "saved_at": 1791222739.2401958,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "ELHA.GR",
+        "ACM.US",
+        "AIR.PA",
+        "CAAP",
+        "LDO.MI"
+      ],
+      "peer_count": 5,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": 7.16,
+          "peer_median": 4.7,
+          "difference": 2.46,
+          "percentile": 60.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 16.01,
+          "peer_median": 11.77,
+          "difference": 4.24,
+          "percentile": 100.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 8.01,
+          "peer_median": 10.28,
+          "difference": -2.27,
+          "percentile": 20.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": -13.12,
+          "peer_median": 19.5,
+          "difference": -32.62,
+          "percentile": 0.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 45.0,
+      "peer_advantage_label": "near_peer_median",
+      "peer_strengths": [
+        "ROIC: 16.01% έναντι median peers 11.77% (percentile 100)."
+      ],
+      "peer_weaknesses": [
+        "Forward Revenue: 8.01% έναντι median peers 10.28% (percentile 20).",
+        "Forward EPS: -13.12% έναντι median peers 19.50% (percentile 0)."
+      ],
+      "peer_summary": "Σύγκριση με 5 peers (industry/sector fallback from analysed universe): near peer median, μέσο peer percentile 45.0/100.",
+      "peer_checked_at": "2026-10-05T20:52:19",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=AEGN.AT&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:ULVR.L:5": {
+    "saved_at": 1791222738.9650612,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "BEI.DE",
+        "FFARM.AS",
+        "HEN3.DE"
+      ],
+      "peer_count": 3,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": 5.92,
+          "peer_median": 6.35,
+          "difference": -0.43,
+          "percentile": 33.33,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 46.6,
+          "peer_median": 11.21,
+          "difference": 35.39,
+          "percentile": 100.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 4.09,
+          "peer_median": 5.68,
+          "difference": -1.59,
+          "percentile": 33.33,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": 6.51,
+          "peer_median": 5.29,
+          "difference": 1.22,
+          "percentile": 100.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 66.66,
+      "peer_advantage_label": "above_peer_median",
+      "peer_strengths": [
+        "ROIC: 46.60% έναντι median peers 11.21% (percentile 100).",
+        "Forward EPS: 6.51% έναντι median peers 5.29% (percentile 100)."
+      ],
+      "peer_weaknesses": [
+        "FCF Yield: 5.92% έναντι median peers 6.35% (percentile 33).",
+        "Forward Revenue: 4.09% έναντι median peers 5.68% (percentile 33)."
+      ],
+      "peer_summary": "Σύγκριση με 3 peers (industry/sector fallback from analysed universe): above peer median, μέσο peer percentile 66.7/100.",
+      "peer_checked_at": "2026-10-05T20:52:18",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=ULVR.L&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:TSM:5": {
+    "saved_at": 1791222739.096351,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "ADBE",
+        "ASML.EU",
+        "CAP.EU",
+        "CRDO",
+        "CRM"
+      ],
+      "peer_count": 5,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": 1.24,
+          "peer_median": 7.62,
+          "difference": -6.38,
+          "percentile": 20.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 25.16,
+          "peer_median": 21.42,
+          "difference": 3.74,
+          "percentile": 60.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 34.65,
+          "peer_median": 9.72,
+          "difference": 24.93,
+          "percentile": 80.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": 29.47,
+          "peer_median": 13.04,
+          "difference": 16.43,
+          "percentile": 60.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 55.0,
+      "peer_advantage_label": "above_peer_median",
+      "peer_strengths": [
+        "Forward Revenue: 34.65% έναντι median peers 9.72% (percentile 80)."
+      ],
+      "peer_weaknesses": [
+        "FCF Yield: 1.24% έναντι median peers 7.62% (percentile 20)."
+      ],
+      "peer_summary": "Σύγκριση με 5 peers (industry/sector fallback from analysed universe): above peer median, μέσο peer percentile 55.0/100.",
+      "peer_checked_at": "2026-10-05T20:52:19",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=TSM&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:ALPHA.AT:5": {
+    "saved_at": 1791222739.8830564,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "BAC",
+        "ETE.GR",
+        "EUROB.GR",
+        "OPHC",
+        "PYPL"
+      ],
+      "peer_count": 5,
+      "peer_comparison": [
+        {
+          "metric": "ROE",
+          "field": "financial_roe",
+          "value": 10.173,
+          "peer_median": 13.588,
+          "difference": -3.415,
+          "percentile": 0.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "P/B",
+          "field": "financial_price_to_book",
+          "value": 1.1044,
+          "peer_median": 1.6002,
+          "difference": -0.4958,
+          "percentile": 100.0,
+          "higher_is_better": false
+        },
+        {
+          "metric": "Profit Margin",
+          "field": "financial_profit_margin",
+          "value": 45.266,
+          "peer_median": 36.022,
+          "difference": 9.244,
+          "percentile": 100.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Revenue Growth",
+          "field": "financial_revenue_growth",
+          "value": 57.3,
+          "peer_median": 9.1,
+          "difference": 48.2,
+          "percentile": 100.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "financial_forward_eps_growth",
+          "value": 17.14,
+          "peer_median": 13.4,
+          "difference": 3.74,
+          "percentile": 100.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 80.0,
+      "peer_advantage_label": "peer_leader",
+      "peer_strengths": [
+        "P/B: 1.10 έναντι median peers 1.60 (percentile 100).",
+        "Profit Margin: 45.27% έναντι median peers 36.02% (percentile 100).",
+        "Revenue Growth: 57.30% έναντι median peers 9.10% (percentile 100)."
+      ],
+      "peer_weaknesses": [
+        "ROE: 10.17% έναντι median peers 13.59% (percentile 0)."
+      ],
+      "peer_summary": "Σύγκριση με 5 peers (industry/sector fallback from analysed universe): peer leader, μέσο peer percentile 80.0/100.",
+      "peer_checked_at": "2026-10-05T20:52:19",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=ALPHA.AT&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:BELA.AT:5": {
+    "saved_at": 1791222740.3283236,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "FOYRK.GR",
+        "OTOEL.GR",
+        "DECK",
+        "ITX.MC",
+        "LVS"
+      ],
+      "peer_count": 5,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": 7.74,
+          "peer_median": 3.95,
+          "difference": 3.79,
+          "percentile": 80.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 20.19,
+          "peer_median": 14.99,
+          "difference": 5.2,
+          "percentile": 60.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 5.93,
+          "peer_median": 6.355,
+          "difference": -0.425,
+          "percentile": 50.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": 4.07,
+          "peer_median": 12.375,
+          "difference": -8.305,
+          "percentile": 0.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 47.5,
+      "peer_advantage_label": "near_peer_median",
+      "peer_strengths": [
+        "FCF Yield: 7.74% έναντι median peers 3.95% (percentile 80)."
+      ],
+      "peer_weaknesses": [
+        "Forward EPS: 4.07% έναντι median peers 12.38% (percentile 0)."
+      ],
+      "peer_summary": "Σύγκριση με 5 peers (industry/sector fallback from analysed universe): near peer median, μέσο peer percentile 47.5/100.",
+      "peer_checked_at": "2026-10-05T20:52:20",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=BELA.AT&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:COP:5": {
+    "saved_at": 1791222740.5243149,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "CVX",
+        "EE.US",
+        "LNG.US",
+        "MOH.GR"
+      ],
+      "peer_count": 4,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": 4.7,
+          "peer_median": 4.215,
+          "difference": 0.485,
+          "percentile": 75.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 8.22,
+          "peer_median": 10.615,
+          "difference": -2.395,
+          "percentile": 50.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": -6.15,
+          "peer_median": -1.155,
+          "difference": -4.995,
+          "percentile": 25.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": -9.18,
+          "peer_median": -11.22,
+          "difference": 2.04,
+          "percentile": 50.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 50.0,
+      "peer_advantage_label": "near_peer_median",
+      "peer_strengths": [
+        "FCF Yield: 4.70% έναντι median peers 4.21% (percentile 75)."
+      ],
+      "peer_weaknesses": [
+        "Forward Revenue: -6.15% έναντι median peers -1.16% (percentile 25)."
+      ],
+      "peer_summary": "Σύγκριση με 4 peers (industry/sector fallback from analysed universe): near peer median, μέσο peer percentile 50.0/100.",
+      "peer_checked_at": "2026-10-05T20:52:20",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=COP&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:ETE.AT:5": {
+    "saved_at": 1791222740.7502463,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "EUROB.GR",
+        "OPHC",
+        "ALPHA.GR",
+        "BAC",
+        "PYPL"
+      ],
+      "peer_count": 5,
+      "peer_comparison": [
+        {
+          "metric": "ROE",
+          "field": "financial_roe",
+          "value": 12.091,
+          "peer_median": 13.588,
+          "difference": -1.497,
+          "percentile": 40.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "P/B",
+          "field": "financial_price_to_book",
+          "value": 1.6418,
+          "peer_median": 1.5216,
+          "difference": 0.1202,
+          "percentile": 20.0,
+          "higher_is_better": false
+        },
+        {
+          "metric": "Profit Margin",
+          "field": "financial_profit_margin",
+          "value": 41.105,
+          "peer_median": 36.022,
+          "difference": 5.083,
+          "percentile": 60.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Revenue Growth",
+          "field": "financial_revenue_growth",
+          "value": -0.9,
+          "peer_median": 16.8,
+          "difference": -17.7,
+          "percentile": 0.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "financial_forward_eps_growth",
+          "value": 15.69,
+          "peer_median": 13.4,
+          "difference": 2.29,
+          "percentile": 80.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 40.0,
+      "peer_advantage_label": "below_peer_median",
+      "peer_strengths": [
+        "Forward EPS: 15.69% έναντι median peers 13.40% (percentile 80)."
+      ],
+      "peer_weaknesses": [
+        "P/B: 1.64 έναντι median peers 1.52 (percentile 20).",
+        "Revenue Growth: -0.90% έναντι median peers 16.80% (percentile 0)."
+      ],
+      "peer_summary": "Σύγκριση με 5 peers (industry/sector fallback from analysed universe): below peer median, μέσο peer percentile 40.0/100.",
+      "peer_checked_at": "2026-10-05T20:52:20",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=ETE.AT&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:LNG:5": {
+    "saved_at": 1791222741.1853757,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "COP.US",
+        "CVX",
+        "EE.US",
+        "MOH.GR"
+      ],
+      "peer_count": 4,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": 4.33,
+          "peer_median": 4.4,
+          "difference": -0.07,
+          "percentile": 50.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 24.33,
+          "peer_median": 7.485,
+          "difference": 16.845,
+          "percentile": 100.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 2.77,
+          "peer_median": -5.615,
+          "difference": 8.385,
+          "percentile": 75.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": -8.72,
+          "peer_median": -11.45,
+          "difference": 2.73,
+          "percentile": 75.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 75.0,
+      "peer_advantage_label": "peer_leader",
+      "peer_strengths": [
+        "ROIC: 24.33% έναντι median peers 7.49% (percentile 100).",
+        "Forward Revenue: 2.77% έναντι median peers -5.62% (percentile 75).",
+        "Forward EPS: -8.72% έναντι median peers -11.45% (percentile 75)."
+      ],
+      "peer_weaknesses": [],
+      "peer_summary": "Σύγκριση με 4 peers (industry/sector fallback from analysed universe): peer leader, μέσο peer percentile 75.0/100.",
+      "peer_checked_at": "2026-10-05T20:52:21",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=LNG&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:MTLN.L:5": {
+    "saved_at": 1791222741.6525347,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "PPC.GR",
+        "RWE.DE"
+      ],
+      "peer_count": 2,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": -3.42,
+          "peer_median": -0.63,
+          "difference": -2.79,
+          "percentile": 50.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 3.91,
+          "peer_median": 10.065,
+          "difference": -6.155,
+          "percentile": 50.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 4.66,
+          "peer_median": 3.245,
+          "difference": 1.415,
+          "percentile": 100.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": 21.75,
+          "peer_median": 11.49,
+          "difference": 10.26,
+          "percentile": 100.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 75.0,
+      "peer_advantage_label": "peer_leader",
+      "peer_strengths": [
+        "Forward Revenue: 4.66% έναντι median peers 3.25% (percentile 100).",
+        "Forward EPS: 21.75% έναντι median peers 11.49% (percentile 100)."
+      ],
+      "peer_weaknesses": [],
+      "peer_summary": "Σύγκριση με 2 peers (industry/sector fallback from analysed universe): peer leader, μέσο peer percentile 75.0/100.",
+      "peer_checked_at": "2026-10-05T20:52:21",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=MTLN.L&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:OTOEL.AT:5": {
+    "saved_at": 1791222741.8922117,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "BELA.GR",
+        "FOYRK.GR",
+        "DECK",
+        "ITX.MC",
+        "LVS"
+      ],
+      "peer_count": 5,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": -5.59,
+          "peer_median": 7.44,
+          "difference": -13.03,
+          "percentile": 0.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 7.28,
+          "peer_median": 20.19,
+          "difference": -12.91,
+          "percentile": 20.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": -2.0,
+          "peer_median": 5.93,
+          "difference": -7.93,
+          "percentile": 0.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": -6.4,
+          "peer_median": 11.16,
+          "difference": -17.56,
+          "percentile": 0.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 5.0,
+      "peer_advantage_label": "peer_laggard",
+      "peer_strengths": [],
+      "peer_weaknesses": [
+        "FCF Yield: -5.59% έναντι median peers 7.44% (percentile 0).",
+        "ROIC: 7.28% έναντι median peers 20.19% (percentile 20).",
+        "Forward Revenue: -2.00% έναντι median peers 5.93% (percentile 0)."
+      ],
+      "peer_summary": "Σύγκριση με 5 peers (industry/sector fallback from analysed universe): peer laggard, μέσο peer percentile 5.0/100.",
+      "peer_checked_at": "2026-10-05T20:52:21",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=OTOEL.AT&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:PPC:5": {
+    "saved_at": 1791222742.0681796,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "MTLN.GR",
+        "RWE.DE"
+      ],
+      "peer_count": 2,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": 9.81,
+          "peer_median": -7.245,
+          "difference": 17.055,
+          "percentile": 100.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 17.51,
+          "peer_median": 3.265,
+          "difference": 14.245,
+          "percentile": 100.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 2.28,
+          "peer_median": 4.435,
+          "difference": -2.155,
+          "percentile": 0.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": 16.73,
+          "peer_median": 14.0,
+          "difference": 2.73,
+          "percentile": 50.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 62.5,
+      "peer_advantage_label": "above_peer_median",
+      "peer_strengths": [
+        "FCF Yield: 9.81% έναντι median peers -7.25% (percentile 100).",
+        "ROIC: 17.51% έναντι median peers 3.27% (percentile 100)."
+      ],
+      "peer_weaknesses": [
+        "Forward Revenue: 2.28% έναντι median peers 4.44% (percentile 0)."
+      ],
+      "peer_summary": "Σύγκριση με 2 peers (industry/sector fallback from analysed universe): above peer median, μέσο peer percentile 62.5/100.",
+      "peer_checked_at": "2026-10-05T20:52:22",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=PPC&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:APP:5": {
+    "saved_at": 1791222737.1556685,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "RDDT",
+        "EVD.EU"
+      ],
+      "peer_count": 2,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": 4.14,
+          "peer_median": 1.95,
+          "difference": 2.19,
+          "percentile": 100.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 63.85,
+          "peer_median": 21.955,
+          "difference": 41.895,
+          "percentile": 100.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 26.56,
+          "peer_median": 18.38,
+          "difference": 8.18,
+          "percentile": 50.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": 27.72,
+          "peer_median": 19.795,
+          "difference": 7.925,
+          "percentile": 50.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 75.0,
+      "peer_advantage_label": "peer_leader",
+      "peer_strengths": [
+        "FCF Yield: 4.14% έναντι median peers 1.95% (percentile 100).",
+        "ROIC: 63.85% έναντι median peers 21.95% (percentile 100)."
+      ],
+      "peer_weaknesses": [],
+      "peer_summary": "Σύγκριση με 2 peers (industry/sector fallback from analysed universe): peer leader, μέσο peer percentile 75.0/100.",
+      "peer_checked_at": "2026-10-05T20:52:17",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=APP&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  },
+  "peer:LDO.MI:5": {
+    "saved_at": 1791222738.6324115,
+    "payload": {
+      "peer_source": "industry/sector fallback from analysed universe",
+      "peer_symbols": [
+        "RHM.DE",
+        "ACM.US",
+        "AEGN.GR",
+        "AIR.PA",
+        "CAAP"
+      ],
+      "peer_count": 5,
+      "peer_comparison": [
+        {
+          "metric": "FCF Yield",
+          "field": "fcf_yield",
+          "value": 2.63,
+          "peer_median": 7.16,
+          "difference": -4.53,
+          "percentile": 0.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "ROIC",
+          "field": "roic",
+          "value": 10.29,
+          "peer_median": 15.81,
+          "difference": -5.52,
+          "percentile": 0.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward Revenue",
+          "field": "forward_revenue_growth",
+          "value": 11.15,
+          "peer_median": 10.28,
+          "difference": 0.87,
+          "percentile": 60.0,
+          "higher_is_better": true
+        },
+        {
+          "metric": "Forward EPS",
+          "field": "forward_eps_growth",
+          "value": 19.94,
+          "peer_median": 19.5,
+          "difference": 0.44,
+          "percentile": 60.0,
+          "higher_is_better": true
+        }
+      ],
+      "peer_quality_percentile": 30.0,
+      "peer_advantage_label": "below_peer_median",
+      "peer_strengths": [],
+      "peer_weaknesses": [
+        "FCF Yield: 2.63% έναντι median peers 7.16% (percentile 0).",
+        "ROIC: 10.29% έναντι median peers 15.81% (percentile 0)."
+      ],
+      "peer_summary": "Σύγκριση με 5 peers (industry/sector fallback from analysed universe): below peer median, μέσο peer percentile 30.0/100.",
+      "peer_checked_at": "2026-10-05T20:52:18",
+      "peer_intelligence_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/api/v4/stock_peers?symbol=LDO.MI&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    }
+  }
+}

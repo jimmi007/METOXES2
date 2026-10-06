@@ -1,6 +1,6 @@
 {
   "status": "OK",
-  "positions_checked": 66,
+  "positions_checked": 69,
   "positions_with_issues": 25,
   "errors": 0,
   "warnings": 0,
@@ -45,6 +45,25 @@
             "fcf_growth",
             "roic",
             "final_score"
+          ],
+          "expected": null
+        }
+      ]
+    },
+    {
+      "symbol": "BCRX",
+      "platform": "Trading212",
+      "errors": 0,
+      "warnings": 0,
+      "info": 1,
+      "issues": [
+        {
+          "code": "missing_fundamentals",
+          "severity": "info",
+          "field": "fundamentals",
+          "message": "Λείπουν ορισμένα fundamentals.",
+          "actual": [
+            "fcf_growth"
           ],
           "expected": null
         }
@@ -207,28 +226,6 @@
       ]
     },
     {
-      "symbol": "SXLI.L",
-      "platform": "Trading212",
-      "errors": 0,
-      "warnings": 0,
-      "info": 1,
-      "issues": [
-        {
-          "code": "missing_fundamentals",
-          "severity": "info",
-          "field": "fundamentals",
-          "message": "Λείπουν ορισμένα fundamentals.",
-          "actual": [
-            "fcf_yield",
-            "fcf_growth",
-            "roic",
-            "final_score"
-          ],
-          "expected": null
-        }
-      ]
-    },
-    {
       "symbol": "SXRU.DE",
       "platform": "Trading212",
       "errors": 0,
@@ -303,8 +300,8 @@
           "severity": "info",
           "field": "percent_change",
           "message": "Πολύ μεγάλη συνολική απόδοση, αλλά συμφωνεί με purchase_price/current_price.",
-          "actual": 183.84,
-          "expected": 183.84
+          "actual": 190.63,
+          "expected": 190.63
         }
       ]
     },
@@ -398,8 +395,8 @@
           "severity": "info",
           "field": "percent_change",
           "message": "Πολύ μεγάλη συνολική απόδοση, αλλά συμφωνεί με purchase_price/current_price.",
-          "actual": 229.99,
-          "expected": 229.99
+          "actual": 230.48,
+          "expected": 230.48
         }
       ]
     },

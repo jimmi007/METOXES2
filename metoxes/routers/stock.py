@@ -1,5 +1,7 @@
 import asyncio
+import json
 import os
+from pathlib import Path
 from io import BytesIO
 from openpyxl import load_workbook
 from metoxes.services.fundamentals_service import get_stock_fundamentals
@@ -55,6 +57,21 @@ from metoxes.services.market_context_service import (
 from metoxes.services.ai_commentary_service import (
     enrich_ai_commentary,
 )
+from metoxes.services.peer_intelligence_service import (
+    enrich_peer_intelligence,
+)
+from metoxes.services.event_impact_service import (
+    enrich_event_impact,
+)
+from metoxes.services.scenario_analysis_service import (
+    enrich_standard_scenarios,
+    analyze_custom_scenario,
+)
+from metoxes.services.model_backtest_service import (
+    record_model_snapshots,
+    run_score_backtest,
+    load_latest_backtest_report,
+)
 from metoxes.services.score_explanation_service import (
     enrich_score_explanations,
     reconcile_financial_crosschecks,
@@ -104,7 +121,7 @@ from metoxes.services.freedom_service import (
 
 router = APIRouter()
 
-BUILD_VERSION = "V19-sold-sell-date"
+BUILD_VERSION = "V26-candidate-country-clean-menus"
 
 
 # ==========================================================
@@ -113,12 +130,15 @@ BUILD_VERSION = "V19-sold-sell-date"
 
 @router.get("/stocks/enrichment-status")
 async def enrichment_status():
-    """Visible health/status endpoint for the V13 Trading212 history-debug build."""
+    """Visible health/status endpoint for the current METOXES2 build."""
     return {
         "status": "OK",
         "build": BUILD_VERSION,
         "expected_routes": [
             "/stocks/enrichment-status",
+            "/stocks/model-intelligence",
+            "/stocks/scenario/{symbol}",
+            "/stocks/backtest-scores",
             "/stocks/capital/realized",
             "/stocks/freedom/realized",
             "/stocks/trading212/history-debug",
@@ -137,6 +157,11 @@ async def enrichment_status():
         },
         "features": [
             "AI commentary per stock",
+            "real competitor / peer intelligence",
+            "AI + deterministic news and earnings impact scoring",
+            "scenario stress tests with shadow scores",
+            "point-in-time score history and no-look-ahead backtesting",
+            "predictive metric IC and weight recommendations",
             "news and earnings context",
             "dedicated Financial Services scoring",
             "anomaly detection",
@@ -736,12 +761,54 @@ async def update_excel():
     )
 
     # ======================================================
-    # 11C. AI COMMENTARY PER STOCK
+    # 11C. REAL COMPETITOR / PEER INTELLIGENCE
+    # ======================================================
+    stocks = await asyncio.to_thread(
+        enrich_peer_intelligence,
+        stocks,
+        4,
+        20,
+        5,
+    )
+
+    # ======================================================
+    # 11D. NEWS / EARNINGS IMPACT
+    # ======================================================
+    # Separate advisory layer (-100..+100). It does not overwrite Final Score.
+    stocks = await asyncio.to_thread(
+        enrich_event_impact,
+        stocks,
+    )
+
+    # ======================================================
+    # 11E. STANDARD SCENARIO STRESS TESTS
+    # ======================================================
+    stocks = enrich_standard_scenarios(
+        stocks
+    )
+
+    # ======================================================
+    # 11F. AI COMMENTARY PER STOCK
     # ======================================================
     stocks = await asyncio.to_thread(
         enrich_ai_commentary,
         stocks,
     )
+
+    # ======================================================
+    # 11G. POINT-IN-TIME MODEL HISTORY
+    # ======================================================
+    # Needed for a genuine forward-return backtest without look-ahead bias.
+    try:
+        model_snapshot_result = record_model_snapshots(
+            stocks,
+            source="portfolio",
+        )
+    except Exception as error:
+        model_snapshot_result = {
+            "status": "error",
+            "error": str(error)[:300],
+        }
 
     # ======================================================
     # 12. DATA QUALITY CHECKS
@@ -856,6 +923,11 @@ async def update_excel():
                 "report",
                 {},
             ),
+            "peer_intelligence": True,
+            "event_impact": True,
+            "scenario_analysis": True,
+            "model_history": model_snapshot_result,
+            "latest_backtest": load_latest_backtest_report(),
         },
 
         "data_quality": {
@@ -912,6 +984,116 @@ async def update_excel():
                     ]
                 ),
         }
+    }
+
+
+# ==========================================================
+# V20 MODEL INTELLIGENCE / SCENARIO / BACKTEST
+# ==========================================================
+
+@router.get("/stocks/model-intelligence")
+async def model_intelligence_status():
+    return {
+        "build": BUILD_VERSION,
+        "status": "OK",
+        "live_score_policy": "deterministic Final Score unchanged by AI/event layer",
+        "peer_intelligence": "FMP peers when configured; analysed-universe fallback",
+        "event_impact": "-100..+100 advisory impact with OpenAI/rules fallback",
+        "scenario_analysis": "shadow scores; does not overwrite Final Score",
+        "backtesting": "point-in-time snapshots -> forward returns -> Spearman IC -> suggested weights",
+        "latest_backtest": load_latest_backtest_report(),
+    }
+
+
+@router.get("/stocks/scenario/{symbol}")
+async def stock_scenario(
+    symbol: str,
+    eps_growth_shock_pp: float = -15.0,
+    revenue_growth_shock_pp: float = 0.0,
+    fcf_growth_shock_pp: float = 0.0,
+    roic_change_pct: float = 0.0,
+    roe_change_pct: float = 0.0,
+    profit_margin_shock_pp: float = 0.0,
+):
+    """Run a custom shadow scenario from the latest dashboard snapshot."""
+    dashboard_file = Path(__file__).resolve().parents[2] / "portfolio_dashboard_data.json"
+    if not dashboard_file.exists():
+        raise HTTPException(status_code=404, detail="Run POST /stocks/update-excel first.")
+    try:
+        payload = json.loads(dashboard_file.read_text(encoding="utf-8"))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=f"Cannot read dashboard data: {error}")
+
+    wanted = str(symbol or "").strip().upper()
+    row = None
+    source = None
+    for bucket in ("stocks", "candidates"):
+        for item in payload.get(bucket) or []:
+            if str(item.get("symbol") or "").strip().upper() == wanted:
+                row = item
+                source = bucket
+                break
+        if row is not None:
+            break
+    if row is None:
+        raise HTTPException(status_code=404, detail=f"Symbol {wanted} not found in latest dashboard data.")
+
+    result = analyze_custom_scenario(
+        row,
+        eps_growth_shock_pp=eps_growth_shock_pp,
+        revenue_growth_shock_pp=revenue_growth_shock_pp,
+        fcf_growth_shock_pp=fcf_growth_shock_pp,
+        roic_change_pct=roic_change_pct,
+        roe_change_pct=roe_change_pct,
+        profit_margin_shock_pp=profit_margin_shock_pp,
+        name="API custom scenario",
+    )
+    return {
+        "build": BUILD_VERSION,
+        "symbol": wanted,
+        "source": source,
+        "result": result,
+        "note": "Scenario score is a shadow analysis and does not change Final Score.",
+    }
+
+
+@router.post("/stocks/backtest-scores")
+async def backtest_scores(
+    horizon_days: int = 90,
+    min_samples: int = 12,
+    benchmark: str | None = None,
+):
+    if horizon_days < 20 or horizon_days > 730:
+        raise HTTPException(status_code=400, detail="horizon_days must be between 20 and 730.")
+    if min_samples < 6 or min_samples > 1000:
+        raise HTTPException(status_code=400, detail="min_samples must be between 6 and 1000.")
+    try:
+        report = await asyncio.to_thread(
+            run_score_backtest,
+            horizon_days,
+            min_samples,
+            benchmark,
+        )
+    except Exception as error:
+        raise HTTPException(status_code=503, detail=f"Backtest failed: {error}")
+    # Refresh the existing dashboard immediately so the Model Intelligence
+    # accordion shows the new backtest report without requiring another
+    # broker refresh.
+    try:
+        dashboard_file = Path(__file__).resolve().parents[2] / "portfolio_dashboard_data.json"
+        if dashboard_file.exists():
+            current = json.loads(dashboard_file.read_text(encoding="utf-8"))
+            generate_portfolio_dashboard(
+                stocks=current.get("stocks", []),
+                quality_report=current.get("quality", {}),
+                candidates=current.get("candidates", []),
+            )
+    except Exception:
+        pass
+
+    return {
+        "build": BUILD_VERSION,
+        "report": report,
     }
 
 
@@ -1490,8 +1672,8 @@ async def research_candidate_stocks():
 
     return {
         "message": (
-            "US/Europe candidate research V10 completed; "
-            "Candidates sheet, AI context and dashboard updated"
+            "US/Europe candidate research V20 completed; "
+            "Candidates sheet, peer/event/scenario AI context and dashboard updated"
         ),
         "count": len(
             public_candidates
@@ -1518,6 +1700,18 @@ async def research_candidate_stocks():
             "news_earnings_check": True,
             "ai_commentary": (
                 "OpenAI Responses API when OPENAI_API_KEY exists; deterministic fallback otherwise"
+            ),
+            "peer_intelligence": (
+                "FMP peers + Yahoo metrics; industry/sector fallback"
+            ),
+            "event_impact": (
+                "AI/rules impact -100..+100; separate from Final Score"
+            ),
+            "scenario_analysis": (
+                "EPS -15pp, growth slowdown and bear-case shadow scores"
+            ),
+            "backtest_learning": (
+                "point-in-time snapshots and forward-return IC weight recommendations"
             ),
             "secondary_validation": (
                 "1Y daily price history with 52W fallback"

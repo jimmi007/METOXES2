@@ -1,6 +1,6 @@
 {
   "sec:ADBE": {
-    "saved_at": 1791019450.2421684,
+    "saved_at": 1791139438.1176884,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -12,12 +12,12 @@
       "secondary_operating_cash_flow_ttm": 8307000000.0,
       "secondary_revenue_ttm": 25764000000.0,
       "secondary_net_income_ttm": 7200000000.0,
-      "secondary_checked_at": "2026-10-03T12:24:10",
+      "secondary_checked_at": "2026-10-04T21:43:58",
       "secondary_cik": "0000796343"
     }
   },
   "sec:ROP": {
-    "saved_at": 1791019450.3215141,
+    "saved_at": 1791299304.4127,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -29,12 +29,12 @@
       "secondary_operating_cash_flow_ttm": 2116000000.0,
       "secondary_revenue_ttm": 8165300000.0,
       "secondary_net_income_ttm": 2454200000.0,
-      "secondary_checked_at": "2026-10-03T12:24:10",
+      "secondary_checked_at": "2026-10-06T18:08:24",
       "secondary_cik": "0000882835"
     }
   },
   "sec:IMMR": {
-    "saved_at": 1791019450.4262476,
+    "saved_at": 1791299307.1107392,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -46,12 +46,12 @@
       "secondary_operating_cash_flow_ttm": -188019000.0,
       "secondary_revenue_ttm": 1755093000.0,
       "secondary_net_income_ttm": 5671000.0,
-      "secondary_checked_at": "2026-10-03T12:24:10",
+      "secondary_checked_at": "2026-10-06T18:08:27",
       "secondary_cik": "0001058811"
     }
   },
   "sec:BSX": {
-    "saved_at": 1791019450.5286674,
+    "saved_at": 1791299303.9503202,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -63,12 +63,12 @@
       "secondary_operating_cash_flow_ttm": 1243000000.0,
       "secondary_revenue_ttm": 20771000000.0,
       "secondary_net_income_ttm": 352000000.0,
-      "secondary_checked_at": "2026-10-03T12:24:10",
+      "secondary_checked_at": "2026-10-06T18:08:23",
       "secondary_cik": "0000885725"
     }
   },
   "sec:DECK": {
-    "saved_at": 1791019450.6222086,
+    "saved_at": 1791299306.39484,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -80,12 +80,12 @@
       "secondary_operating_cash_flow_ttm": 321962000.0,
       "secondary_revenue_ttm": 5372458000.0,
       "secondary_net_income_ttm": 1018472000.0,
-      "secondary_checked_at": "2026-10-03T12:24:10",
+      "secondary_checked_at": "2026-10-06T18:08:26",
       "secondary_cik": "0000910521"
     }
   },
   "sec:OPHC": {
-    "saved_at": 1791019451.1824622,
+    "saved_at": 1791299307.2018392,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -97,12 +97,12 @@
       "secondary_operating_cash_flow_ttm": 13578000.0,
       "secondary_revenue_ttm": null,
       "secondary_net_income_ttm": 19243000.0,
-      "secondary_checked_at": "2026-10-03T12:24:11",
+      "secondary_checked_at": "2026-10-06T18:08:27",
       "secondary_cik": "0001288855"
     }
   },
   "sec:RKLB": {
-    "saved_at": 1791019451.2136073,
+    "saved_at": 1791299306.7566345,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -114,12 +114,12 @@
       "secondary_operating_cash_flow_ttm": -132530000.0,
       "secondary_revenue_ttm": 733992000.0,
       "secondary_net_income_ttm": -178951000.0,
-      "secondary_checked_at": "2026-10-03T12:24:11",
+      "secondary_checked_at": "2026-10-06T18:08:26",
       "secondary_cik": "0001819994"
     }
   },
   "sec:EPAM": {
-    "saved_at": 1791019451.4710474,
+    "saved_at": 1791299307.9552274,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -131,12 +131,12 @@
       "secondary_operating_cash_flow_ttm": 205056000.0,
       "secondary_revenue_ttm": 5562644000.0,
       "secondary_net_income_ttm": 380342000.0,
-      "secondary_checked_at": "2026-10-03T12:24:11",
+      "secondary_checked_at": "2026-10-06T18:08:27",
       "secondary_cik": "0001352010"
     }
   },
   "sec:NNE": {
-    "saved_at": 1791019451.497455,
+    "saved_at": 1791299308.5376012,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -148,12 +148,12 @@
       "secondary_operating_cash_flow_ttm": -8339099.0,
       "secondary_revenue_ttm": null,
       "secondary_net_income_ttm": -33395163.0,
-      "secondary_checked_at": "2026-10-03T12:24:11",
+      "secondary_checked_at": "2026-10-06T18:08:28",
       "secondary_cik": "0001923891"
     }
   },
   "sec:PTC": {
-    "saved_at": 1791019451.6034205,
+    "saved_at": 1791299309.5338438,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -165,12 +165,12 @@
       "secondary_operating_cash_flow_ttm": 876436000.0,
       "secondary_revenue_ttm": 2704114000.0,
       "secondary_net_income_ttm": 1017349000.0,
-      "secondary_checked_at": "2026-10-03T12:24:11",
+      "secondary_checked_at": "2026-10-06T18:08:29",
       "secondary_cik": "0000857005"
     }
   },
   "sec:CCS": {
-    "saved_at": 1791019452.0857742,
+    "saved_at": 1791299309.434654,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -182,12 +182,12 @@
       "secondary_operating_cash_flow_ttm": 126025000.0,
       "secondary_revenue_ttm": 3697908000.0,
       "secondary_net_income_ttm": 132814000.0,
-      "secondary_checked_at": "2026-10-03T12:24:12",
+      "secondary_checked_at": "2026-10-06T18:08:29",
       "secondary_cik": "0001576940"
     }
   },
   "sec:CI": {
-    "saved_at": 1791019452.1713808,
+    "saved_at": 1791299310.1358805,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -199,12 +199,12 @@
       "secondary_operating_cash_flow_ttm": 12919000000.0,
       "secondary_revenue_ttm": 277088000000.0,
       "secondary_net_income_ttm": 6169000000.0,
-      "secondary_checked_at": "2026-10-03T12:24:12",
+      "secondary_checked_at": "2026-10-06T18:08:30",
       "secondary_cik": "0001739940"
     }
   },
   "sec:PODD": {
-    "saved_at": 1791019452.4792006,
+    "saved_at": 1791299314.19446,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -216,12 +216,12 @@
       "secondary_operating_cash_flow_ttm": 265700000.0,
       "secondary_revenue_ttm": 1034100000.0,
       "secondary_net_income_ttm": 296200000.0,
-      "secondary_checked_at": "2026-10-03T12:24:12",
+      "secondary_checked_at": "2026-10-06T18:08:34",
       "secondary_cik": "0001145197"
     }
   },
   "sec:CVX": {
-    "saved_at": 1791019452.592775,
+    "saved_at": 1791139435.2568443,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -233,12 +233,12 @@
       "secondary_operating_cash_flow_ttm": 21736000000.0,
       "secondary_revenue_ttm": 207299000000.0,
       "secondary_net_income_ttm": 20311000000.0,
-      "secondary_checked_at": "2026-10-03T12:24:12",
+      "secondary_checked_at": "2026-10-04T21:43:55",
       "secondary_cik": "0000093410"
     }
   },
   "sec:ALB": {
-    "saved_at": 1791019452.9409983,
+    "saved_at": 1791299314.0793521,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -250,12 +250,12 @@
       "secondary_operating_cash_flow_ttm": 1536788000.0,
       "secondary_revenue_ttm": 5809865000.0,
       "secondary_net_income_ttm": 661253000.0,
-      "secondary_checked_at": "2026-10-03T12:24:12",
+      "secondary_checked_at": "2026-10-06T18:08:34",
       "secondary_cik": "0000915913"
     }
   },
   "sec:LVS": {
-    "saved_at": 1791019453.0413241,
+    "saved_at": 1791299313.4565253,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -267,12 +267,12 @@
       "secondary_operating_cash_flow_ttm": 2412000000.0,
       "secondary_revenue_ttm": 13719000000.0,
       "secondary_net_income_ttm": 1727000000.0,
-      "secondary_checked_at": "2026-10-03T12:24:13",
+      "secondary_checked_at": "2026-10-06T18:08:33",
       "secondary_cik": "0001300514"
     }
   },
   "sec:BAC": {
-    "saved_at": 1791019453.1841822,
+    "saved_at": 1791139435.846827,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -284,12 +284,12 @@
       "secondary_operating_cash_flow_ttm": 12747000000.0,
       "secondary_revenue_ttm": 116381000000.0,
       "secondary_net_income_ttm": 33243000000.0,
-      "secondary_checked_at": "2026-10-03T12:24:13",
+      "secondary_checked_at": "2026-10-04T21:43:55",
       "secondary_cik": "0000070858"
     }
   },
   "sec:CRM": {
-    "saved_at": 1791019453.5116389,
+    "saved_at": 1791299317.5669737,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -301,12 +301,12 @@
       "secondary_operating_cash_flow_ttm": 11026000000.0,
       "secondary_revenue_ttm": 42973000000.0,
       "secondary_net_income_ttm": 9606000000.0,
-      "secondary_checked_at": "2026-10-03T12:24:13",
+      "secondary_checked_at": "2026-10-06T18:08:37",
       "secondary_cik": "0001108524"
     }
   },
   "sec:TSLA": {
-    "saved_at": 1791019453.5904562,
+    "saved_at": 1791139439.8443735,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -318,12 +318,12 @@
       "secondary_operating_cash_flow_ttm": 8848000000.0,
       "secondary_revenue_ttm": 101214000000.0,
       "secondary_net_income_ttm": 4136000000.0,
-      "secondary_checked_at": "2026-10-03T12:24:13",
+      "secondary_checked_at": "2026-10-04T21:43:59",
       "secondary_cik": "0001318605"
     }
   },
   "sec:PYPL": {
-    "saved_at": 1791019453.8340151,
+    "saved_at": 1791139442.3244317,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -335,12 +335,12 @@
       "secondary_operating_cash_flow_ttm": 5381000000.0,
       "secondary_revenue_ttm": 18262000000.0,
       "secondary_net_income_ttm": 4909000000.0,
-      "secondary_checked_at": "2026-10-03T12:24:13",
+      "secondary_checked_at": "2026-10-04T21:44:02",
       "secondary_cik": "0001633917"
     }
   },
   "sec:IDCC": {
-    "saved_at": 1791019453.973643,
+    "saved_at": 1791299319.3106127,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -352,12 +352,12 @@
       "secondary_operating_cash_flow_ttm": 19013000.0,
       "secondary_revenue_ttm": 930864000.0,
       "secondary_net_income_ttm": 439772000.0,
-      "secondary_checked_at": "2026-10-03T12:24:13",
+      "secondary_checked_at": "2026-10-06T18:08:39",
       "secondary_cik": "0001405495"
     }
   },
   "sec:ACM": {
-    "saved_at": 1791019454.3657565,
+    "saved_at": 1791299319.954012,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -369,12 +369,12 @@
       "secondary_operating_cash_flow_ttm": 484385000.0,
       "secondary_revenue_ttm": 15396484000.0,
       "secondary_net_income_ttm": 298634000.0,
-      "secondary_checked_at": "2026-10-03T12:24:14",
+      "secondary_checked_at": "2026-10-06T18:08:39",
       "secondary_cik": "0000868857"
     }
   },
   "sec:EE": {
-    "saved_at": 1791019454.406099,
+    "saved_at": 1791299322.4520578,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -386,12 +386,12 @@
       "secondary_operating_cash_flow_ttm": 326289000.0,
       "secondary_revenue_ttm": 1358304000.0,
       "secondary_net_income_ttm": null,
-      "secondary_checked_at": "2026-10-03T12:24:14",
+      "secondary_checked_at": "2026-10-06T18:08:42",
       "secondary_cik": "0001888447"
     }
   },
   "sec:COP": {
-    "saved_at": 1791019454.6769505,
+    "saved_at": 1791299321.7517853,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -403,12 +403,12 @@
       "secondary_operating_cash_flow_ttm": 20798000000.0,
       "secondary_revenue_ttm": 57546000000.0,
       "secondary_net_income_ttm": 9811000000.0,
-      "secondary_checked_at": "2026-10-03T12:24:14",
+      "secondary_checked_at": "2026-10-06T18:08:41",
       "secondary_cik": "0001163165"
     }
   },
   "sec:FCX": {
-    "saved_at": 1791019454.9368978,
+    "saved_at": 1791299323.836266,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -420,12 +420,12 @@
       "secondary_operating_cash_flow_ttm": 5499000000.0,
       "secondary_revenue_ttm": 27516000000.0,
       "secondary_net_income_ttm": 3468000000.0,
-      "secondary_checked_at": "2026-10-03T12:24:14",
+      "secondary_checked_at": "2026-10-06T18:08:43",
       "secondary_cik": "0000831259"
     }
   },
   "sec:LNG": {
-    "saved_at": 1791019454.987076,
+    "saved_at": 1791299324.2994363,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -437,12 +437,12 @@
       "secondary_operating_cash_flow_ttm": 6975000000.0,
       "secondary_revenue_ttm": 21064000000.0,
       "secondary_net_income_ttm": 2241000000.0,
-      "secondary_checked_at": "2026-10-03T12:24:14",
+      "secondary_checked_at": "2026-10-06T18:08:44",
       "secondary_cik": "0000003570"
     }
   },
   "sec:PSN": {
-    "saved_at": 1791019455.326114,
+    "saved_at": 1791299326.6446772,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -454,12 +454,12 @@
       "secondary_operating_cash_flow_ttm": -87897000.0,
       "secondary_revenue_ttm": 6251607000.0,
       "secondary_net_income_ttm": 238482000.0,
-      "secondary_checked_at": "2026-10-03T12:24:15",
+      "secondary_checked_at": "2026-10-06T18:08:46",
       "secondary_cik": "0000275880"
     }
   },
   "sec:APP": {
-    "saved_at": 1791019598.689167,
+    "saved_at": 1791299308.8192,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -471,7 +471,7 @@
       "secondary_operating_cash_flow_ttm": 2804546000.0,
       "secondary_revenue_ttm": 6429934000.0,
       "secondary_net_income_ttm": 4127227000.0,
-      "secondary_checked_at": "2026-10-03T12:26:38",
+      "secondary_checked_at": "2026-10-06T18:08:28",
       "secondary_cik": "0001751008"
     }
   },
@@ -493,7 +493,7 @@
     }
   },
   "sec:RDDT": {
-    "saved_at": 1791019598.7943382,
+    "saved_at": 1791299304.2548048,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -505,7 +505,7 @@
       "secondary_operating_cash_flow_ttm": 870619000.0,
       "secondary_revenue_ttm": 2552854000.0,
       "secondary_net_income_ttm": 708789000.0,
-      "secondary_checked_at": "2026-10-03T12:26:38",
+      "secondary_checked_at": "2026-10-06T18:08:24",
       "secondary_cik": "0001713445"
     }
   },
@@ -527,7 +527,7 @@
     }
   },
   "sec:BCRX": {
-    "saved_at": 1791019598.9278197,
+    "saved_at": 1791299304.1023,
     "payload": {
       "secondary_source": "SEC EDGAR",
       "secondary_status": "ok",
@@ -539,7 +539,7 @@
       "secondary_operating_cash_flow_ttm": -190504000.0,
       "secondary_revenue_ttm": 29059000.0,
       "secondary_net_income_ttm": -625433000.0,
-      "secondary_checked_at": "2026-10-03T12:26:38",
+      "secondary_checked_at": "2026-10-06T18:08:24",
       "secondary_cik": "0000882796"
     }
   },
@@ -663,11 +663,11 @@
     }
   },
   "fmp:ADBE": {
-    "saved_at": 1791023884.8994439,
+    "saved_at": 1791299304.273637,
     "payload": {
       "secondary_source": "FMP",
       "secondary_status": "ok",
-      "secondary_fcf_yield": 11.577894255267749,
+      "secondary_fcf_yield": 11.580817358857223,
       "secondary_roic": 36.78725773694377,
       "secondary_roe": 62.87712029004273,
       "secondary_price_to_book": null,
@@ -675,15 +675,15 @@
       "secondary_operating_cash_flow_ttm": null,
       "secondary_revenue_ttm": null,
       "secondary_net_income_ttm": null,
-      "secondary_checked_at": "2026-10-03T13:38:04"
+      "secondary_checked_at": "2026-10-06T18:08:24"
     }
   },
   "fmp:CVX": {
-    "saved_at": 1791023887.2235694,
+    "saved_at": 1791299309.7018292,
     "payload": {
       "secondary_source": "FMP",
       "secondary_status": "ok",
-      "secondary_fcf_yield": 6.559445011700396,
+      "secondary_fcf_yield": 6.560396851452506,
       "secondary_roic": 7.693169873594216,
       "secondary_roe": 10.983462929945818,
       "secondary_price_to_book": null,
@@ -691,15 +691,15 @@
       "secondary_operating_cash_flow_ttm": null,
       "secondary_revenue_ttm": null,
       "secondary_net_income_ttm": null,
-      "secondary_checked_at": "2026-10-03T13:38:07"
+      "secondary_checked_at": "2026-10-06T18:08:29"
     }
   },
   "fmp:BAC": {
-    "saved_at": 1791023887.2376218,
+    "saved_at": 1791299309.9811494,
     "payload": {
       "secondary_source": "FMP",
       "secondary_status": "ok",
-      "secondary_fcf_yield": 24.837870871293344,
+      "secondary_fcf_yield": 24.713727286513183,
       "secondary_roic": 0.9618583371725737,
       "secondary_roe": 11.133376393636228,
       "secondary_price_to_book": null,
@@ -707,15 +707,15 @@
       "secondary_operating_cash_flow_ttm": null,
       "secondary_revenue_ttm": null,
       "secondary_net_income_ttm": null,
-      "secondary_checked_at": "2026-10-03T13:38:07"
+      "secondary_checked_at": "2026-10-06T18:08:29"
     }
   },
   "fmp:TSLA": {
-    "saved_at": 1791023889.441826,
+    "saved_at": 1791299314.7730036,
     "payload": {
       "secondary_source": "FMP",
       "secondary_status": "ok",
-      "secondary_fcf_yield": 0.39366991653086647,
+      "secondary_fcf_yield": 0.3830997556077967,
       "secondary_roic": 2.9627306223050907,
       "secondary_roe": 4.585070898670293,
       "secondary_price_to_book": null,
@@ -723,15 +723,15 @@
       "secondary_operating_cash_flow_ttm": null,
       "secondary_revenue_ttm": null,
       "secondary_net_income_ttm": null,
-      "secondary_checked_at": "2026-10-03T13:38:09"
+      "secondary_checked_at": "2026-10-06T18:08:34"
     }
   },
   "fmp:PYPL": {
-    "saved_at": 1791023891.2188828,
+    "saved_at": 1791299317.0577378,
     "payload": {
       "secondary_source": "FMP",
       "secondary_status": "ok",
-      "secondary_fcf_yield": 14.581009360432384,
+      "secondary_fcf_yield": 14.078322588259862,
       "secondary_roic": 14.48684382688998,
       "secondary_roe": 24.419039079429126,
       "secondary_price_to_book": null,
@@ -739,15 +739,15 @@
       "secondary_operating_cash_flow_ttm": null,
       "secondary_revenue_ttm": null,
       "secondary_net_income_ttm": null,
-      "secondary_checked_at": "2026-10-03T13:38:11"
+      "secondary_checked_at": "2026-10-06T18:08:37"
     }
   },
   "fmp:TSM": {
-    "saved_at": 1791023891.937328,
+    "saved_at": 1791299318.1195009,
     "payload": {
       "secondary_source": "FMP",
       "secondary_status": "ok",
-      "secondary_fcf_yield": 1.725206186855054,
+      "secondary_fcf_yield": 1.6684779369971507,
       "secondary_roic": 27.14520021377411,
       "secondary_roe": 39.34832282620624,
       "secondary_price_to_book": null,
@@ -755,7 +755,23 @@
       "secondary_operating_cash_flow_ttm": null,
       "secondary_revenue_ttm": null,
       "secondary_net_income_ttm": null,
-      "secondary_checked_at": "2026-10-03T13:38:11"
+      "secondary_checked_at": "2026-10-06T18:08:38"
+    }
+  },
+  "fmp:NVDA": {
+    "saved_at": 1791299301.4237337,
+    "payload": {
+      "secondary_source": "FMP",
+      "secondary_status": "ok",
+      "secondary_fcf_yield": 2.164017811642364,
+      "secondary_roic": 59.504249068171255,
+      "secondary_roe": 110.11463673627841,
+      "secondary_price_to_book": null,
+      "secondary_fcf_ttm": null,
+      "secondary_operating_cash_flow_ttm": null,
+      "secondary_revenue_ttm": null,
+      "secondary_net_income_ttm": null,
+      "secondary_checked_at": "2026-10-06T18:08:21"
     }
   }
 }

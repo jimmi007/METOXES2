@@ -91,8 +91,26 @@ def build_rule_commentary(row):
     anomaly_text = f" Έλεγχος δεδομένων: {anomaly}." if anomaly else ""
     cross_suffix = f" {cross_text}" if cross_text else ""
 
+    peer_text = str(row.get("peer_summary") or "").strip()
+    peer_suffix = f" Ανταγωνιστές: {peer_text}" if peer_text else ""
+
+    event_summary = str(row.get("event_impact_summary") or "").strip()
+    event_score = _safe_float(row.get("event_impact_score"))
+    if event_summary:
+        event_suffix = (
+            f" Event impact {event_score:+.0f}/100: {event_summary}"
+            if event_score is not None
+            else f" Event impact: {event_summary}"
+        )
+    else:
+        event_suffix = ""
+
+    scenario_text = str(row.get("scenario_summary") or "").strip()
+    scenario_suffix = f" Scenario analysis: {scenario_text}" if scenario_text else ""
+
     return (
-        f"Η {name} έχει Final Score {score_text}. {rationale}{cross_suffix}{market_text}{anomaly_text} "
+        f"Η {name} έχει Final Score {score_text}. {rationale}{cross_suffix}{market_text}{peer_suffix}"
+        f"{event_suffix}{scenario_suffix}{anomaly_text} "
         "Η ανάλυση είναι επεξήγηση του μοντέλου και όχι σύσταση αγοράς ή πώλησης."
     )
 
@@ -108,6 +126,15 @@ def _public_context(row):
         "earnings_eps_actual", "anomaly_summary", "discount_from_52w_high_pct",
         "score_rationale_headline", "score_rationale_text", "score_drivers",
         "score_weaknesses", "score_crosscheck_text", "score_model_label",
+        "industry", "peer_source", "peer_symbols", "peer_count",
+        "peer_quality_percentile", "peer_advantage_label", "peer_strengths",
+        "peer_weaknesses", "peer_summary",
+        "event_impact_score", "event_impact_label", "event_impact_confidence",
+        "event_impact_summary", "event_impact_source",
+        "scenario_eps_minus_15_score", "scenario_eps_minus_15_delta",
+        "scenario_growth_slowdown_score", "scenario_growth_slowdown_delta",
+        "scenario_bear_score", "scenario_bear_delta", "scenario_risk_label",
+        "scenario_summary",
     )
     return {key: row.get(key) for key in keys}
 
@@ -154,9 +181,10 @@ def _call_openai_batch(rows):
 
     requested = [_public_context(row) for row in rows]
     prompt = (
-        "Είσαι αναλυτής δεδομένων μετοχών. Για κάθε εγγραφή γράψε 70-110 λέξεις στα ελληνικά. "
-        "Εξήγησε γιατί προκύπτει το final_score, ανέφερε 2 θετικά, 2 κινδύνους, τι δείχνουν οι πρόσφατες ειδήσεις/earnings, "
-        "τυχόν discrepancy δεύτερης πηγής και anomalies. Μην κάνεις σύσταση αγοράς/πώλησης και μην εφευρίσκεις στοιχεία. "
+        "Είσαι αναλυτής δεδομένων μετοχών. Για κάθε εγγραφή γράψε 90-140 λέξεις στα ελληνικά. "
+        "Εξήγησε γιατί προκύπτει το final_score, ανέφερε 2 θετικά και 2 κινδύνους, σύγκρινε τη μετοχή με τους πραγματικούς/διαθέσιμους peers, "
+        "εξήγησε το news/earnings event impact και τι δείχνει το scenario stress test. Ανέφερε discrepancy δεύτερης πηγής και anomalies όπου υπάρχουν. "
+        "Μην κάνεις σύσταση αγοράς/πώλησης και μην εφευρίσκεις στοιχεία. Αν peer/event/scenario δεδομένα λείπουν, πες το καθαρά. "
         "Επέστρεψε ΜΟΝΟ JSON object {\"SYMBOL\": \"commentary\"}.\n\nDATA:\n"
         + json.dumps(requested, ensure_ascii=False, default=str)
     )
