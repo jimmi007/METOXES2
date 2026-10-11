@@ -43,7 +43,7 @@ def build_six_month_review(stocks, asof, histories):
         valid = hist.get('as_of') == str(asof) and hist.get('status') == 'available'
         row = {k: stock.get(k) for k in ('symbol','name','platform','purchase_date','purchase_price','current_price','quantity','percent_change','currency')}
         row['currency'] = hist.get('currency') or stock.get('currency')
-        row['history'] = hist if valid else {'status': 'missing_or_stale'}
+        row['history'] = hist if valid else {**hist, 'status': 'stale' if hist.get('status')=='available' else hist.get('status', 'missing_or_stale'), 'reason': hist.get('reason') or ('Το ιστορικό δεν έχει ενημερωθεί για την ημερομηνία αναφοράς.' if hist else 'Δεν έχει ανακτηθεί ιστορικό τιμών. Επανεκτέλεσε την ενημέρωση portfolio.')}
         row['monthly_percent_change'] = number(hist.get('mean_monthly_3m_pct')) if valid else None
         row['includes_pre_purchase'] = bought > months_before(asof, 3)
         groups[0 if bought >= cutoff else 1].append(row)

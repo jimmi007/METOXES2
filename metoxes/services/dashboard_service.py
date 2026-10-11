@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import json
-from datetime import date, datetime
+import math
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from openpyxl import load_workbook
@@ -179,6 +180,29 @@ def _load_candidates_from_excel():
         workbook.close()
 
 
+def _load_sold_from_excel():
+    """Read archived sold quantities and broker-realized EUR P/L, not live prices."""
+    if not PORTFOLIO_EXCEL_FILE.exists():
+        return []
+    workbook = load_workbook(PORTFOLIO_EXCEL_FILE, read_only=True, data_only=True)
+    try:
+        if "Sold" not in workbook.sheetnames:
+            return []
+        rows = workbook["Sold"].iter_rows(values_only=True)
+        headers = [str(v or "").strip().lower() for v in next(rows, ())]
+        result = []
+        for values in rows:
+            row = dict(zip(headers, values))
+            if not row.get("symbol") or not row.get("purchase_date"):
+                continue
+            result.append({k: row.get(k) for k in (
+                "symbol", "platform", "purchase_date", "sell_date", "purchase_price",
+                "quantity", "percent_change", "total_profit_loss")})
+        return _serializable_stocks(result)
+    finally:
+        workbook.close()
+
+
 def _load_candidates_preserving_enrichment(json_path=DASHBOARD_JSON_FILE):
     """
     Keep rich candidate research fields across normal portfolio refreshes.
@@ -249,6 +273,8 @@ table{border-collapse:collapse;width:100%;font-size:12px}th{position:sticky;top:
 #candidateMaster>.master-summary{background:#f1eef9;border-left:5px solid #8d79b8;color:#514174}#candidateMaster>.master-summary:hover{background:#e9e4f5}
 #modelMaster>.master-summary{background:#fff5e6;border-left:5px solid #d5a04f;color:#75501c}#modelMaster>.master-summary:hover{background:#ffefd7}
 .quarter-card .master-summary{border-left:5px solid #6eaa91;color:#355b50}
+
+.detail{background:#fff0dc}.detail td{background:#fff3e3}.detail th{background:#edc18c;color:#49301c}.detail th button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}.detail th button:focus-visible{outline:2px solid #244b70}.history-table{font-size:11px;margin-top:10px}.history-table th{position:static;background:#edf2f8;color:#526475;font-weight:400}.history-table td,.history-table th{padding:5px;font-weight:400}.value-history{max-height:160px;overflow:auto}.kpi:has(.value-history) .v{font-size:20px;font-weight:400}.history-note{font-size:10px;color:var(--muted);font-weight:400}
 </style>
 </head>
 <body>
@@ -267,8 +293,8 @@ table{border-collapse:collapse;width:100%;font-size:12px}th{position:sticky;top:
 </div>
 
 <div class="kpis">
-<div class="kpi"><div class="l">Portfolio Value</div><div class="v" id="kValue">—</div></div>
-<div class="kpi"><div class="l">Portfolio Return</div><div class="v" id="kReturn">—</div></div>
+<div class="kpi"><div class="l">Portfolio Value</div><div class="v" id="kValue">—</div><div class="value-history"><table class="history-table"><thead><tr><th>Ημερομηνία</th><th>Ποσό</th></tr></thead><tbody id="valueHistory"></tbody></table></div><p class="history-note">Συνολικό portfolio · τελευταία καταγραφή ανά ημέρα</p></div>
+<div class="kpi"><div class="l">Total return from PD</div><div class="v" id="kReturn">—</div></div>
 <div class="kpi"><div class="l">VUAA Return</div><div class="v" id="kVuaa">—</div></div>
 <div class="kpi"><div class="l">Excess Return</div><div class="v" id="kExcess">—</div></div>
 <div class="kpi"><div class="l">Positions</div><div class="v" id="kCount">—</div></div>
@@ -280,7 +306,7 @@ table{border-collapse:collapse;width:100%;font-size:12px}th{position:sticky;top:
 <div class="card"><div class="title">Κατανομή ανά Sector</div><div id="sectorChart" class="chart"></div></div>
 <div class="card"><div class="title">Κατανομή ανά Χώρα</div><div id="countryChart" class="chart"></div></div>
 <div class="card"><div class="title">Μεγαλύτερες Θέσεις</div><div id="holdingsChart" class="chart"></div></div>
-<div class="card"><div class="title">Συνολική Απόδοση</div><div id="returnChart" class="chart tall"></div></div>
+<div class="card"><div class="title">Total return from PD</div><div id="returnChart" class="chart tall"></div></div>
 <div class="card"><div class="title">Excess Return vs VUAA</div><div id="excessChart" class="chart tall"></div></div>
 <div class="card"><div class="title">1M vs Μέση Μηνιαία</div><div id="momentumChart" class="chart tall"></div></div>
 
@@ -313,7 +339,7 @@ table{border-collapse:collapse;width:100%;font-size:12px}th{position:sticky;top:
 </div>
 
 <div class="card full"><div class="title">ROIC vs FCF Yield</div><div id="fundChart" class="chart"></div></div>
-<div class="card full detail"><div class="title">Αναλυτικός Πίνακας Portfolio</div><div class="tablewrap"><table><thead><tr><th>Symbol</th><th>Name</th><th>Sector</th><th>Country</th><th>Platform</th><th>Purchase Date</th><th>Market Value</th><th>Return</th><th>1M</th><th>Avg/Month</th><th>VUAA</th><th>Excess</th><th>FCF Yield</th><th>FCF Growth</th><th>ROIC</th><th>Forward Revenue</th><th>Forward EPS</th><th>Score</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
+<div class="card full detail"><div class="title">Αναλυτικός Πίνακας Portfolio</div><div class="tablewrap"><table><thead><tr><th>Symbol</th><th>Name</th><th>Sector</th><th>Country</th><th>Platform</th><th>Purchase Date</th><th>Market Value</th><th>Total return from PD</th><th>Απόδοση LastMonth</th><th>Avg/Month</th><th>VUAA</th><th>Excess</th><th>FCF Yield</th><th>FCF Growth</th><th>ROIC</th><th>Forward Revenue</th><th>Forward EPS</th><th>Score</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
 </div>
 </div>
 
@@ -334,7 +360,7 @@ function safeLink(url,label){try{const u=new URL(url);return ['https:','http:'].
 function renderSixMonthReview(){
  const q=PAYLOAD.six_month_review;if(!q)return;
  const stat=(title,g)=>`<div class="subcard"><h4>${title}</h4><p><b>Μέση μηνιαία επίδοση τελευταίων 3 μηνών</b></p><p>${g.positions} θέσεις / ${g.securities} tickers · με πλήρες ιστορικό: ${g.valid_monthly}</p><p>Μέσος: <b class="${cls(g.mean_monthly_pct)}">${pct(g.mean_monthly_pct)}</b> · Διάμεσος: ${pct(g.median_monthly_pct)}</p><p>Με θετικό μέσο 3Μ: ${pct(g.positive_pct)}</p></div>`;
- const table=rows=>`<div class="tablewrap"><table class="quarter-review-table"><thead><tr><th>Μετοχή / broker</th><th>Αγορά</th><th>Μηνιαίες μεταβολές (παλαιότερη → νεότερη)</th><th>Μέση μηνιαία 3Μ</th><th>Συνολική 3Μ</th><th>Μέση τιμή κλεισίματος 3Μ</th><th>Τεκμηρίωση</th></tr></thead><tbody>${rows.map(x=>`<tr><td><b>${esc(x.symbol)}</b><br>${esc(x.platform)}</td><td>${esc(x.purchase_date)}</td><td>${(x.history.monthly_returns||[]).map(v=>pct(v)).join(' / ')||'—'}</td><td class="${cls(x.monthly_percent_change)}">${pct(x.monthly_percent_change)}${x.includes_pre_purchase?' *':''}</td><td>${pct(x.history.total_3m_pct)}</td><td>${num(x.history.mean_close_3m)} ${esc(x.currency||'')}</td><td><details><summary>Περίοδος / πηγή</summary><p>${esc(x.history.source||'Δεν υπάρχει πλήρες, ενημερωμένο ιστορικό τιμών.')}</p><p>Κλεισίματα: ${esc((x.history.price_dates||[]).join(' → '))}</p></details></td></tr>`).join('')}</tbody></table></div>`;
+ const table=rows=>`<div class="tablewrap"><table class="quarter-review-table"><thead><tr><th>Μετοχή / broker</th><th>Αγορά</th><th>Μηνιαίες μεταβολές (παλαιότερη → νεότερη)</th><th>Μέση μηνιαία 3Μ</th><th>Συνολική 3Μ</th><th>Μέση τιμή κλεισίματος 3Μ</th><th>Τεκμηρίωση</th></tr></thead><tbody>${rows.map(x=>`<tr><td><b>${esc(x.symbol)}</b><br>${esc(x.platform)}</td><td>${esc(x.purchase_date)}</td><td>${(x.history.monthly_returns||[]).map(v=>pct(v)).join(' / ')||'—'}</td><td class="${cls(x.monthly_percent_change)}">${pct(x.monthly_percent_change)}${x.includes_pre_purchase?' *':''}</td><td>${pct(x.history.total_3m_pct)}</td><td>${num(x.history.mean_close_3m)} ${esc(x.currency||'')}</td><td><details><summary>${x.history.status==='available'?'Περίοδος / πηγή':'Γιατί λείπουν στοιχεία'}</summary><p>${esc(x.history.source||x.history.reason||'Δεν υπάρχει πλήρες, ενημερωμένο ιστορικό τιμών.')}</p><p>Κλεισίματα: ${esc((x.history.price_dates||[]).join(' → '))}</p><p>Σύμβολο παρόχου: ${esc(x.history.provider_symbol||x.symbol)} · Κατάσταση: ${esc(x.history.status)}</p></details></td></tr>`).join('')}</tbody></table></div>`;
  document.getElementById('sixMonthReview').innerHTML=`<p>Νέες αγορές: ${esc(q.cutoff)} έως ${esc(q.as_of)} · παλαιότερες: πριν από ${esc(q.cutoff)}.</p><p><b>Κοινή περίοδος μέτρησης: ${esc(q.performance_start)} έως ${esc(q.as_of)}.</b></p><div class="quarter-stats">${stat('Νέες αγορές εξαμήνου',q.recent)}${stat('Παλαιότερες αγορές',q.older)}<div class="subcard"><h4>Διαφορά μέσης μηνιαίας επίδοσης 3Μ</h4><b class="${cls(q.difference_pp)}">${num(q.difference_pp)} ποσοστιαίες μονάδες</b><p>Νέες μείον παλαιότερες</p></div></div><p class="quarter-note">${esc(q.method)}</p><details open><summary>Νέες αγορές — αναλυτικά</summary>${table(q.rows)}</details><details><summary>Παλαιότερες αγορές — αναλυτικά</summary>${table(q.older_rows)}</details><p class="quarter-note">* Περιλαμβάνονται ημέρες πριν από την αγορά. Παύλα = ανεπαρκές ιστορικό, δεν μετρά ως μηδέν. Η ενότητα αφορά όλο το portfolio.</p>`;
 }
 function renderSavedInvesting(){
@@ -347,10 +373,18 @@ function renderUSValue(){
  const rows=q.rows||[];
  document.getElementById('usValueScreen').innerHTML=`<p><b>Ενημερωμένα στοιχεία: ${q.fresh_count}/${q.universe_size} σύμβολα · πέρασαν τα φίλτρα: ${rows.length}.</b> ${q.status==='complete'?'Ο έλεγχος ολοκληρώθηκε.':'Μερική κάλυψη — η λίστα μπορεί να αλλάξει όταν ολοκληρωθεί η ανάκτηση.'}</p><p>Τελευταία επιτυχής ανάκτηση: ${esc(q.checked_at||'Δεν έχει ολοκληρωθεί')} · Αυτόματη ενημέρωση μαζί με το dashboard, cache 24 ωρών.</p><details><summary>Κριτήρια και τρόπος βαθμολόγησης</summary><p class="quarter-note">${esc(q.method)}</p><p class="quarter-note">Τα θεμελιώδη μεγέθη αφορούν τις περιόδους/εκτιμήσεις του παρόχου. Η ημερομηνία ανάκτησης δεν είναι ημερομηνία οικονομικών καταστάσεων. Δεν έχει γίνει ακόμη backtesting αυτού του φίλτρου.</p><p class="quarter-note">Σύμβολα δείγματος: ${esc((q.universe||[]).join(', '))}</p></details>${!rows.length?`<p>${q.fresh_count?'Καμία εταιρεία με επαρκή στοιχεία δεν πέρασε όλα τα φίλτρα.':'Δεν ολοκληρώθηκε η άντληση στοιχείων. Η επόμενη ενημέρωση θα ξαναδοκιμάσει αυτόματα.'} Δεν εμφανίζονται υποθετικές βαθμολογίες.</p>`:''}${Object.keys(q.last_errors||{}).length?`<p class="quarter-note">Αποτυχίες ανάκτησης: ${Object.keys(q.last_errors).length}. Η επανάληψη για αυτά τα σύμβολα επιτρέπεται μετά από 15 λεπτά.</p>`:''}${rows.map(x=>`<details class="stock-details candidate-details"><summary class="stock-summary"><span class="stock-rank">#${x.rank}</span><span class="stock-symbol">${esc(x.symbol)}</span><span class="stock-name">${esc(x.name)}${x.already_in_portfolio?' · ήδη στο portfolio':''}</span><span class="score-badge"><span class="candidate-label">Score φίλτρου</span>${num(x.value_score)}</span><span class="beta-badge"><span class="candidate-label">Beta</span>${num(x.beta)}</span><span class="source-badge"><span class="candidate-label">FCF yield</span>${pct(x.fcf_yield_pct)}</span><span class="low52"><span class="candidate-label">Χαμηλό 52W</span>${num(x.low_52w)} USD</span><span class="source-badge"><span class="candidate-label">Από χαμηλό 52W</span>${pct(x.distance_from_52w_low_pct)}</span></summary><div class="stock-panel"><div class="analysis-grid"><div class="subcard"><h4>Γιατί πέρασε το φίλτρο</h4><p>${esc(x.rationale)}</p><p>Κλάδος: ${esc(x.sector)}. Δείγμα σύγκρισης: ${esc(x.peer_symbols.join(', '))}.</p><p>Χαμηλότερο forward P/E από διάμεσο κλάδου: ${pct(x.pe_discount_pct)}. Αυτό δεν είναι αναμενόμενη άνοδος τιμής.</p></div><div class="subcard"><h4>Ανάλυση score / 100</h4><p>Σχετικό P/E: ${num(x.components.relative_pe)}/30</p><p>FCF yield: ${num(x.components.fcf_yield)}/30</p><p>ROE: ${num(x.components.roe)}/20</p><p>Καθαρό περιθώριο: ${num(x.components.profit_margin)}/10</p><p>Ανάπτυξη εσόδων: ${num(x.components.revenue_growth)}/10</p></div><div class="subcard"><h4>Τιμή / Beta / 52W</h4><p>Τιμή: ${num(x.current_price)} USD · Υψηλό 52W: ${num(x.high_52w)} USD</p><p>Beta (5Y Monthly): ${num(x.beta)}. Ιστορική ευαισθησία στον δείκτη του παρόχου, όχι πρόβλεψη. ${x.beta==null?'Μη διαθέσιμο.':Math.abs(x.beta)>1.5?'Αυξημένη ευαισθησία στην αγορά.':''}</p><p>${safeLink(x.source_url,'Yahoo Finance — στοιχεία εταιρείας')} · Ανάκτηση: ${esc(x.checked_at)}</p></div><div class="subcard"><h4>Κίνδυνοι / περιορισμοί</h4><ul>${x.risks.map(v=>`<li>${esc(v)}</li>`).join('')}</ul></div></div></div></details>`).join('')}`;
 }
-function renderQuarter(){
- const q=PAYLOAD.quarter_review;if(!q)return;
- const stat=(title,g)=>`<div class="subcard"><h4>${title}</h4><p><b>Επίδοση τελευταίου μήνα (L / 1Μ)</b></p><p>${g.positions} θέσεις / ${g.securities} tickers · έγκυρη L: ${g.valid_monthly}</p><p>Μέση μεταβολή τελευταίου μήνα: <b class="${cls(g.mean_monthly_pct)}">${pct(g.mean_monthly_pct)}</b> · Διάμεσος τελευταίου μήνα: ${pct(g.median_monthly_pct)}</p><p>Θετικές τελευταίου μήνα: ${pct(g.positive_pct)}</p><p>Συνολική απόδοση από αγορά: ${pct(g.since_purchase_pct)}</p></div>`;
- document.getElementById('quarterReview').innerHTML=`<p>Αγορές ${esc(q.cutoff)} έως ${esc(q.as_of)}. Σύγκριση με αγορές πριν από ${esc(q.cutoff)}.</p><div class="quarter-stats">${stat('Νέες αγορές',q.recent)}${stat('Παλαιότερες αγορές',q.older)}<div class="subcard"><h4>Διαφορά μέσης μηνιαίας επίδοσης</h4><b class="${cls(q.difference_pp)}">${num(q.difference_pp)} ποσοστιαίες μονάδες</b><p>Νέες μείον παλαιότερες</p></div></div><p class="quarter-note">${esc(q.method)}</p><p class="quarter-note">Έρευνα γενικών ροών ειδήσεων από Yahoo Finance, CNBC, MarketWatch, Investing.com · ${esc(q.research?.status||'')} · ${num(q.research?.elapsed_seconds)} sec · όριο 170 sec. Τελευταίος έλεγχος: ${esc(q.research?.checked_at||'δεν εκτελέστηκε')}. Το όριο αφορά μόνο την πρόσθετη έρευνα V21. Οι ροές καλύπτουν τους διαθέσιμους πρόσφατους τίτλους, όχι πλήρες αρχείο μηνός.</p><p class="quarter-note">Η ενότητα αφορά όλο το portfolio, ανεξάρτητα από τα επάνω φίλτρα.</p><div class="tablewrap"><table class="quarter-review-table"><thead><tr><th>Μετοχή / broker</th><th>Αγορά</th><th>Τιμή αγοράς → τώρα</th><th>Από αγορά</th><th>L / 1M</th><th>Ειδήσεις / πιθανή εξήγηση</th></tr></thead><tbody>${q.rows.map(x=>`<tr><td><b>${esc(x.symbol)}</b><br>${esc(x.platform)}</td><td>${esc(x.purchase_date)}</td><td>${num(x.purchase_price)} → ${num(x.current_price)}</td><td class="${cls(x.percent_change)}">${pct(x.percent_change)}</td><td class="${cls(x.monthly_percent_change)}">${pct(x.monthly_percent_change)}${x.monthly_includes_pre_purchase?' *':''}</td><td><details><summary>Ανάλυση και πηγές (${(x.news?.articles||[]).length})</summary><p>${esc(x.news?.summary||'Δεν έχει ολοκληρωθεί έρευνα για αυτή τη μετοχή.')}</p><ul>${(x.news?.articles||[]).map(a=>`<li>${safeLink(a.url,a.title)} — ${esc(a.source)} · ${esc(a.published_at)}</li>`).join('')}</ul><small>${esc(JSON.stringify(x.news?.source_status||{}))}</small></details></td></tr>`).join('')}</tbody></table></div><p class="quarter-note">* Κατοχή κάτω από 30 ημέρες: η L μπορεί να περιέχει μεταβολή πριν από την αγορά. Τιμές όπως καταγράφονται στο portfolio.</p>`;
+function renderQuarter(platform=''){
+ const root=PAYLOAD.quarter_review;if(!root)return;
+ const q=platform?(root.by_platform||{})[platform]:root;if(!q)return;
+ const selector=`<label for="quarterPlatform">Πλατφόρμα: </label><select id="quarterPlatform" onchange="renderQuarter(this.value)"><option value="">Όλες οι πλατφόρμες</option>${Object.keys(root.by_platform||{}).map(p=>`<option value="${esc(p)}"${p===platform?' selected':''}>${esc(p)}</option>`).join('')}</select>`;
+ const audit=q.audit||{status:'partial',checks:0,errors:[],issues:[]};
+ const auditHTML=`<details${audit.status==='ok'?'':' open'}><summary>${audit.status==='error'?'Σφάλμα συμφωνίας ποσών':audit.status==='partial'?'Έλεγχοι: υπάρχουν ελλιπή στοιχεία':'Έλεγχοι: τα ποσά συμφωνούν'} · ${audit.checks} έλεγχοι · ${audit.issues.length} επισημάνσεις</summary><ul>${audit.errors.map(e=>`<li>${esc(e.check)}: ${esc(e.actual)} αντί ${esc(e.expected)}</li>`).join('')}${audit.issues.map(e=>`<li>${esc(e.symbol)} · ${esc(e.platform||'Χωρίς πλατφόρμα')}: ${esc(e.reason)}</li>`).join('')}</ul><p>Ελέγχονται τα αθροίσματα, το κόστος ανοικτών θέσεων, τα πραγματοποιημένα ποσά Sold και οι ημερομηνίες LastMonth. Τα ελλιπή στοιχεία δεν θεωρούνται μηδέν. Τα σύνολα αθροίζονται πριν από τη στρογγυλοποίηση στα λεπτά.</p></details>`;
+ const issues=x=>(x.data_issues||[]).length?`<br><small class="neg">${esc(x.data_issues.join(' · '))}</small>`:'';
+ const money=v=>v==null?'—':euro.format(v);
+ const stat=(title,g)=>`<div class="subcard"><h4>${title}</h4><p>${g.positions} θέσεις / ${g.securities} tickers</p><p>Απόδοση LastMonth: <b class="${cls(g.weighted_monthly_pct)}">${pct(g.weighted_monthly_pct)}</b></p><p>Κέρδος/ζημιά τελευταίου μήνα: <b class="${cls(g.monthly_profit_loss)}">${money(g.monthly_profit_loss)}</b></p><p>Κάλυψη ανοικτών ${g.monthly_profit_loss_covered??0}/${g.monthly_profit_loss_total??0} θέσεων${g.monthly_profit_loss_covered!==g.monthly_profit_loss_total?' · μερικό άθροισμα':''}</p><p><b>Ανοικτές + Sold από την απόκτηση</b></p><p>Κερδισμένες αγορές από απόκτηση: <b>${pct(g.winning_purchase_pct)}</b> (${g.winning_purchases??0}/${g.total_purchases??0})${g.unknown_purchases?` · χωρίς αποτέλεσμα: ${g.unknown_purchases}`:''}</p><p>Total return from PD: <span class="${cls(g.combined_return_pct)}">${pct(g.combined_return_pct)}</span></p><p>Κέρδος/ζημιά από απόκτηση: <span class="${cls(g.combined_profit_loss)}">${money(g.combined_profit_loss)}</span></p><p>Ανοικτές: ${money(g.open_profit_loss)} · Sold: ${money(g.sold_profit_loss)}</p><p>Κάλυψη ποσών: ${g.combined_covered??0}/${g.combined_positions??0}${g.combined_covered!==g.combined_positions?" · μερικό άθροισμα":""}<br>Κάλυψη Total return: ${g.combined_return_covered??0}/${g.combined_positions??0}${g.combined_return_covered!==g.combined_positions?" · μερική απόδοση":""}</p></div>`;
+ const soldTable=rows=>`<div class="tablewrap"><table><thead><tr><th>Μετοχή</th><th>Ημ. απόκτησης</th><th>Total return from PD</th><th>Κέρδος/ζημιά</th></tr></thead><tbody>${(rows||[]).map(x=>`<tr><td title="${esc(x.platform)} · Πώληση: ${esc(x.sell_date)}">${esc(x.symbol)}${issues(x)}</td><td>${esc(x.purchase_date)}</td><td class="${cls(x.realized_return_pct)}">${pct(x.realized_return_pct)}</td><td class="${cls(x.realized_profit_loss)}">${money(x.realized_profit_loss)}</td></tr>`).join('')||'<tr><td colspan="4">Δεν υπάρχουν πωλημένες θέσεις σε αυτή την ομάδα.</td></tr>'}</tbody></table></div>`;
+ const table=rows=>`<div class="tablewrap"><table class="quarter-review-table"><thead><tr><th>Μετοχή / broker</th><th>Ημερομηνία απόκτησης</th><th>Τιμή αγοράς → τώρα</th><th>Μέση μηνιαία άνοδος</th><th>Total return from PD</th><th>Κέρδος/ζημιά από απόκτηση</th><th>Απόδοση LastMonth</th><th>Κέρδος/ζημιά τελευταίου μήνα</th><th>Διάστημα υπολογισμού</th><th>Ειδήσεις / πηγές</th></tr></thead><tbody>${(rows||[]).map(x=>`<tr><td><b>${esc(x.symbol)}</b><br>${esc(x.platform)}${issues(x)}</td><td>${esc(x.purchase_date)}</td><td>${num(x.purchase_price)} → ${num(x.current_price)}</td><td class="${cls(x.avg_monthly_change)}">${pct(x.avg_monthly_change)}</td><td class="${cls(x.purchase_return_pct)}">${pct(x.purchase_return_pct)}</td><td class="${cls(x.purchase_profit_loss)}">${money(x.purchase_profit_loss)}</td><td class="${cls(x.holding_monthly_pct)}">${pct(x.holding_monthly_pct)}</td><td class="${cls(x.monthly_profit_loss)}">${money(x.monthly_profit_loss)}</td><td>${esc(x.monthly_period_start)} → ${esc(x.monthly_period_end)}${x.monthly_basis==='portfolio_1m_fallback'?'<br><small>Εκτίμηση από διαθέσιμη απόδοση 1Μ</small>':''}${x.monthly_price_dates?.length?`<br><small>Κλεισίματα: ${esc(x.monthly_price_dates.join(' → '))}</small>`:''}</td><td><details><summary>Ανάλυση και πηγές (${(x.news?.articles||[]).length})</summary><p>${esc(x.news?.summary||'Δεν υπάρχουν επαληθευμένοι σχετικοί τίτλοι.')}</p><ul>${(x.news?.articles||[]).map(a=>`<li>${safeLink(a.url,a.title)} — ${esc(a.source)} · ${esc(a.published_at)}</li>`).join('')}</ul><small>Στοχευμένη αναζήτηση: ${esc(x.news?.targeted_status||'δεν εκτελέστηκε')} · Έλεγχος: ${esc(x.news?.checked_at||'—')}</small></details></td></tr>`).join('')}</tbody></table></div>`;
+ document.getElementById('quarterReview').innerHTML=`${selector}<p>Επιλογή: ${esc(platform||'Όλες οι πλατφόρμες')} · Στοιχεία έως ${esc(q.as_of)}</p>${auditHTML}<p>Νέες αγορές ${esc(q.cutoff)} έως ${esc(q.as_of)} · παλαιότερες πριν από ${esc(q.cutoff)}.</p><div class="quarter-stats">${stat('Νέες αγορές',q.recent)}${stat('Παλαιότερες αγορές',q.older)}<div class="subcard"><h4>Διαφορά απόδοσης LastMonth</h4><b class="${cls(q.difference_pp)}">${num(q.difference_pp)} ποσοστιαίες μονάδες</b><p>Νέες μείον παλαιότερες · σταθμισμένες αποδόσεις</p></div></div><p class="quarter-note">${esc(q.method)}</p><p class="quarter-note">Αφορά την επιλεγμένη πλατφόρμα ή όλες μαζί. Τα ποσά είναι εκτιμήσεις, όχι εκκαθάριση broker. Οι ειδήσεις προέρχονται από στοχευμένη αναζήτηση δημόσιων τίτλων Bloomberg, Reuters, Capital.gr, Ναυτεμπορική, Investing.com μέσω Google News και συμπληρωματικά RSS. Δεν διαβάζονται συνδρομητικά άρθρα· οι τίτλοι δεν αποδεικνύουν την αιτία μεταβολής.</p><details open><summary>Νέες αγορές — αναλυτικά</summary>${table(q.rows)}<h4>Sold — αγορές τριμήνου</h4>${soldTable(q.sold_rows)}</details><details><summary>Δες και παλιές αγορές</summary>${table(q.older_rows)}<h4>Sold — παλαιότερες αγορές</h4>${soldTable(q.older_sold_rows)}</details><p class="quarter-note">Το LastMonth αφορά ανοικτές θέσεις. Τα σύνολα από απόκτηση περιλαμβάνουν και Sold έως την πώληση. Το ποσοστό κερδισμένων = κερδοφόρες αγορές / όλες τις αγορές της ομάδας. Μερική πώληση και υπόλοιπο ίδιας μετοχής, broker και ημερομηνίας μετρούν ως μία αγορά. Ελλιπή αποτελέσματα δηλώνονται χωριστά.${q.excluded_sold_count?` Εξαιρέθηκαν ${q.excluded_sold_count} Sold εγγραφές με ελλιπείς ή ασυνεπείς ημερομηνίες.`:""}</p>`;
 }
 
 function isoDate(v){if(!v)return null;const s=String(v).slice(0,10);return /^\d{4}-\d{2}-\d{2}$/.test(s)?s:null}
@@ -407,7 +441,7 @@ function render(){
  Plotly.react("countryChart",[{type:"pie",labels:cou.map(x=>x[0]),values:cou.map(x=>x[1]),hole:.5}],lay({margin:{l:10,r:10,t:10,b:10}}),{responsive:true,displaylogo:false});
 
  const h=[...rs].filter(x=>x.market_value!=null).sort((a,b)=>b.market_value-a.market_value).slice(0,15).reverse();
- Plotly.react("holdingsChart",[{type:"bar",orientation:"h",y:h.map(x=>x.symbol),x:h.map(x=>x.market_value),marker:{color:C.blue}}],lay({margin:{l:80,r:25,t:15,b:55}}),{responsive:true,displaylogo:false});
+ Plotly.react("holdingsChart",[{type:"bar",orientation:"h",y:h.map(x=>x.symbol),x:h.map(x=>x.market_value),text:h.map(x=>pct(sum(DATA.map(v=>v.market_value))>0?100*x.market_value/sum(DATA.map(v=>v.market_value)):null)),textposition:"outside",cliponaxis:false,hovertemplate:"%{y}<br>%{x:,.2f} €<br>%{text} του συνολικού portfolio<extra></extra>",marker:{color:C.blue}}],lay({margin:{l:80,r:85,t:15,b:55},xaxis:{range:[0,Math.max(1,...h.map(x=>x.market_value))*1.2]}}),{responsive:true,displaylogo:false});
 
  const r=[...rs].filter(x=>x.percent_change!=null).sort((a,b)=>a.percent_change-b.percent_change);
  Plotly.react("returnChart",[{type:"bar",orientation:"h",y:r.map(x=>x.symbol),x:r.map(x=>x.percent_change),marker:{color:r.map(x=>x.percent_change>=0?C.green:C.red)}}],lay({margin:{l:80,r:25,t:15,b:55}}),{responsive:true,displaylogo:false});
@@ -455,11 +489,21 @@ function render(){
  const f=rs.filter(x=>x.roic!=null&&x.fcf_yield!=null);
  Plotly.react("fundChart",[{type:"scatter",mode:"markers+text",textposition:"top center",text:f.map(x=>x.symbol),x:f.map(x=>x.roic),y:f.map(x=>x.fcf_yield),marker:{size:10,color:C.blue}}],lay({xaxis:{title:"ROIC (%)",gridcolor:"#E9EDF3"},yaxis:{title:"FCF Yield (%)",gridcolor:"#E9EDF3"}}),{responsive:true,displaylogo:false});
 
- document.getElementById("tbody").innerHTML=[...rs].sort((a,b)=>(b.market_value||0)-(a.market_value||0)).map(x=>`<tr><td><b>${x.symbol||""}</b></td><td>${x.name||""}</td><td>${x.sector||""}</td><td>${x.country||""}</td><td>${x.platform||""}</td><td>${String(x.purchase_date||"").slice(0,10)}</td><td>${x.market_value==null?"—":euro.format(x.market_value)}</td><td class="${cls(x.percent_change)}">${pct(x.percent_change)}</td><td class="${cls(x.monthly_percent_change)}">${pct(x.monthly_percent_change)}</td><td class="${cls(x.avg_monthly_change)}">${pct(x.avg_monthly_change)}</td><td>${pct(x.vuaa_return)}</td><td class="${cls(x.excess_return)}">${pct(x.excess_return)}</td><td>${pct(x.fcf_yield)}</td><td>${pct(x.fcf_growth)}</td><td>${pct(x.roic)}</td><td>${pct(x.forward_revenue_growth)}</td><td>${pct(x.forward_eps_growth)}</td><td><b>${num(x.final_score)}</b></td></tr>`).join("");
+ document.getElementById("tbody").innerHTML=sortDetailRows(rs).map(x=>`<tr><td><b>${x.symbol||""}</b></td><td>${x.name||""}</td><td>${x.sector||""}</td><td>${x.country||""}</td><td>${x.platform||""}</td><td>${String(x.purchase_date||"").slice(0,10)}</td><td>${x.market_value==null?"—":euro.format(x.market_value)}</td><td class="${cls(x.percent_change)}">${pct(x.percent_change)}</td><td class="${cls(x.holding_monthly_pct)}">${pct(x.holding_monthly_pct)}</td><td class="${cls(x.avg_monthly_change)}">${pct(x.avg_monthly_change)}</td><td>${pct(x.vuaa_return)}</td><td class="${cls(x.excess_return)}">${pct(x.excess_return)}</td><td>${pct(x.fcf_yield)}</td><td>${pct(x.fcf_growth)}</td><td>${pct(x.roic)}</td><td>${pct(x.forward_revenue_growth)}</td><td>${pct(x.forward_eps_growth)}</td><td><b>${num(x.final_score)}</b></td></tr>`).join("");
 }
 
 ["sector","country","platform","minScore","dateFrom","dateTo","agePreset"].forEach(id=>document.getElementById(id).addEventListener("change",render));
 document.getElementById("search").addEventListener("input",render);
+
+const detailFields=['symbol','name','sector','country','platform','purchase_date','market_value','percent_change','holding_monthly_pct','avg_monthly_change','vuaa_return','excess_return','fcf_yield','fcf_growth','roic','forward_revenue_growth','forward_eps_growth','final_score'];
+let detailSort={field:'market_value',direction:-1};
+function sortDetailRows(rs){return [...rs].sort((a,b)=>{const av=a[detailSort.field],bv=b[detailSort.field];const missing=v=>v==null||v==='';if(missing(av))return missing(bv)?0:1;if(missing(bv))return -1;const numeric=detailFields.indexOf(detailSort.field)>=6;return detailSort.direction*(numeric?Number(av)-Number(bv):String(av).localeCompare(String(bv),'el'));});}
+function updateSortHeaders(){document.querySelectorAll('.detail th').forEach((th,i)=>{const active=detailSort.field===detailFields[i];th.setAttribute('aria-sort',active?(detailSort.direction===1?'ascending':'descending'):'none');th.querySelector('.sort-arrow').textContent=active?(detailSort.direction===1?' ↑':' ↓'):' ↕';});}
+document.querySelectorAll('.detail th').forEach((th,i)=>{const label=th.textContent;th.innerHTML=`<button type="button" title="Ταξινόμηση: κλικ για αλλαγή σειράς">${esc(label)}<span class="sort-arrow" aria-hidden="true"> ↕</span></button>`;th.querySelector('button').addEventListener('click',()=>{const field=detailFields[i];detailSort={field,direction:detailSort.field===field?-detailSort.direction:(i>=6?-1:1)};updateSortHeaders();render();});});
+updateSortHeaders();
+document.getElementById('valueHistory').innerHTML=(PAYLOAD.portfolio_value_history||[]).map(x=>`<tr><td>${esc(x.date.split('-').reverse().join('/'))}</td><td>${euro.format(x.value)}</td></tr>`).join('');
+function monthlyProfitTable(rows){return `<div class="tablewrap"><table><thead><tr><th>Μετοχή / broker</th><th>Αγορά</th><th>Κέρδος/ζημιά τελευταίου μήνα</th></tr></thead><tbody>${(rows||[]).map(x=>`<tr><td>${esc(x.symbol)} · ${esc(x.platform)}</td><td>${esc(x.purchase_date)}</td><td class="${cls(x.monthly_profit_loss)}">${x.monthly_profit_loss==null?'—':euro.format(x.monthly_profit_loss)}</td></tr>`).join('')}</tbody></table></div>`;}
+
 renderQuarter();
 renderSixMonthReview();
 render();
@@ -468,18 +512,73 @@ render();
 </html>'''
 
 
+
+def _finite(value):
+    try:
+        result = float(value) if value is not None else None
+        return result if result is not None and math.isfinite(result) else None
+    except (ValueError, TypeError):
+        return None
+
+
+def _monthly_profit_loss(stock, as_of):
+    from .portfolio_review_service import holding_period_metrics
+    return holding_period_metrics(stock, as_of)['monthly_profit_loss']
+
+
+def _attach_dashboard_updates(payload, json_path):
+    as_of = date.fromisoformat(payload["generated_at"][:10])
+    from .portfolio_review_service import build_review
+    review = payload.get("quarter_review") or {}
+    if "profit_loss_rows" not in review:
+        review = build_review(payload["stocks"], as_of, sold_stocks=payload.get("sold_stocks", []))
+        payload["quarter_review"] = review
+    # Reuse the exact reviewed values, including historical price evidence.
+    key = lambda r: (r.get("symbol"), r.get("platform"), str(r.get("purchase_date")), r.get("quantity"))
+    reviewed = {key(r): r for r in review.get("rows", []) + review.get("older_rows", [])}
+    for stock in payload["stocks"]:
+        source = reviewed.get(key(stock), {})
+        for field in ("monthly_profit_loss", "holding_monthly_pct", "monthly_start_value",
+                      "monthly_period_start", "monthly_period_end", "monthly_basis"):
+            stock[field] = source.get(field)
+    # Keep a durable history beside the JSON; seed it from the prior snapshot.
+    history_path = json_path.with_name(json_path.stem + "_value_history.json")
+    history = {}
+    if history_path.exists():
+        for row in json.loads(history_path.read_text(encoding="utf-8")):
+            history[row["date"]] = row
+    if json_path.exists():
+        previous = json.loads(json_path.read_text(encoding="utf-8"))
+        for row in previous.get("portfolio_value_history", []):
+            history.setdefault(row["date"], row)
+        previous_stocks = previous.get("stocks", [])
+        values = [_finite(x.get("market_value")) for x in previous_stocks]
+        if previous.get("generated_at") and values and all(v is not None for v in values):
+            day = previous["generated_at"][:10]
+            history.setdefault(day, {"date": day, "value": round(sum(values), 2)})
+    values = [_finite(x.get("market_value")) for x in payload["stocks"]]
+    if values and all(v is not None for v in values):
+        history[str(as_of)] = {"date": str(as_of), "value": round(sum(values), 2)}
+    payload["portfolio_value_history"] = sorted(history.values(), key=lambda x: x["date"], reverse=True)
+    temp = history_path.with_suffix(".tmp")
+    temp.write_text(json.dumps(payload["portfolio_value_history"], ensure_ascii=False, indent=2), encoding="utf-8")
+    temp.replace(history_path)
+
+
 def generate_portfolio_dashboard(
     stocks,
     quality_report=None,
     candidates=None,
     json_path=DASHBOARD_JSON_FILE,
     html_path=DASHBOARD_HTML_FILE,
+    snapshot_at=None,
+    sold_stocks=None,
 ):
     json_path = Path(json_path)
     html_path = Path(html_path)
 
     payload = {
-        "generated_at": datetime.now().isoformat(
+        "generated_at": snapshot_at or datetime.now().isoformat(
             timespec="seconds"
         ),
         "stocks": _serializable_stocks(
@@ -494,6 +593,7 @@ def generate_portfolio_dashboard(
                 )
             )
         ),
+        "sold_stocks": _serializable_stocks(sold_stocks) if sold_stocks is not None else _load_sold_from_excel(),
         "quality": quality_report or {},
         "model_intelligence": (
             __import__(
@@ -509,6 +609,8 @@ def generate_portfolio_dashboard(
         enriched = {r.get("symbol"): r for r in payload["candidates"]}
         for candidate in candidates:
             candidate.update(enriched.get(candidate.get("symbol"), {}))
+
+    _attach_dashboard_updates(payload, json_path)
 
     json_path.write_text(
         json.dumps(
@@ -566,4 +668,6 @@ def refresh_dashboard_candidates(candidates=None):
             {},
         ),
         candidates=candidates,
+        snapshot_at=previous.get("generated_at"),
+        sold_stocks=previous.get("sold_stocks"),
     )

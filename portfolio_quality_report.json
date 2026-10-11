@@ -1,10 +1,10 @@
 {
   "status": "OK",
-  "positions_checked": 69,
-  "positions_with_issues": 25,
+  "positions_checked": 68,
+  "positions_with_issues": 24,
   "errors": 0,
   "warnings": 0,
-  "info": 25,
+  "info": 24,
   "stocks": [
     {
       "symbol": "VUAA.L",
@@ -64,28 +64,6 @@
           "message": "Λείπουν ορισμένα fundamentals.",
           "actual": [
             "fcf_growth"
-          ],
-          "expected": null
-        }
-      ]
-    },
-    {
-      "symbol": "SXR8.DE",
-      "platform": "Trading212",
-      "errors": 0,
-      "warnings": 0,
-      "info": 1,
-      "issues": [
-        {
-          "code": "missing_fundamentals",
-          "severity": "info",
-          "field": "fundamentals",
-          "message": "Λείπουν ορισμένα fundamentals.",
-          "actual": [
-            "fcf_yield",
-            "fcf_growth",
-            "roic",
-            "final_score"
           ],
           "expected": null
         }
@@ -300,8 +278,8 @@
           "severity": "info",
           "field": "percent_change",
           "message": "Πολύ μεγάλη συνολική απόδοση, αλλά συμφωνεί με purchase_price/current_price.",
-          "actual": 190.63,
-          "expected": 190.63
+          "actual": 173.49,
+          "expected": 173.49
         }
       ]
     },
@@ -395,8 +373,8 @@
           "severity": "info",
           "field": "percent_change",
           "message": "Πολύ μεγάλη συνολική απόδοση, αλλά συμφωνεί με purchase_price/current_price.",
-          "actual": 230.48,
-          "expected": 230.48
+          "actual": 231.46,
+          "expected": 231.46
         }
       ]
     },

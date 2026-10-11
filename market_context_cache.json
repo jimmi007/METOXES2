@@ -1,6 +1,6 @@
 {
   "context:EGLN.L:3": {
-    "saved_at": 1791299330.3917625,
+    "saved_at": 1791711917.3767455,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -11,12 +11,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=EGLN.L&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:50"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=EGLN.L&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:17"
     }
   },
   "context:BSX:3": {
-    "saved_at": 1791299329.853799,
+    "saved_at": 1791711917.4264011,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -27,12 +27,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=BSX&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:49"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=BSX&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:17"
     }
   },
   "context:ROP:3": {
-    "saved_at": 1791299329.878437,
+    "saved_at": 1791711917.3943634,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -43,8 +43,8 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ROP&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:49"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ROP&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:17"
     }
   },
   "context:SXR8.DE:3": {
@@ -64,7 +64,7 @@
     }
   },
   "context:VUAA.L:3": {
-    "saved_at": 1791299330.4207816,
+    "saved_at": 1791711917.844043,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -75,12 +75,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=VUAA.L&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:50"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=VUAA.L&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:17"
     }
   },
   "context:IMMR:3": {
-    "saved_at": 1791299333.5844696,
+    "saved_at": 1791711920.0867708,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -91,12 +91,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=IMMR&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:53"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=IMMR&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:20"
     }
   },
   "context:RKLB:3": {
-    "saved_at": 1791299334.7948568,
+    "saved_at": 1791711921.224828,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -107,12 +107,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=RKLB&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:54"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=RKLB&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:21"
     }
   },
   "context:ADBE:3": {
-    "saved_at": 1791299332.4443135,
+    "saved_at": 1791711919.4448557,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -123,12 +123,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ADBE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:52"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ADBE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:19"
     }
   },
   "context:DECK:3": {
-    "saved_at": 1791299332.4110873,
+    "saved_at": 1791711919.3915832,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -139,12 +139,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=DECK&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:52"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=DECK&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:19"
     }
   },
   "context:CRDO:3": {
-    "saved_at": 1791299334.8372443,
+    "saved_at": 1791711921.201074,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -155,12 +155,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=CRDO&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:54"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=CRDO&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:21"
     }
   },
   "context:OPHC:3": {
-    "saved_at": 1791299334.7283275,
+    "saved_at": 1791711921.1755931,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -171,12 +171,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=OPHC&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:54"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=OPHC&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:21"
     }
   },
   "context:EPAM:3": {
-    "saved_at": 1791299334.7501733,
+    "saved_at": 1791711921.2409344,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -187,12 +187,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=EPAM&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:54"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=EPAM&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:21"
     }
   },
   "context:PTC:3": {
-    "saved_at": 1791299336.70802,
+    "saved_at": 1791711923.0980225,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -203,12 +203,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=PTC&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:56"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=PTC&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:23"
     }
   },
   "context:NNE:3": {
-    "saved_at": 1791299335.6106007,
+    "saved_at": 1791711921.705533,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -219,28 +219,28 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=NNE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:55"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=NNE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:21"
     }
   },
   "context:CCS:3": {
-    "saved_at": 1791299336.745382,
+    "saved_at": 1791711923.1471603,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
       "news_sentiment": "neutral",
       "earnings_source": "Yahoo Finance",
-      "earnings_date": "2026-10-21",
+      "earnings_date": "2026-10-28",
       "earnings_eps_estimate": null,
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=CCS&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:56"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=CCS&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:23"
     }
   },
   "context:PODD:3": {
-    "saved_at": 1791299338.6004963,
+    "saved_at": 1791711925.1055846,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -251,12 +251,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=PODD&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:58"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=PODD&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:25"
     }
   },
   "context:CVX:3": {
-    "saved_at": 1791299337.9944096,
+    "saved_at": 1791711923.4822452,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -267,12 +267,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=CVX&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:57"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=CVX&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:23"
     }
   },
   "context:BAC:3": {
-    "saved_at": 1791299338.6198325,
+    "saved_at": 1791711925.0710442,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -283,12 +283,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=BAC&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:58"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=BAC&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:25"
     }
   },
   "context:CI:3": {
-    "saved_at": 1791299337.8918977,
+    "saved_at": 1791711923.0818326,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -299,12 +299,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=CI&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:57"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=CI&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:23"
     }
   },
   "context:LVS:3": {
-    "saved_at": 1791299338.6426365,
+    "saved_at": 1791711925.0864584,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -315,12 +315,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=LVS&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:58"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=LVS&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:25"
     }
   },
   "context:CAAP:3": {
-    "saved_at": 1791299339.577006,
+    "saved_at": 1791711925.1758323,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -331,12 +331,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=CAAP&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:59"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=CAAP&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:25"
     }
   },
   "context:ALB:3": {
-    "saved_at": 1791299340.0276177,
+    "saved_at": 1791711925.195154,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -347,12 +347,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ALB&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:00"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ALB&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:25"
     }
   },
   "context:SXRU.DE:3": {
-    "saved_at": 1791299341.0712936,
+    "saved_at": 1791711927.4377832,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -363,8 +363,8 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=SXRU.DE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:01"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=SXRU.DE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:27"
     }
   },
   "context:SXLI.L:3": {
@@ -384,7 +384,7 @@
     }
   },
   "context:RHM.DE:3": {
-    "saved_at": 1791299340.6195414,
+    "saved_at": 1791711926.9595177,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -395,12 +395,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=RHM.DE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:00"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=RHM.DE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:26"
     }
   },
   "context:TSLA:3": {
-    "saved_at": 1791299340.707127,
+    "saved_at": 1791711927.0173929,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -411,12 +411,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=TSLA&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:00"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=TSLA&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:27"
     }
   },
   "context:BEI.DE:3": {
-    "saved_at": 1791299343.4188523,
+    "saved_at": 1791711928.5326436,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -427,12 +427,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=BEI.DE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:03"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=BEI.DE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:28"
     }
   },
   "context:ITX.MC:3": {
-    "saved_at": 1791299342.1756275,
+    "saved_at": 1791711927.5374377,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -443,12 +443,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ITX.MC&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:02"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ITX.MC&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:27"
     }
   },
   "context:GLD:3": {
-    "saved_at": 1791299341.908577,
+    "saved_at": 1791711928.0446422,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -459,12 +459,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=GLD&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:01"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=GLD&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:28"
     }
   },
   "context:LDO.MI:3": {
-    "saved_at": 1791299342.9814765,
+    "saved_at": 1791711928.5535772,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -475,12 +475,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=LDO.MI&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:02"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=LDO.MI&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:28"
     }
   },
   "context:RWE.DE:3": {
-    "saved_at": 1791299343.6803703,
+    "saved_at": 1791711929.351611,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -491,12 +491,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=RWE.DE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:03"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=RWE.DE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:29"
     }
   },
   "context:CRM:3": {
-    "saved_at": 1791299344.4198637,
+    "saved_at": 1791711930.2910469,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -507,12 +507,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=CRM&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:04"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=CRM&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:30"
     }
   },
   "context:AIR.PA:3": {
-    "saved_at": 1791299344.4387648,
+    "saved_at": 1791711930.0758295,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -523,12 +523,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=AIR.PA&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:04"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=AIR.PA&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:30"
     }
   },
   "context:SAAB-B.ST:3": {
-    "saved_at": 1791299345.639403,
+    "saved_at": 1791711930.8904557,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -539,12 +539,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=SAAB-B.ST&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:05"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=SAAB-B.ST&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:30"
     }
   },
   "context:FFARM.AS:3": {
-    "saved_at": 1791299344.952297,
+    "saved_at": 1791711930.4280193,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -555,12 +555,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=FFARM.AS&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:04"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=FFARM.AS&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:30"
     }
   },
   "context:ULVR.L:3": {
-    "saved_at": 1791299346.6645806,
+    "saved_at": 1791711931.6993034,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -571,12 +571,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ULVR.L&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:06"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ULVR.L&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:31"
     }
   },
   "context:PYPL:3": {
-    "saved_at": 1791299346.5546906,
+    "saved_at": 1791711930.310624,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -587,12 +587,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=PYPL&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:06"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=PYPL&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:30"
     }
   },
   "context:IDCC:3": {
-    "saved_at": 1791299347.5464926,
+    "saved_at": 1791711932.0223744,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -603,12 +603,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=IDCC&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:07"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=IDCC&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:32"
     }
   },
   "context:HEN3.DE:3": {
-    "saved_at": 1791299346.7242703,
+    "saved_at": 1791711932.004569,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -619,12 +619,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=HEN3.DE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:06"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=HEN3.DE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:32"
     }
   },
   "context:TSM:3": {
-    "saved_at": 1791299346.760224,
+    "saved_at": 1791711932.0375078,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -635,12 +635,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=TSM&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:06"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=TSM&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:32"
     }
   },
   "context:ACM:3": {
-    "saved_at": 1791299348.73956,
+    "saved_at": 1791711932.3942394,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -651,12 +651,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ACM&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:08"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ACM&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:32"
     }
   },
   "context:AEGN.AT:3": {
-    "saved_at": 1791299348.8693604,
+    "saved_at": 1791711933.190949,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -667,12 +667,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=AEGN.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:08"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=AEGN.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:33"
     }
   },
   "context:ASML:3": {
-    "saved_at": 1791299348.8505795,
+    "saved_at": 1791711934.0571957,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -683,12 +683,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ASML&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:08"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ASML&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:34"
     }
   },
   "context:ALPHA.AT:3": {
-    "saved_at": 1791299349.3284018,
+    "saved_at": 1791711934.0132523,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -699,12 +699,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ALPHA.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:09"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ALPHA.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:34"
     }
   },
   "context:CAP.PA:3": {
-    "saved_at": 1791299350.545782,
+    "saved_at": 1791711934.1727884,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -715,12 +715,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=CAP.PA&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:10"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=CAP.PA&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:34"
     }
   },
   "context:BELA.AT:3": {
-    "saved_at": 1791299349.6803467,
+    "saved_at": 1791711933.7911386,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -731,12 +731,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=BELA.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:09"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=BELA.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:33"
     }
   },
   "context:ELHA.AT:3": {
-    "saved_at": 1791299351.2935843,
+    "saved_at": 1791711935.7672598,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -747,12 +747,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ELHA.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:11"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ELHA.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:35"
     }
   },
   "context:COP:3": {
-    "saved_at": 1791299350.6006176,
+    "saved_at": 1791711934.722399,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -763,12 +763,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=COP&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:10"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=COP&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:34"
     }
   },
   "context:EE:3": {
-    "saved_at": 1791299350.5245724,
+    "saved_at": 1791711935.5905356,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -779,12 +779,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=EE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:10"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=EE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:35"
     }
   },
   "context:ETE.AT:3": {
-    "saved_at": 1791299351.6747754,
+    "saved_at": 1791711935.6892917,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -795,12 +795,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ETE.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:11"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=ETE.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:35"
     }
   },
   "context:EUROB.AT:3": {
-    "saved_at": 1791299352.4727826,
+    "saved_at": 1791711935.7036443,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -811,12 +811,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=EUROB.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:12"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=EUROB.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:35"
     }
   },
   "context:FOYRK.AT:3": {
-    "saved_at": 1791299353.0577195,
+    "saved_at": 1791711937.669886,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -827,12 +827,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=FOYRK.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:13"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=FOYRK.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:37"
     }
   },
   "context:FCX:3": {
-    "saved_at": 1791299352.381491,
+    "saved_at": 1791711937.5415397,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -843,28 +843,28 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=FCX&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:12"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=FCX&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:37"
     }
   },
   "context:EVD.DE:3": {
-    "saved_at": 1791299352.2590592,
+    "saved_at": 1791711936.3360856,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
       "news_sentiment": "neutral",
       "earnings_source": "Yahoo Finance",
-      "earnings_date": "2026-11-19",
+      "earnings_date": "2026-11-12",
       "earnings_eps_estimate": null,
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=EVD.DE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:12"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=EVD.DE&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:36"
     }
   },
   "context:LAMDA.AT:3": {
-    "saved_at": 1791299353.6510956,
+    "saved_at": 1791711937.6366131,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -875,12 +875,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=LAMDA.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:13"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=LAMDA.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:37"
     }
   },
   "context:LNG:3": {
-    "saved_at": 1791299354.2444253,
+    "saved_at": 1791711937.652517,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -891,12 +891,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=LNG&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:14"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=LNG&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:37"
     }
   },
   "context:MTLN.L:3": {
-    "saved_at": 1791299354.5114796,
+    "saved_at": 1791711939.562048,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -907,12 +907,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=MTLN.L&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:14"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=MTLN.L&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:39"
     }
   },
   "context:OTOEL.AT:3": {
-    "saved_at": 1791299355.118318,
+    "saved_at": 1791711939.9028873,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -923,12 +923,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=OTOEL.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:15"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=OTOEL.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:39"
     }
   },
   "context:MOH.AT:3": {
-    "saved_at": 1791299354.3690674,
+    "saved_at": 1791711938.1149054,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -939,12 +939,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=MOH.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:14"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=MOH.AT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:38"
     }
   },
   "context:PPC:3": {
-    "saved_at": 1791299355.7072785,
+    "saved_at": 1791711939.6824722,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -955,12 +955,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=PPC&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:15"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=PPC&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:39"
     }
   },
   "context:SIX3D.XD:3": {
-    "saved_at": 1791299356.6282933,
+    "saved_at": 1791711939.950033,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -971,12 +971,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=SIX3D.XD&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:16"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=SIX3D.XD&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:39"
     }
   },
   "context:THEON.AS:3": {
-    "saved_at": 1791299356.529306,
+    "saved_at": 1791711941.2135818,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -987,12 +987,12 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=THEON.AS&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:16"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=THEON.AS&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:41"
     }
   },
   "context:PSN:3": {
-    "saved_at": 1791299356.7288704,
+    "saved_at": 1791711939.6622531,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -1003,8 +1003,8 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=PSN&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:09:16"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=PSN&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:39"
     }
   },
   "context:ZZ-B.ST:3": {
@@ -1056,7 +1056,7 @@
     }
   },
   "context:BCRX:3": {
-    "saved_at": 1791299331.7292426,
+    "saved_at": 1791711919.4238422,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -1067,8 +1067,8 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=BCRX&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:51"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=BCRX&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:19"
     }
   },
   "context:TEK.L:3": {
@@ -1088,7 +1088,7 @@
     }
   },
   "context:RDDT:3": {
-    "saved_at": 1791299332.5092068,
+    "saved_at": 1791711919.4064214,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -1099,8 +1099,8 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=RDDT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:52"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=RDDT&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:19"
     }
   },
   "context:ROVI.MC:3": {
@@ -1120,7 +1120,7 @@
     }
   },
   "context:APP:3": {
-    "saved_at": 1791299336.7257664,
+    "saved_at": 1791711923.066082,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -1131,8 +1131,8 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=APP&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:56"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=APP&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:23"
     }
   },
   "context:CDE:3": {
@@ -1312,7 +1312,7 @@
     }
   },
   "context:NVDA:3": {
-    "saved_at": 1791299329.9154425,
+    "saved_at": 1791711917.4566412,
     "payload": {
       "news_source": "Yahoo Finance",
       "news_headlines": [],
@@ -1323,8 +1323,8 @@
       "earnings_eps_actual": null,
       "earnings_revenue_estimate": null,
       "earnings_revenue_actual": null,
-      "fmp_context_error": "Client error '402 Payment Required' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=NVDA&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
-      "market_context_checked_at": "2026-10-06T18:08:49"
+      "fmp_context_error": "Client error '429 Too Many Requests' for url 'https://financialmodelingprep.com/stable/news/stock?symbols=NVDA&page=0&limit=3&apikey=pAMngBgBFPORN0WDhdrUAVuvraINP8d4'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "market_context_checked_at": "2026-10-11T12:45:17"
     }
   }
 }

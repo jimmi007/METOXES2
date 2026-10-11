@@ -4,8 +4,12 @@ import json, os, re, subprocess, sys, time, urllib.parse, urllib.request, xml.et
 from datetime import datetime, timezone, timedelta
 from email.utils import parsedate_to_datetime
 from pathlib import Path
-from portfolio_review_service import number, parse_date, months_before
-from extended_review_service import history_metrics
+try:
+    from .portfolio_review_service import number, parse_date, months_before
+    from .extended_review_service import history_metrics
+except ImportError:
+    from portfolio_review_service import number, parse_date, months_before
+    from extended_review_service import history_metrics
 
 FEEDS={
  'finance.yahoo.com':'https://finance.yahoo.com/news/rssindex',
@@ -14,6 +18,45 @@ FEEDS={
  'cnbc.com':'https://www.cnbc.com/id/100003114/device/rss/rss.html',
 }
 DOMAINS=tuple(FEEDS)
+SEARCH_DOMAINS=('bloomberg.com','reuters.com','capital.gr','naftemporiki.gr','investing.com')
+NEWS_VERSION=2
+
+def fetch_company_news(row, asof):
+    """Public title/date/link search, not access to paywalled article bodies."""
+    name=str(row.get('name') or row.get('symbol') or '').strip()
+    if not name: return []
+    sites=' OR '.join('site:'+d for d in SEARCH_DOMAINS)
+    query='"'+name.replace('"','')+'" ('+sites+') after:'+str(asof-timedelta(days=31))+' before:'+str(asof+timedelta(days=1))
+    greek=str(row.get('country','')).lower()=='greece' or str(row.get('symbol','')).endswith(('.GR','.AT'))
+    params={'q':query,'hl':'el' if greek else 'en-US','gl':'GR' if greek else 'US','ceid':'GR:el' if greek else 'US:en'}
+    url='https://news.google.com/rss/search?'+urllib.parse.urlencode(params)
+    with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 METOXES2'}),timeout=8) as response:
+        xml=response.read(2_000_000)
+    articles=[]
+    for item in ET.fromstring(xml).findall('./channel/item'):
+        try: published=parsedate_to_datetime(item.findtext('pubDate')).date()
+        except (TypeError,ValueError,AttributeError): continue
+        source=item.find('source')
+        host=urllib.parse.urlparse(source.get('url','') if source is not None else '').hostname or ''
+        domain=next((d for d in SEARCH_DOMAINS if host==d or host.endswith('.'+d)),None)
+        link=item.findtext('link') or ''
+        if not domain or not asof-timedelta(days=30)<=published<=asof or not link.startswith('https://'): continue
+        articles.append({'title':item.findtext('title'),'url':link,'source':domain,
+                         'published_at':str(published),'evidence':'headline_only',
+                         'retrieval':'Google News RSS; σύνδεσμος μέσω Google News'})
+    return sorted(articles,key=lambda a:a['published_at'],reverse=True)[:15]
+
+# Explicit exchange mapping: never treat PPC.GR as US poultry ticker PPC.
+PROVIDER_OVERRIDES={'ASML.EU':'ASML.AS','CAP.EU':'CAP.PA','EVD.EU':'EVD.DE',
+                    'RHM.EU':'RHM.DE','THEON.EU':'THEON.AS','VUAA.EU':'VUAA.L',
+                    'MTLN.GR':'MTLN.L','SIX3.EU':'SIX3D.XD'}
+
+def provider_symbol(symbol):
+    if symbol in PROVIDER_OVERRIDES:return PROVIDER_OVERRIDES[symbol]
+    if symbol.endswith('.US'):return symbol[:-3]
+    if symbol.endswith('.GR'):return symbol[:-3]+'.AT'
+    return symbol
+
 
 def fetch_feed(domain,asof):
     # Generic public feed: no holdings, quantities, or names sent to the source.
@@ -42,11 +85,29 @@ def fetch_beta(row):
 
 def fetch_history(symbol, asof):
     import yfinance as yf
-    ticker=yf.Ticker(symbol)
-    frame=ticker.history(start=str(months_before(asof,3)-timedelta(days=8)), end=str(asof+timedelta(days=1)), auto_adjust=False, timeout=10)
-    points=[{'date':str(index.date()),'close':number(row.get('Close')),'adjusted_close':number(row.get('Adj Close'))} for index,row in frame.iterrows()]
+    provider=provider_symbol(symbol)
+    ticker=yf.Ticker(provider)
+    frame=ticker.history(start=str(months_before(asof,3)-timedelta(days=8)),
+                         end=str(asof+timedelta(days=1)),auto_adjust=False,timeout=10)
+    points=[{'date':str(index.date()),'close':number(row.get('Close')),
+             'adjusted_close':number(row.get('Adj Close'))} for index,row in frame.iterrows()]
     result=history_metrics(points,asof)
-    result['currency']=ticker.get_history_metadata().get('currency')
+    result.update(provider_symbol=provider,checked_at=datetime.now(timezone.utc).isoformat())
+    if result.get('status')!='available':
+        result['reason']='Δεν υπάρχουν έγκυρα προσαρμοσμένα κλεισίματα για όλες τις περιόδους 3Μ.'
+    # LastMonth uses split-adjusted Close price returns, not dividend total returns.
+    anchors=[asof-timedelta(days=30),asof]
+    selected=[]
+    for anchor in anchors:
+        eligible=[p for p in points if number(p['close']) is not None and p['close']>0
+                  and timedelta(0)<=anchor-parse_date(p['date'])<=timedelta(days=7)]
+        if eligible:selected.append(max(eligible,key=lambda p:p['date']))
+    if len(selected)==2:
+        result['last_month_price_pct']=(selected[1]['close']/selected[0]['close']-1)*100
+        result['last_month_price_dates']=[p['date'] for p in selected]
+    # Currency metadata failure must not discard already downloaded price history.
+    try:result['currency']=ticker.get_history_metadata().get('currency')
+    except Exception:result['currency']=None
     return result
 
 
@@ -89,21 +150,22 @@ def main():
         except Exception:return False
     def save():
         temp=out.with_suffix('.tmp');temp.write_text(json.dumps(cache,ensure_ascii=False),encoding='utf-8');temp.replace(out)
-    recent={r['symbol']:r for r in request['stocks'] if parse_date(r.get('purchase_date')) and cutoff<=parse_date(r['purchase_date'])<=asof}
-    pool=cf.ThreadPoolExecutor(max_workers=6);jobs={}
+    recent={r['symbol']:r for r in request['stocks'] if parse_date(r.get('purchase_date')) and parse_date(r['purchase_date'])<=asof}
+    pool=cf.ThreadPoolExecutor(max_workers=4);news_pool=cf.ThreadPoolExecutor(max_workers=4);jobs={}
     root=Path(__file__).resolve().parents[2]
     if str(root) not in sys.path:sys.path.insert(0,str(root))
     pending={}
     for symbol,row in recent.items():
         existing=cache['news'].get(symbol,{})
-        if fresh(existing.get('checked_at'),6) and existing.get('as_of')==str(asof):continue
+        if existing.get('search_version')==NEWS_VERSION and existing.get('articles') and fresh(existing.get('checked_at'),6) and existing.get('as_of')==str(asof):continue
         pending[symbol]=row
         retained=[a for a in existing.get('articles',[]) if parse_date(a.get('published_at')) and asof-timedelta(days=31)<=parse_date(a['published_at'])<=asof]
-        cache['news'][symbol]={'articles':retained,'source_status':{},'as_of':str(asof),'checked_at':now.isoformat(),'summary':explain(retained)}
+        cache['news'][symbol]={'articles':retained,'source_status':{},'as_of':str(asof),'checked_at':now.isoformat(),'summary':explain(retained),'search_version':NEWS_VERSION,'targeted_status':'pending'}
     if pending:
-        for domain in DOMAINS:jobs[pool.submit(fetch_feed,domain,asof)]=('feed','',domain)
+        for domain in DOMAINS:jobs[news_pool.submit(fetch_feed,domain,asof)]=('feed','',domain)
+        for symbol,row in pending.items():jobs[news_pool.submit(fetch_company_news,row,asof)]=('search',symbol,None)
     history_symbols=[symbol for symbol in dict.fromkeys(r.get('symbol') for r in request['stocks'] if r.get('symbol'))
-        if not(cache['history_3m'].get(symbol,{}).get('as_of')==str(asof) and cache['history_3m'][symbol].get('status')=='available')]
+        if not(cache['history_3m'].get(symbol,{}).get('as_of')==str(asof) and cache['history_3m'][symbol].get('status')=='available' and cache['history_3m'][symbol].get('provider_symbol')==provider_symbol(symbol))]
     for history_symbol in history_symbols:
         jobs[pool.submit(fetch_history,history_symbol,asof)]=('history',history_symbol,None)
     for row in request['candidates']:
@@ -118,14 +180,24 @@ def main():
             if kind=='history':cache['history_3m'][symbol]=result
             elif kind=='beta' and number(result.get('beta')) is not None:cache['betas'][symbol]=result
             elif kind=='investing': cache['investing_sync_status']='complete' if result.returncode==0 else 'unavailable'
+            elif kind=='search':
+                r=cache['news'][symbol]
+                r['articles']=sorted({a['url']:a for a in r['articles']+result}.values(),key=lambda a:a['published_at'],reverse=True)[:20]
+                r['targeted_status']='ok' if result else 'no_matching_headlines'
+                r['summary']=explain(r['articles'])
             elif kind=='feed':
                 for symbol,row in pending.items():
                     selected=[a for a in result if matches(row,a)][:3]
                     r=cache['news'][symbol];r['articles']=list({a['url']:a for a in r['articles']+selected}.values());r['source_status'][domain]='ok' if selected else 'no_matching_headlines';r['summary']=explain(r['articles'])
         except Exception as error:
-            if kind=='feed':
+            if kind=='history':
+                cache['history_3m'][symbol]={'as_of':str(asof),'status':'fetch_error',
+                    'provider_symbol':provider_symbol(symbol),'reason':'Αποτυχία ανάκτησης: '+type(error).__name__,
+                    'checked_at':now.isoformat()}
+            elif kind=='search':cache['news'][symbol]['targeted_status']='unavailable'
+            elif kind=='feed':
                 for symbol in pending:cache['news'][symbol]['source_status'][domain]='unavailable'
 
         save()
-    pool.shutdown(wait=False);cache['status']='completed_with_results' if any(r.get('articles') for r in cache['news'].values()) else 'no_news_evidence';save()
+    pool.shutdown(wait=False);news_pool.shutdown(wait=False);cache['status']='completed_with_results' if any(r.get('articles') for r in cache['news'].values()) else 'no_news_evidence';save()
 if __name__=='__main__':main()
